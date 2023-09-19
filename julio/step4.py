@@ -13,9 +13,13 @@ c2_def = load_c2def(htc_path)
 # %%
 c2_def_new = c2_def.copy()
 
-sf = (R - r_hub)/(R2- r_hub)
+R_1 = 89.14
+R_2 = 92.49
+r_hub = 2.8
 
-c2_def_new[:, 2] *= 1.01
+sf = (R_1 - r_hub)/(R_2- r_hub)
+
+c2_def_new[:, 2] *= sf
 
 save_path = 'dtu_10mw_hawc2s_redesign1.txt'
 
