@@ -3,8 +3,18 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from lacbox.io import load_c2def, save_c2def, load_pc
 
+'''
+The following code plots polar data of the 10MW RWT blade
+as well as the design points for each airfoil of that blade
+'''
+
+
 
 def plot_polar(polar_data, savename=None):
+    '''
+    Visualizes polar data for each section of the blade
+    Computes the design point for each airfoil and plots it
+    '''
 
     fig, ax = plt.subplots(1,3)
     lab = []
@@ -60,7 +70,11 @@ def plot_polar(polar_data, savename=None):
 
 
 def interp_cl(cl_des, cl_list, aoa_list, cd_list=None):
-    
+    '''
+    Returns the aoa and cd for the selected cl_design 
+    by interpolating airfoil data  
+    '''
+
     # slicing the aoa data for aoa > 0 and aoa < aoa@cl_max
     aoa_clmax = aoa_list[cl_list == np.max(cl_list)]
     aoa_clmax_idx = aoa_list < aoa_clmax
