@@ -66,6 +66,7 @@ def plot_polar(polar_data, savename=None):
 
     plt.show()
 
+    return polar_data
 
 
 
