@@ -4,8 +4,10 @@
 # M Janssen, September 2023
 
 from lacbox.io import load_st, load_ae, load_c2def, save_c2def, save_ae, load_pc, save_pc
+import numpy as np
 import matplotlib.pyplot as plt
-
+import pandas as pd
+from sklearn.metrics import r2_score
 # -------------------------------------------------------------------- #
 # Switches
 # -------------------------------------------------------------------- # show_figures = False
@@ -16,17 +18,23 @@ task_4 = False
 # -------------------------------------------------------------------- #
 
 # Reload the data from the original st file
-st_path = "./data/DTU_10MW_RWT_Blade_st.dat"
+data_path = "../dtu_10mw"
+st_path = data_path + "./data/DTU_10MW_RWT_Blade_st.dat"
 
 # define the path where the ae and ind files are
-ae_path = './data/DTU_10MW_RWT_ae.dat'
-ind_path = './dtu_10mw_hawc2s_rigid_1point_u8000.ind'
-htc_path = 'dtu_10mw_hawc2s_rigid_1point.htc'
-pc_path = './DTU_10MW_RWT_pc.dat'
+ae_path = data_path + '/data/DTU_10MW_RWT_ae.dat'
+ind_path = data_path + '/dtu_10mw_hawc2s_rigid_1point_u8000.ind'
+htc_path = data_path + '/dtu_10mw_hawc2s_rigid_1point.htc'
+pc_path = data_path + '/DTU_10MW_RWT_pc.dat'
 
 # OUTPUT paths
 c2def_save_path = 'c2_def_scaled.txt'
 ae_save_path = 'DTU_10MW_RWT_ae_test_scaling.dat'
+thickness_out_path = '../results/aero_design/thickness.dat'
+polynomial_path = '../results/aero_design/thickness_polynomial.dat'
+
+
+visualize_thickness = False
 
 
 # -------------------------------------------------------------------- #
@@ -94,9 +102,35 @@ thickness = tc_ratio*chord/100
 # Get the centerline from the c2def block in the htc file
 c2_def = load_c2def(htc_path)  # x, y , z , theta
 
-# Scale up
+# Scale up the thickness
 thickness_new = thickness * scaling_factor   # Scale up thickness
-z_new = c2_def[:, 2] * scaling_factor         # Scale up the z direciton
+z_new = c2_def[:, 2] * scaling_factor         # Scale up the z direction
+radius_new = radius * scaling_factor
+
+# Thickness data into dataframe and save as csv
+df = pd.DataFrame(data={"radius": radius_new, "thickness": thickness_new})
+df.to_csv(thickness_out_path, index=False)
+
+# Fit a polynomial to the thickness
+#polynomial_coeffs = np.polynomial.polynomial.Polynomial.fit(radius_new, thickness_new, 4)
+#poly = np.polynomial.polynomial.Polynomial(polynomial_coeffs)
+poly_coeffs = np.polyfit(radius_new, thickness_new, 8)
+thickness_poly = np.polyval(poly_coeffs, radius_new)
+r2 = r2_score(thickness_new, thickness_poly)
+
+np.savetxt(polynomial_path, poly_coeffs)
+breakpoint()
+
+
+
+if visualize_thickness:
+    plt.scatter(radius_new, thickness_new)
+    plt.plot(radius_new, thickness_poly)
+    plt.show()
+    breakpoint()
+
+
+
 
 c2_def_new = c2_def.copy()
 c2_def_new[:, 2] *= scaling_factor  # Scale the z coordinate
@@ -136,7 +170,6 @@ tip_speed = 80  # m/s should be a compromise between less noise limitations offs
 n_blades = 3
 chord_max = 6.5  # Taken over from the RWT
 
-breakpoint()
 
 # -------------------------------------------------------------------- #
 # Script
@@ -145,6 +178,7 @@ breakpoint()
 # ------------------------------------------------------------------- #
 
 if task_4:
+    # Start task 4
    
     # PC file contains the airfoil stuff
     pc_data = load_pc(pc_path)
