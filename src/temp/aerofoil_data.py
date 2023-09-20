@@ -42,7 +42,7 @@ def plot_polar(polar_data, savename=None):
         polar_data[iprof]['cl_des'] = polar_data[iprof]['cl_max'] - .4
 
         # neglect cylinder and t/c=60% airfoil (as mentioned in the assignment description) 
-        if polar_data[iprof]['comment'] == 'Cylinder' or polar_data[iprof]['comment'] == 'FFA-W3-"600" (Re=6x10^6)':
+        if polar_data[iprof]['comment'] == 'Cylinder':
             continue
         
         # compute aoa and cd for chosen cl (cl_max - 0.4)
