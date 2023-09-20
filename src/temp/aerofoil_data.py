@@ -2,12 +2,29 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from lacbox.io import load_c2def, save_c2def, load_pc
-
+import json
 '''
 The following code plots polar data of the 10MW RWT blade
 as well as the design points for each airfoil of that blade
 '''
 
+
+
+def numpy_to_list(obj):
+    """
+
+    Parameters
+    ----------
+    obj : list of dictionaries. Each dictionary contains np arrays
+
+    Returns
+    -------
+    obj : json serialisable list -> can be written in a txt file
+
+    """
+    if isinstance(obj, np.ndarray):
+        return obj.tolist()
+    return obj
 
 
 def plot_polar(polar_data, savename=None):
@@ -116,4 +133,8 @@ if __name__ == '__main__':
     # Plot polar data
     polar_data = load_pc('../../dtu_10mw/data/DTU_10MW_RWT_pc.dat')
     print(polar_data)
-    plot_polar(polar_data, 'assignment1/polar_data.pdf')
+    polar_data = plot_polar(polar_data, 'assignment1/polar_data.pdf')
+
+    with open('../../results/polar_data.json', 'w') as fp:
+        json.dump(polar_data, fp, default=numpy_to_list)
+
