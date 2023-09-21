@@ -101,5 +101,5 @@ if __name__ == '__main__':
    axs[0].set_ylim([0,0.18])
    fig.set_figheight(4)
    fig.set_figwidth(6)
-   plt.savefig("../../results/task1/chord_twist.pdf", bbox_inches='tight')
+   #plt.savefig("../../results/task1/chord_twist.pdf", bbox_inches='tight')
    plt.show() 
