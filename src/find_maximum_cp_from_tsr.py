@@ -173,18 +173,24 @@ tsr_max = tsr_list[CP_max]
 fig, ax1 = plt.subplots()
 print(tsr_list)
 ax2 = ax1.twinx()
-lns1 = ax1.plot(tsr_list, CP_list, "b--", label = "CP")
-lns2 = ax2.plot(tsr_list, CT_list, "r-.", label = "CT")
-lns3 = ax1.axvline(tsr_max, label = "Maximum CP")
+ax1.plot(tsr_list, CP_list, "b--", label = "CP")
+ax2.plot(tsr_list, CT_list, "r-.", label = "CT")
+ax2.axvline(tsr_max, label = "Maximum CP", color = "grey", markersize = 5)
 # lns4 = ax1.axhline(16/27, label = "Betz Limit")
 ax1.set_xlabel(r"Tip Speed Ratio [-]")
 ax1.set_ylabel("Power Coefficient [-]")
 ax2.set_ylabel("Thrust Coefficient [-]")
 ax1.grid(True)
 
-lns = lns1+lns2
-labs = [l.get_label() for l in lns]
-ax1.legend(lns, labs, loc=[0.02, 0.87])
+lines1, labels1 = ax1.get_legend_handles_labels()
+lines2, labels2 = ax2.get_legend_handles_labels()
+lines = lines1 + lines2
+labels = labels1 + labels2
+ax1.legend(lines, labels, loc='best')
+
+# lns = lns1+lns2
+# labs = [l.get_label() for l in lns]
+# ax1.legend(lns, labs, loc=[0.02, 0.87])
 
 plt.tight_layout()
 plt.show(block = True)
