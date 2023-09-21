@@ -1,4 +1,5 @@
 # Compute the site conditions / wind stuff for the new class
+# including the Wind distribution
 # M Janssen
 # September '23
 
