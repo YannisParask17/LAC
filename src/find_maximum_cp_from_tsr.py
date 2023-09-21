@@ -1,7 +1,7 @@
 # %% Import modules
 from aero_design_functions import get_design_functions, solve_tc, solve_bem, CLP_fun, CP_fun, CLT_fun, CT_fun, chord_fun, twist_deg_fun
 from lacbox.aero import root_chord, min_tc_chord, max_twist
-from lacbox.io import load_ae, save_ae
+from lacbox.io import load_ae, save_ae, load_c2def, save_c2def
 import numpy as np
 import matplotlib.pyplot as plt
 # import json
@@ -20,21 +20,27 @@ chord_max = 6.0     # Maximum chord size [m]
 chord_root = 5.38   # Chord at the root [m]
 
 # IO of the AE file
+data_path = "../dtu_10mw"
+
 ae_path = '../dtu_10mw/data/DTU_10MW_RWT_ae.dat'
+htc_path = data_path + '/dtu_10mw_hawc2s_rigid_1point.htc'
+
+# Out
+c2def_save_path = '../results/hawc_files/c2_def_scaled.txt'
 out_path = '../results/hawc_files/10MW_1a_ae.dat'
 
 # Function for the absolute thickness vs span for the 35 m blade
 def thickness(r):
-    """Absolute thickness [m] as a function of blade span [m]"""
+    """Absolute thickness [m] as a function of blade span [m] with the adapted polynomial coeffs"""
     p_edge = [-1.850596047180256051e-13,
-    7.691381134546526722e-11,
-    -1.354769902773717907e-08,
-    1.305293765103693518e-06,
-    -7.377855176793037461e-05,
-    2.410743711971400152e-03,
-    -3.989165296263064847e-02,
-    1.221564339981970615e-01,
-    5.541080966680200781e+00]  # polynomial coefficients
+              7.691381134546526722e-11,
+              -1.354769902773717907e-08,
+              1.305293765103693518e-06,
+              -7.377855176793037461e-05,
+              2.410743711971400152e-03,
+              -3.989165296263064847e-02,
+              1.221564339981970615e-01,
+              5.541080966680200781e+00]  # polynomial coefficients
     t_poly = np.polyval(p_edge, r)  # evaluate polynomial
     t = np.minimum(t_poly, chord_root)  # clip at max thickness
     return t
@@ -175,7 +181,7 @@ for i, tsr in enumerate(tsr_list):
 # fig.show()
 
 
-#%% TSR vs CP
+#  %% TSR vs CP
 
 CP_max = np.argmax(CP_list)
 tsr_max = tsr_list[CP_max]
@@ -183,8 +189,8 @@ tsr_max = tsr_list[CP_max]
 fig, ax1 = plt.subplots()
 print(tsr_list)
 ax2 = ax1.twinx()
-ax1.plot(tsr_list, CP_list, "b--", label = "CP")
-ax2.plot(tsr_list, CT_list, "r-.", label = "CT")
+ax1.plot(tsr_list, CP_list, "b--", label="CP")
+ax2.plot(tsr_list, CT_list, "r-.", label="CT")
 ax2.axvline(tsr_max, label = r"$CP_{max}$ " +f"($\lambda$ = {tsr_max:2.2f})", color = "grey", markersize = 5)
 # lns4 = ax1.axhline(16/27, label = "Betz Limit")
 ax1.set_xlabel(r"Tip Speed Ratio [-]")
@@ -203,12 +209,12 @@ ax1.legend(lines, labels, loc='best')
 # ax1.legend(lns, labs, loc=[0.02, 0.87])
 
 plt.tight_layout()
-plt.show(block = True)
+plt.show(block=True)
 
 
 CT, CP, chord, tc, cl, cd, twist, aoa = solve_CP(cl_des, r, t, tsr_max, R, a, B)
 
-df_new = pd.DataFrame({"CT" : CT, "CP" : CP, "chord" : chord, "tc" : tc, "cl" : cl, "cd" : cd, "twist" : twist, "aoa" : aoa})
+df_new = pd.DataFrame({"CT": CT, "CP": CP, "chord": chord, "tc": tc, "cl": cl, "cd": cd, "twist": twist, "aoa": aoa})
 df_new.to_json("design_parameters_at_max_cp.json")
 
 # Change the ae file and save it
@@ -216,6 +222,20 @@ ae_new = ae_data.copy()
 ae_new[:, 0] = rad_positions_ae     # radial position
 ae_new[:, 1] = chord    # Chord
 ae_new[:, 2] = tc       # T/C ratio
-
 save_ae(out_path, ae_new)
+
+# Change the C2Def
+
+# Get the centerline from the c2def block in the htc file
+c2_def = load_c2def(htc_path)  # x, y , z , theta
+
+c2_def_new = c2_def.copy()
+c2_def_new[:, 2] *= scaling_factor      # Scale the z coordinate
+breakpoint()
+twist_interp = - np.interp(c2_def_new[:, 2], rad_positions_ae, twist)
+c2_def_new[:, 3] = twist_interp               # Add new twist
+
+save_c2def(c2def_save_path, c2_def_new)
+
+
 print("Done!")

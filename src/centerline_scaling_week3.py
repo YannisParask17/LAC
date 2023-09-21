@@ -85,7 +85,7 @@ def scale_rotor(rx, ix, iy, vx, verbose=False):
 # -------------------------------------------------------------------- #
 
 
-# Initial values 
+# Initial values
 
 rx = 178.3/2    # Radius of the reference turbine
 ix = 0.16       # Class a
@@ -114,8 +114,6 @@ df = pd.DataFrame(data={"radius": radius_new, "thickness": thickness_new})
 df.to_csv(thickness_out_path, index=False)
 
 # Fit a polynomial to the thickness
-#polynomial_coeffs = np.polynomial.polynomial.Polynomial.fit(radius_new, thickness_new, 4)
-#poly = np.polynomial.polynomial.Polynomial(polynomial_coeffs)
 poly_coeffs = np.polyfit(radius_new, thickness_new, 8)
 thickness_poly = np.polyval(poly_coeffs, radius_new)
 r2 = r2_score(thickness_new, thickness_poly)
@@ -124,15 +122,11 @@ np.savetxt(polynomial_path, poly_coeffs)
 breakpoint()
 
 
-
 if visualize_thickness:
     plt.scatter(radius_new, thickness_new)
     plt.plot(radius_new, thickness_poly)
     plt.show()
     breakpoint()
-
-
-
 
 c2_def_new = c2_def.copy()
 c2_def_new[:, 2] *= scaling_factor  # Scale the z coordinate
@@ -163,21 +157,3 @@ if show_plots:
 tip_speed = 80  # m/s should be a compromise between less noise limitations offshore, but taking wild life into account, stay on the lower range
 n_blades = 3
 chord_max = 6.5  # Taken over from the RWT
-
-
-# -------------------------------------------------------------------- #
-# Script
-# Question 4
-# Choosing design lift/ angle of attack
-# ------------------------------------------------------------------- #
-
-if task_4:
-    # Start task 4
-   
-    # PC file contains the airfoil stuff
-    pc_data = load_pc(pc_path)
-    print(f"Number of profiles: len(pc_data)={len(pc_data)}")
-    print(f"Profile keys: pc_data[i].keys()={pc_data[0].keys()}")
-    
-
-
