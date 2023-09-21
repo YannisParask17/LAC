@@ -1,24 +1,27 @@
 # %% Import modules
 from aero_design_functions import get_design_functions, solve_tc, solve_bem, CLP_fun, CP_fun, CLT_fun, CT_fun, chord_fun, twist_deg_fun
 from lacbox.aero import root_chord, min_tc_chord, max_twist
+from lacbox.io import load_ae, save_ae
 import numpy as np
 import matplotlib.pyplot as plt
-import json
+# import json
 import pandas as pd
 
-# f = open("polar_data.json",)
-# data = json.load(f)
-# f.close()
-# df = pd.DataFrame(data)
 # Inputs
-R = 92.5  # length of blade [m]
+R = 92.5  # length of blade [m] -> Should not be blade length, but radius
+r_old = 178.3/2
 # tsr = 9.0  # TSR [-]
 B = 3  # number of blades
 a = 1/3  # axial induction [-]
 r_hub = 2.8
-r = np.linspace(r_hub, R-0.6, 50)  # Rotor span [m]
-chord_max = 6.0 # Maximum chord size [m]
-chord_root = 5.38 # Chord at the root [m]
+r2 = np.linspace(r_hub, R-0.6, 50)  # Rotor span [m] -> Defined in the rad positions from the ae file
+
+chord_max = 6.0     # Maximum chord size [m]
+chord_root = 5.38   # Chord at the root [m]
+
+# IO of the AE file
+ae_path = '../dtu_10mw/data/DTU_10MW_RWT_ae.dat'
+out_path = '../results/hawc_files/10MW_1a_ae.dat'
 
 # Function for the absolute thickness vs span for the 35 m blade
 def thickness(r):
@@ -39,27 +42,34 @@ def thickness(r):
 # Aero dynamic polar design functions and the values (t/c vs. cl, cd, aoa)
 cl_des, cd_des, aoa_des, tc_vals, cl_vals, cd_vals, aoa_vals = get_design_functions(2)
 
+
+# Computing the spacing of the elements from the ae file
+ae_data = load_ae(ae_path)      # Get the RWT data
+scaling_factor = R/r_old
+rad_positions_ae = ae_data[:, 0]* R/r_old
+r = r_hub + rad_positions_ae
+
 # Solving for the relative thickness (t/c)
 # Computing absolute thickness
-t = thickness(r)
+t = thickness(r-r_hub)
 
 
 def solve_CP(cl_des, r, t, tsr, R, a, B):
-# Solving for t/c
+    # Solving for t/c
     tc_ideal = solve_tc(cl_des, r, t, tsr, R, a, B)
     # Getting ideal aero cl (before changing chord)
     cl_ideal = cl_des(tc_ideal)  # [-]
 
     # Chord [m]
-    chord_ideal = chord_fun(r, tsr, R, a, B, cl_ideal) # calculating ideal chord
-    chord = root_chord(r, chord_ideal, chord_root, chord_max) # transition from ideal to root chord
-    chord = min_tc_chord(chord, t) # maintain minimum t/c at the tip
+    chord_ideal = chord_fun(r, tsr, R, a, B, cl_ideal)          # calculating ideal chord
+    chord = root_chord(r, chord_ideal, chord_root, chord_max)   # transition from ideal to root chord
+    chord = min_tc_chord(chord, t)                              # maintain minimum t/c at the tip
 
     # Updating t/c and polar design values
     tc = t/chord*100
-    cl = cl_des(tc)  # [-]
-    cd = cd_des(tc) # [-]
-    aoa_ideal = aoa_des(tc) # [deg]
+    cl = cl_des(tc)             # [-]
+    cd = cd_des(tc)             # [-]
+    aoa_ideal = aoa_des(tc)     # [deg]
 
     # Twist [deg]
     twist_ideal = twist_deg_fun(r, tsr, R, a, aoa_ideal) # [deg]
@@ -200,3 +210,12 @@ CT, CP, chord, tc, cl, cd, twist, aoa = solve_CP(cl_des, r, t, tsr_max, R, a, B)
 
 df_new = pd.DataFrame({"CT" : CT, "CP" : CP, "chord" : chord, "tc" : tc, "cl" : cl, "cd" : cd, "twist" : twist, "aoa" : aoa})
 df_new.to_json("design_parameters_at_max_cp.json")
+
+# Change the ae file and save it
+ae_new = ae_data.copy()
+ae_new[:, 0] = rad_positions_ae     # radial position
+ae_new[:, 1] = chord    # Chord
+ae_new[:, 2] = tc       # T/C ratio
+
+save_ae(out_path, ae_new)
+print("Done!")

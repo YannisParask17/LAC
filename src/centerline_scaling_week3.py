@@ -27,9 +27,11 @@ ind_path = data_path + '/dtu_10mw_hawc2s_rigid_1point_u8000.ind'
 htc_path = data_path + '/dtu_10mw_hawc2s_rigid_1point.htc'
 pc_path = data_path + '/DTU_10MW_RWT_pc.dat'
 
+json_path= '../results/design_parameters_at_max_cp.json'  # Json with the new chord and t/c values
+
 # OUTPUT paths
-c2def_save_path = 'c2_def_scaled.txt'
-ae_save_path = 'DTU_10MW_RWT_ae_test_scaling.dat'
+c2def_save_path = '../results/hawc_files/c2_def_scaled.txt'
+#out_path = '../results/hawc_files/10MW_1a_ae.dat'
 thickness_out_path = '../results/aero_design/thickness.dat'
 polynomial_path = '../results/aero_design/thickness_polynomial.dat'
 
@@ -91,7 +93,7 @@ iy = 0.14       # Class b
 vx = 11.4       # V rated for the 10 mw reference turbine
 
 radius_new, scaling_factor = scale_rotor(rx, ix, iy, vx)
-
+breakpoint()
 # load aero data -> Thickness
 ae = load_ae(ae_path)
 
@@ -148,14 +150,6 @@ if show_plots:
 
     fig.tight_layout()
     plt.show()
-
-# Scale thickness in AE
-
-ae_new = ae.copy()
-# ae: [ Curve length, Chord, rel.thickness, pc set number]
-# ae_new[:, 0] *= scaling_factor
-# ae_new[:, 1] *= scaling_factor
-# save_ae(ae_save_path, ae_new)
 
 
 # -------------------------------------------------------------------- #

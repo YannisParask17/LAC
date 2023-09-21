@@ -19,11 +19,11 @@ r_RWT, c_RWT, tc_RWT, pcset_RWT = load_ae(ae_path, unpack=True)
 s0, t_skin0, t_blade0, w_cap0, chord0, t_cap0 = np.loadtxt("structural_parameters_DTU10MW.dat", unpack=True)
 
 # We interpolate to have the same number of points
-c_RWT = np.interp(s0,r_RWT,c_RWT)
+c_RWT = np.interp(s0, r_RWT, c_RWT)
 # %%
 # Dummy scaled chord and thickness (assuming S_R=R1/R0=1.05 -> c1=S_R*c0, t_blade1=S_R*t_blade0)
 # !! Use your own values !!
-S_radius = 1.037 # Scaling factor
+S_radius = 92.5 / 89.15     #1.037  # Scaling factor
 # chord1 = S_radius*chord0
 chord1 = c_RWT
 t_blade1 = S_radius*t_blade0
@@ -57,6 +57,7 @@ st_data["y_e"] *= S_thickness
 # Saving scaled ST-file
 # Uncomment to save the new ST-file
 save_st("../dtu_10mw_redesign/data/dtu_10mw_redesign_st.dat", st_data)
+save_st("../results/hawc_files/dtu_10mw_redesign_st.dat", st_data)
 
 # Plotting m, I_x, I_y, I_p, S_chord, S_thickness
 fig, axs = plt.subplots(3, 2, figsize=(7, 6))
