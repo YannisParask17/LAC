@@ -15,10 +15,10 @@ R = 92.5  # length of blade [m]
 # tsr = 9.0  # TSR [-]
 B = 3  # number of blades
 a = 1/3  # axial induction [-]
-r_hub = 1.0
+r_hub = 2.8
 r = np.linspace(r_hub, R-0.6, 50)  # Rotor span [m]
 chord_max = 6.0 # Maximum chord size [m]
-chord_root = 8.0 # Chord at the root [m]
+chord_root = 5.38 # Chord at the root [m]
 
 # Function for the absolute thickness vs span for the 35 m blade
 def thickness(r):
@@ -37,7 +37,7 @@ def thickness(r):
     return t
 
 # Aero dynamic polar design functions and the values (t/c vs. cl, cd, aoa)
-cl_des, cd_des, aoa_des, tc_vals, cl_vals, cd_vals, aoa_vals = get_design_functions(1)
+cl_des, cd_des, aoa_des, tc_vals, cl_vals, cd_vals, aoa_vals = get_design_functions(2)
 
 # Solving for the relative thickness (t/c)
 # Computing absolute thickness
@@ -74,13 +74,13 @@ def solve_CP(cl_des, r, t, tsr, R, a, B):
     CLP = CLP_fun(r, tsr, R, a, B, cl, cd, chord)
     CT = CT_fun(r, R, CLT)
     CP = CP_fun(r, R, CLP)
-    return CT, CP
+    return CT, CP, chord, tc, cl, cd, twist, aoa
 
 tsr_list = np.linspace(6, 9, 40)
 CP_list = np.zeros(len(tsr_list))
 CT_list = np.zeros(len(tsr_list))
 for i, tsr in enumerate(tsr_list):
-    CT, CP = solve_CP(cl_des, r, t, tsr, R, a, B)
+    CT, CP, chord, tc, cl, cd, twist, aoa = solve_CP(cl_des, r, t, tsr, R, a, B)
     CP_list[i] = CP
     CT_list[i] = CT
     print(i)
@@ -175,7 +175,7 @@ print(tsr_list)
 ax2 = ax1.twinx()
 ax1.plot(tsr_list, CP_list, "b--", label = "CP")
 ax2.plot(tsr_list, CT_list, "r-.", label = "CT")
-ax2.axvline(tsr_max, label = "Maximum CP", color = "grey", markersize = 5)
+ax2.axvline(tsr_max, label = r"$CP_{max}$ " +f"($\lambda$ = {tsr_max:2.2f})", color = "grey", markersize = 5)
 # lns4 = ax1.axhline(16/27, label = "Betz Limit")
 ax1.set_xlabel(r"Tip Speed Ratio [-]")
 ax1.set_ylabel("Power Coefficient [-]")
@@ -194,3 +194,9 @@ ax1.legend(lines, labels, loc='best')
 
 plt.tight_layout()
 plt.show(block = True)
+
+
+CT, CP, chord, tc, cl, cd, twist, aoa = solve_CP(cl_des, r, t, tsr_max, R, a, B)
+
+df_new = pd.DataFrame({"CT" : CT, "CP" : CP, "chord" : chord, "tc" : tc, "cl" : cl, "cd" : cd, "twist" : twist, "aoa" : aoa})
+df_new.to_json("design_parameters_at_max_cp.json")
