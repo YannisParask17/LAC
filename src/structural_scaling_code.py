@@ -7,6 +7,7 @@ from structural_scaling import EIx, EIy, GK, md
 # %%
 # blade st data
 path_st_file_DTU10MW = "../dtu_10mw/data/DTU_10MW_RWT_Blade_st.dat"
+path_struct_params_10mw = "../data/structural_parameters_DTU10MW.dat"
 st_data_DTU10MW = load_st(path_st_file_DTU10MW, 0, 0)
 st_data = load_st(path_st_file_DTU10MW, 0, 0) # Loading st_data to overwrite
 
@@ -16,7 +17,7 @@ r_RWT, c_RWT, tc_RWT, pcset_RWT = load_ae(ae_path, unpack=True)
 
 
 # Load structural data
-s0, t_skin0, t_blade0, w_cap0, chord0, t_cap0 = np.loadtxt("structural_parameters_DTU10MW.dat", unpack=True)
+s0, t_skin0, t_blade0, w_cap0, chord0, t_cap0 = np.loadtxt(path_struct_params_10mw, unpack=True)
 
 # We interpolate to have the same number of points
 c_RWT = np.interp(s0, r_RWT, c_RWT)
