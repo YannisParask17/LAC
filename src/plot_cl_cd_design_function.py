@@ -45,11 +45,37 @@ for i in range(0, 6):
     except:
         breakpoint()
         print("Something fishy is going on")
+
+# Getting the Cl and CD from the design functions
+
+cl1 = cl_des1(tc_list)
+cl2 = cl_des2(tc_list)
+cl3 = cl_des3(tc_list)
+
+cd1 = cd_des1(tc_list)
+cd2 = cd_des2(tc_list)
+cd3 = cd_des3(tc_list)
+
+aoa1 = aoa_des1(tc_list)
+aoa2 = aoa_des2(tc_list)
+aoa3 = aoa_des3(tc_list)
+
+
 # Plot
 fig, axs = plt.subplots(3, 1)
 axs[0].scatter(tc_list, cl)
+axs[0].plot(tc_list, cl1)
+axs[0].plot(tc_list, cl2)
+axs[0].plot(tc_list, cl3)
+#axs[0].scatter(tc_vals1, cl_vals1)
 axs[1].scatter(tc_list, cd)
+axs[1].plot(tc_list, cd1)
+axs[1].plot(tc_list, cd2)
+axs[1].plot(tc_list, cd3)
 axs[2].scatter(tc_list, aoa)
+axs[2].plot(tc_list, aoa1)
+axs[2].plot(tc_list, aoa2)
+axs[2].plot(tc_list, aoa3)
 
 axs[0].set_ylabel('cl')
 axs[1].set_ylabel('cd')
