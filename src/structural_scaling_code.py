@@ -24,7 +24,9 @@ c_RWT = np.interp(s0, r_RWT, c_RWT)
 # %%
 # Dummy scaled chord and thickness (assuming S_R=R1/R0=1.05 -> c1=S_R*c0, t_blade1=S_R*t_blade0)
 # !! Use your own values !!
-S_radius = 92.5 / 89.15     #1.037  # Scaling factor
+R_dtu10mw = 89.15
+R_scaled = 92.5
+S_radius = R_scaled/R_dtu10mw     #1.037  # Scaling factor
 # chord1 = S_radius*chord0
 chord1 = c_RWT
 t_blade1 = S_radius*t_blade0
@@ -64,43 +66,44 @@ save_st("../results/hawc_files/dtu_10mw_redesign_st.dat", st_data)
 fig, axs = plt.subplots(3, 2, figsize=(7, 6))
 # m_d
 ax = axs[0, 0]
-ax.plot(st_data["s"], st_data["m"], label="scaled")
-ax.plot(st_data_DTU10MW["s"], st_data_DTU10MW["m"], label="DTU 10MW")
+ax.plot(st_data["s"]/R_scaled, st_data["m"], label="scaled")
+ax.plot(st_data_DTU10MW["s"]/R_dtu10mw, st_data_DTU10MW["m"], label="DTU 10MW")
 ax.set_ylabel("$m_d$ [kg/m]")
 ax.grid()
 # I_p
 ax = axs[0, 1]
-ax.plot(st_data["s"], st_data["I_p"], label="scaled")
-ax.plot(st_data_DTU10MW["s"], st_data_DTU10MW["I_p"], label="DTU 10MW")
+ax.plot(st_data["s"]/R_scaled, st_data["I_p"], label="scaled")
+ax.plot(st_data_DTU10MW["s"]/R_dtu10mw, st_data_DTU10MW["I_p"], label="DTU 10MW")
 ax.set_ylabel("$I_p$ [m$^4$]")
 ax.grid()
 # I_x
 ax = axs[1, 0]
-ax.plot(st_data["s"], st_data["I_x"], label="scaled")
-ax.plot(st_data_DTU10MW["s"], st_data_DTU10MW["I_x"], label="DTU 10MW")
+ax.plot(st_data["s"]/R_scaled, st_data["I_x"], label="scaled")
+ax.plot(st_data_DTU10MW["s"]/R_dtu10mw, st_data_DTU10MW["I_x"], label="DTU 10MW")
 ax.set_ylabel("$I_x$ [m$^4$]")
 ax.grid()
 ax.legend()
 # I_y
 ax = axs[1, 1]
-ax.plot(st_data["s"], st_data["I_y"], label="scaled")
-ax.plot(st_data_DTU10MW["s"], st_data_DTU10MW["I_y"], label="DTU 10MW")
+ax.plot(st_data["s"]/R_scaled, st_data["I_y"], label="scaled")
+ax.plot(st_data_DTU10MW["s"]/R_dtu10mw, st_data_DTU10MW["I_y"], label="DTU 10MW")
 ax.set_ylabel("$I_y$ [m$^4$]")
 ax.grid()
 # S_chord
 ax = axs[2, 0]
-ax.plot(st_data["s"], S_chord, label="scaled")
+ax.plot(st_data["s"]/R_scaled, S_chord, label="scaled")
 ax.set_ylabel("$S_{chord}$ [-]")
 ax.set_xlabel("Blade length [m]")
 ax.grid()
 # S_thickness
 ax = axs[2, 1]
-ax.plot(st_data["s"], S_thickness, label="scaled")
+ax.plot(st_data["s"]/R_scaled, S_thickness, label="scaled")
 ax.set_ylabel("$S_{thickness}$ [-]")
 ax.set_xlabel("Blade length [m]")
 ax.grid()
 
 fig.tight_layout()
+plt.savefig('../results/st_comparison.pdf')
 plt.show()
 
 
