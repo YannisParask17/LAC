@@ -65,56 +65,57 @@ if __name__ == '__main__':
     alpha = 0
     rad_positions = np.linspace(0.08, 1, 200)
     
+    tsr_list = [6, 8, 10, 12]
     
-    chord_list = calc_chord(rad_positions, cl, tsr, n_blades)
-    chord_list_tsr_10 = calc_chord(rad_positions, cl, 10, n_blades)
-    chord_list_tsr_6 = calc_chord(rad_positions, cl, 6, n_blades)
+    fig, axs = plt.subplots(1, 2)
+    n_blades = 3
+    cl = 1
+    tsr = 8
+    for tsr in tsr_list:
+
+        chord_list = calc_chord(rad_positions, cl, tsr, n_blades)
+        twist_list = calc_twist_deg(rad_positions, tsr, alpha)
     
-    chord_list_cl_06 = calc_chord(rad_positions, 0.6, tsr, n_blades)
-    chord_list_cl_14 = calc_chord(rad_positions, 1.4, tsr, n_blades)
-    
-    twist_list = calc_twist_deg(rad_positions, tsr, alpha)
-    twist_list_tsr6 = calc_twist_deg(rad_positions, 6, alpha)
-    twist_list_tsr10 = calc_twist_deg(rad_positions, 10, alpha)
-    
-    fig, axs = plt.subplots(2, 1)
-    axs[0].plot(rad_positions, chord_list, label='cl=1, tsr=8, n_blades=8')
-    axs[0].plot(rad_positions, chord_list_tsr_10, label='cl=1, tsr=10, n_blades=8')
-    axs[0].plot(rad_positions, chord_list_tsr_6, label='cl=1, tsr=6, n_blades=8')
-    axs[0].plot(rad_positions, chord_list_cl_06, label='cl=0.6, tsr=8, n_blades=8')
-    axs[0].plot(rad_positions, chord_list_cl_14, label='cl=1.4, tsr=8, n_blades=8')
-    
-    axs[1].plot(rad_positions, twist_list)
-    axs[1].plot(rad_positions, twist_list_tsr10)
-    axs[1].plot(rad_positions, twist_list_tsr6)
+        axs[0].plot(rad_positions, chord_list, label=f"TSR={tsr}")
+        axs[1].plot(rad_positions, twist_list, label=f"TSR={tsr}")
     
     [ax.grid() for ax in axs]
+    axs[0].set_xlabel("Radius r/R (-)")
     axs[1].set_xlabel("Radius r/R (-)")
     axs[0].set_ylabel("Chord c/R (-)")
     axs[1].set_ylabel("Twist (deg)")
     
-    axs[0].legend(loc='upper center', bbox_to_anchor=(0.5, -1.5),
-            ncol=3, fancybox=True, shadow=False) 
-    axs[0].set_ylim([0,0.18])
-    fig.set_figheight(4)
-    fig.set_figwidth(6)
-    #plt.savefig("../../results/task1/chord_twist.pdf", bbox_inches='tight')
-    #plt.show()
+    axs[0].legend()  # (loc='upper center', bbox_to_anchor=(0.5, -1.5),
+    # ncol=3, fancybox=True, shadow=False)
+    axs[0].set_ylim([0, 0.4])
+    fig.set_figheight(2)
+    fig.set_figwidth(10)
+    
+    plt.savefig("../../results/aero_design/chord_twist_tsr.pdf", bbox_inches='tight')
+    # plt.savefig("../../results/task1/chord_twist.pdf", bbox_inches='tight')
+    # plt.show()
 
     # Do comparison of different amount of blades
     cl_list = [0.6, 0.8, 1, 1.2, 1.4]
     n_blade_list = [2, 3, 4, 5, 100]
 
-    plt.figure(2)
     fig, axs = plt.subplots(1, 2)
+    n_blades = 3
+    cl = 1
+    tsr = 8
     for n_blades in n_blade_list:
+
         chord_list = calc_chord(rad_positions, cl, tsr, n_blades)
         twist_list = calc_twist_deg(rad_positions, tsr, alpha)
     
-        axs[0].plot(rad_positions, chord_list, label=f"N={n_blades}")
+        axs[0].plot(rad_positions, chord_list, label=f"B={n_blades}")
     
+    n_blades = 3
+    cl = 1
+    tsr = 8
     for cl in cl_list:
-        chord_list = calc_chord(rad_positions, cl, 8, 2.5)
+
+        chord_list = calc_chord(rad_positions, cl, 8, 3)
         twist_list = calc_twist_deg(rad_positions, 8, alpha)
     
         axs[1].plot(rad_positions, chord_list, label=f'$C_l= {{{cl}}}$')
@@ -129,7 +130,8 @@ if __name__ == '__main__':
     axs[1].legend()  #(loc='upper center', bbox_to_anchor=(0.5, -1.5),
     # ncol=3, fancybox=True, shadow=False) 
     axs[0].set_ylim([0, 0.4])
-    fig.set_figheight(2.5)
-    fig.set_figwidth(8.3)
+    axs[1].set_ylim([0, 0.4])
+    fig.set_figheight(2)
+    fig.set_figwidth(10)
     plt.savefig("../../results/aero_design/chord_cl_n_blades.pdf", bbox_inches='tight')
     plt.show()
