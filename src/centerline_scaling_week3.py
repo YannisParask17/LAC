@@ -36,7 +36,7 @@ thickness_out_path = '../results/aero_design/thickness.dat'
 polynomial_path = '../results/aero_design/thickness_polynomial.dat'
 
 
-visualize_thickness = False
+visualize_thickness = True
 
 
 # -------------------------------------------------------------------- #
@@ -93,7 +93,6 @@ iy = 0.14       # Class b
 vx = 11.4       # V rated for the 10 mw reference turbine
 
 radius_new, scaling_factor = scale_rotor(rx, ix, iy, vx)
-breakpoint()
 # load aero data -> Thickness
 ae = load_ae(ae_path)
 
@@ -109,6 +108,9 @@ thickness_new = thickness * scaling_factor   # Scale up thickness
 z_new = c2_def[:, 2] * scaling_factor         # Scale up the z direction
 radius_new = radius * scaling_factor
 
+
+
+
 # Thickness data into dataframe and save as csv
 df = pd.DataFrame(data={"radius": radius_new, "thickness": thickness_new})
 df.to_csv(thickness_out_path, index=False)
@@ -119,14 +121,20 @@ thickness_poly = np.polyval(poly_coeffs, radius_new)
 r2 = r2_score(thickness_new, thickness_poly)
 
 np.savetxt(polynomial_path, poly_coeffs)
-breakpoint()
 
 
 if visualize_thickness:
-    plt.scatter(radius_new, thickness_new)
-    plt.plot(radius_new, thickness_poly)
+    plt.figure(figsize=(4.5, 3))
+    plt.plot(radius, thickness, color='C0', label="RWT")
+    plt.scatter(radius_new, thickness_new, color='C1', marker='x', label="Scaled")
+    plt.plot(radius_new, thickness_poly, color='C1', label="Polynomial scaled")
+    plt.xlabel("Radius [m]")
+    plt.ylabel("Thickness [m]")
+    plt.grid()
+    plt.legend()
+    plt.savefig("../results/aero_design/thickness.pdf", bbox_inches='tight')
     plt.show()
-    breakpoint()
+
 
 c2_def_new = c2_def.copy()
 c2_def_new[:, 2] *= scaling_factor  # Scale the z coordinate

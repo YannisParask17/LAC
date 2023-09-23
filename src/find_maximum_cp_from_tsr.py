@@ -19,6 +19,11 @@ r2 = np.linspace(r_hub, R-0.6, 50)  # Rotor span [m] -> Defined in the rad posit
 chord_max = 6.0     # Maximum chord size [m]
 chord_root = 5.38   # Chord at the root [m]
 
+
+# Switches 
+
+plot_thickness = True
+
 # IO of the AE file
 data_path = "../dtu_10mw"
 
@@ -28,6 +33,7 @@ htc_path = data_path + '/dtu_10mw_hawc2s_rigid_1point.htc'
 # Out
 c2def_save_path = '../results/hawc_files/c2_def_scaled.txt'
 out_path = '../results/hawc_files/10MW_1a_ae.dat'
+json_out = "../results/design_parameters_at_max_cp.json"
 
 # Function for the absolute thickness vs span for the 35 m blade
 def thickness(r):
@@ -45,6 +51,10 @@ def thickness(r):
     t = np.minimum(t_poly, chord_root)  # clip at max thickness
     return t
 
+
+
+
+
 # Aero dynamic polar design functions and the values (t/c vs. cl, cd, aoa)
 cl_des, cd_des, aoa_des, tc_vals, cl_vals, cd_vals, aoa_vals = get_design_functions(2)
 
@@ -58,6 +68,22 @@ r = r_hub + rad_positions_ae
 # Solving for the relative thickness (t/c)
 # Computing absolute thickness
 t = thickness(r-r_hub)
+
+# Plot the thickness
+if plot_thickness:  # Super inefficient code, but good enough
+    # pass data to variables
+    radius_plot, chord_plot, tc_ratio_plot, pcset_plot = load_ae(ae_path, unpack=True)
+    thickness_plot = tc_ratio_plot*chord_plot/100
+    plt.figure(figsize=(4.5, 2.2))
+    plt.plot(radius_plot, thickness_plot, color='C0', label="RWT")
+    plt.plot(r-r_hub, t, color='C1', label="Scaled")
+    plt.xlabel("Radius [m]")
+    plt.ylabel("Thickness [m]")
+    plt.grid()
+    plt.legend()
+    plt.savefig("../results/aero_design/thickness_limited.pdf", bbox_inches='tight')
+    plt.show()
+    breakpoint()
 
 
 def solve_CP(cl_des, r, t, tsr, R, a, B):
@@ -215,7 +241,8 @@ plt.show(block=True)
 CT, CP, chord, tc, cl, cd, twist, aoa = solve_CP(cl_des, r, t, tsr_max, R, a, B)
 
 df_new = pd.DataFrame({"CT": CT, "CP": CP, "chord": chord, "tc": tc, "cl": cl, "cd": cd, "twist": twist, "aoa": aoa})
-df_new.to_json("design_parameters_at_max_cp.json")
+df_new.to_json(json_out)
+
 
 # Change the ae file and save it
 ae_new = ae_data.copy()

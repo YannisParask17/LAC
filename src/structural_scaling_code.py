@@ -9,7 +9,7 @@ from structural_scaling import EIx, EIy, GK, md
 path_st_file_DTU10MW = "../dtu_10mw/data/DTU_10MW_RWT_Blade_st.dat"
 path_struct_params_10mw = "../data/structural_parameters_DTU10MW.dat"
 st_data_DTU10MW = load_st(path_st_file_DTU10MW, 0, 0)
-st_data = load_st(path_st_file_DTU10MW, 0, 0) # Loading st_data to overwrite
+st_data = load_st(path_st_file_DTU10MW, 0, 0)       # Loading st_data to overwrite
 
 # Design chord
 ae_path = '../dtu_10mw/data/DTU_10MW_RWT_ae.dat'
@@ -24,7 +24,7 @@ c_RWT = np.interp(s0, r_RWT, c_RWT)
 # %%
 # Dummy scaled chord and thickness (assuming S_R=R1/R0=1.05 -> c1=S_R*c0, t_blade1=S_R*t_blade0)
 # !! Use your own values !!
-S_radius = 92.5 / 89.15     #1.037  # Scaling factor
+S_radius = 92.5 / 89.15     # 1.037  # Scaling factor
 # chord1 = S_radius*chord0
 chord1 = c_RWT
 t_blade1 = S_radius*t_blade0

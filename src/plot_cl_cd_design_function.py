@@ -109,7 +109,6 @@ mask_aoa = np.logical_and(mask_1, mask_2)
 max_cl_36_id = np.argmax(cl_36[mask_aoa])
 cl_des_36_adapted = cl_36[mask_aoa][max_cl_36_id] - 0.4
 
-breakpoint()
 aoa_des_36, cd_des_36 = interp_cl(cl_des_36_adapted, cl_36[mask_aoa], aoa_36[mask_aoa], cd_36[mask_aoa])
 
 # index of 48 is 3
@@ -151,9 +150,9 @@ r2_cd1 = r2_score(cd, cd1_p)
 r2_cd2 = r2_score(cd, cd2_p)
 r2_cd3 = r2_score(cd, cd3_p)
 
-r2_cl1 = r2_score(aoa, aoa1_p)
-r2_cl2 = r2_score(aoa, aoa2_p)
-r2_cl3 = r2_score(aoa, aoa3_p)
+r2_aoa1 = r2_score(aoa, aoa1_p)
+r2_aoa2 = r2_score(aoa, aoa2_p)
+r2_aoa3 = r2_score(aoa, aoa3_p)
 breakpoint()
 # Getting the Cl and CD from the design functions
 
