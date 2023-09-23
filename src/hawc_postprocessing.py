@@ -1,6 +1,9 @@
+# %%
 import lacbox.io as lac
 import numpy as np
 import matplotlib.pyplot as plt
+import pandas as pd
+from aero_design_functions import get_design_functions
 
 def plot_spanwise(ind_data_list, labels=None, save_name=None):
     """
@@ -39,7 +42,7 @@ def plot_spanwise(ind_data_list, labels=None, save_name=None):
     ax[2, 1].grid()
 
     if labels:
-        fig.legend(labels, loc='upper center', ncol=2)
+        fig.legend(labels, loc='upper center', ncol=5)
 
     print("Done!")
 
@@ -52,6 +55,55 @@ def plot_spanwise(ind_data_list, labels=None, save_name=None):
     plt.show()
     return None
 
+
+def plot_spanwise_modified(ind_data_list, labels=None, save_name=None):
+    """
+    Gets the dictionary for spanwise data imported via lacbox
+    and plots a, ap, cl, cd, CT, CP along the span 
+    """
+    print("Plotting spanwise results...")
+    fig, ax = plt.subplots(3,2, figsize=(12,5))
+    for ind_data in ind_data_list:
+        ax[0, 0].plot(ind_data["s_m"]/max(ind_data["s_m"]), ind_data["a"])
+        ax[0, 0].set_ylabel(r"$a$ [-]")
+
+        ax[0, 1].plot(ind_data["s_m"]/max(ind_data["s_m"]), ind_data["Cl"])
+        ax[0, 1].set_ylabel(r"$C_l$ [-]")
+
+        ax[1, 0].plot(ind_data["s_m"]/max(ind_data["s_m"]), np.rad2deg(ind_data["aoa_rad"]))
+        ax[1, 0].set_ylabel(r"$\alpha$ [deg]")
+
+        ax[1, 1].plot(ind_data["s_m"]/max(ind_data["s_m"]), ind_data["Cl"]/ind_data["Cd"])
+        ax[1, 1].set_ylabel(r"$C_l/C_d$ [-]")
+
+        ax[2, 0].plot(ind_data["s_m"]/max(ind_data["s_m"]), ind_data["CP"])
+        ax[2, 0].set_ylabel(r"$C_P$ [-]")
+        ax[2, 0].set_xlabel(r"$r/R$ [-]")
+
+        ax[2, 1].plot(ind_data["s_m"]/max(ind_data["s_m"]), ind_data["CT"])
+        ax[2, 1].set_xlabel(r"$r/R$ [-]")
+        ax[2, 1].set_ylabel(r"$C_T$ [-]")
+
+    ax[0, 0].grid()
+    ax[0, 1].grid()
+    ax[1, 0].grid()
+    ax[1, 1].grid()
+    ax[2, 0].grid()
+    ax[2, 1].grid()
+
+    if labels:
+        fig.legend(labels, loc='upper center', ncol=5)
+
+    print("Done!")
+
+    # Save figure
+    if save_name:
+        print("Saving figure...")
+        plt.savefig(f"results/{save_name}", bbox_inches='tight')
+        print("Done!")
+
+    plt.show()
+    return None
 
 def prepare_geometry(filename_ind, filename_ae):
     """
@@ -117,11 +169,11 @@ def plot_performance(pwr_data_list, labels=None, save_name=None):
     """
     fig, ax = plt.subplots(1,2, figsize=(9,3))
     for pwr_data in pwr_data_list:
-        ax[0].plot(rpm2rads(pwr_data["Speed_rpm"])*pwr_data["Tip_z_m"]/pwr_data["V_ms"][0], pwr_data["Cp"] )
+        ax[0].plot(rpm2rads(pwr_data["Speed_rpm"])*pwr_data["Tip_z_m"]/pwr_data["V_ms"], pwr_data["Cp"] )
         ax[0].set_xlabel("Tip speed ratio (-)")
         ax[0].set_ylabel(r"$C_P$ (-)")
 
-        ax[1].plot(rpm2rads(pwr_data["Speed_rpm"])*pwr_data["Tip_z_m"]/pwr_data["V_ms"][0], pwr_data["Ct"] )
+        ax[1].plot(rpm2rads(pwr_data["Speed_rpm"])*pwr_data["Tip_z_m"]/pwr_data["V_ms"], pwr_data["Ct"] )
         ax[1].set_xlabel("Tip speed ratio (-)")
         ax[1].set_ylabel(r"$C_T$ (-)")
 
@@ -143,52 +195,93 @@ def plot_performance(pwr_data_list, labels=None, save_name=None):
 
 
 if __name__ == "__main__":
-    # Import power data
-    pwr_data = lac.load_pwr("dtu_10mw_hawc2s_rigid_1point.pwr")
-    print(pwr_data)
 
-    # Import induction data
-    ind_data = lac.load_ind("dtu_10mw_hawc2s_rigid_1point_u8000.ind")
-    ind_data2 = lac.load_ind("dtu_10mw_hawc2s_rigid_1point_u8000.ind")
-    print(ind_data)
+    # file paths
+    path_dtu10mw = "../dtu_10mw/"
+    path_scaled = "../dtu_10mw_redesign/"
 
-    # Import ae file (radial position ,chord, relative thickness)
-    r, chord, t_c, _ = lac.load_ae("data/DTU_10MW_RWT_ae.dat", unpack=True) 
+    # %%
 
-    # Plot spanwise results
-    plot_spanwise([ind_data], None, "spanwise_rigid.pdf")
+    # import hawc results
+    ind_scaled_opt = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u4000.ind") 
+    ind_scaled_rated = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u11100.ind") 
+    ind_scaled_14 = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u14000.ind") 
+    ind_scaled_18 = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u18000.ind") 
+    ind_scaled_25 = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u25000.ind") 
+    print(ind_scaled_opt.keys())
 
-    # Plot geometric properties
-    geom = prepare_geometry("dtu_10mw_hawc2s_rigid_1point_u8000.ind", "data/DTU_10MW_RWT_ae.dat")
-    plot_geometry(geom, "spanwise_geometry.pdf")
+    # plot spanwise for different operational points
+    # lab = ['optimal', 'rated', r'above rated-$u=$14m/s', r'above rated-$u=$18m/s',r'cut-out']
+    # plot_spanwise_modified([ind_scaled_opt, ind_scaled_rated, ind_scaled_14, ind_scaled_18,  ind_scaled_25], labels=lab)
+
+    # import design code results
+    ind_scaled_dc = pd.read_json('../results/design_parameters_at_max_cp.json')
+    print(ind_scaled_dc.head())
+
+    # plot hawc vs design code spanwise results
+    lab = ["HAWC2", "Design code"]
+
+    fig, ax = plt.subplots(3,2, figsize=(13,5))
+    ax[0, 0].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["a"])
+    ax[0, 0].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["a"])
+    ax[0, 0].set_ylabel(r"$a$ [-]")
+
+    ax[0, 1].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["Cl"])
+    ax[0, 1].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["cl"])
+    ax[0, 1].set_ylabel(r"$C_l$ [-]")
+
+    ax[1, 0].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), np.rad2deg(ind_scaled_opt["aoa_rad"]))
+    ax[1, 0].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["aoa"])
+    ax[1, 0].set_ylabel(r"$\alpha$ [deg]")
+
+    ax[1, 1].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["Cl"]/ind_scaled_opt["Cd"])
+    ax[1, 1].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["cl"]/ind_scaled_dc["cd"])
+    ax[1, 1].set_ylabel(r"$C_l/C_d$ [-]")
+
+    ax[2, 0].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["CP"])
+    ax[2, 0].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["CLP"])
+    ax[2, 0].set_ylabel(r"$C_P$ [-]")
+    ax[2, 0].set_xlabel(r"$r/R$ [-]")
+
+    ax[2, 1].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["CT"])
+    ax[2, 1].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["CLT"])
+    ax[2, 1].set_xlabel(r"$r/R$ [-]")
+    ax[2, 1].set_ylabel(r"$C_T$ [-]")
+
+    ax[0, 0].grid()
+    ax[0, 1].grid()
+    ax[1, 0].grid()
+    ax[1, 1].grid()
+    ax[2, 0].grid()
+    ax[2, 1].grid()
+
+    fig.legend(lab, loc='upper center', ncol=2)
+    fig.savefig('../results/spanwise_comparison.pdf', bbox_inches='tight')
+    fig.show()
 
 
-    # Plot performance for different TSR
-    pwrdata_tsr = lac.load_pwr("dtu_10mw_hawc2s_rigid_varTSR.pwr")
-    plot_performance([pwrdata_tsr], None,"performance_varTSR.pdf")
+    # side-by-side plots of the actual lift
+    # coefficient and the design lift coefficient versus relative thickness (left plot) and versus radius
+    # (right plot) for design pitch and TSR. 
 
-    # Plot spanwise results for different TSR
-    ind_data6 = lac.load_ind("dtu_10mw_hawc2s_rigid_varTSR_u8000.ind") # tsr=6
-    ind_data65 = lac.load_ind("dtu_10mw_hawc2s_rigid_varTSR_u8001.ind") # tsr=6.5
-    ind_data7 = lac.load_ind("dtu_10mw_hawc2s_rigid_varTSR_u8002.ind") # tsr=7
-    ind_data75 = lac.load_ind("dtu_10mw_hawc2s_rigid_varTSR_u8003.ind") # tsr=7.5
-    ind_data8 = lac.load_ind("dtu_10mw_hawc2s_rigid_varTSR_u8004.ind") # tsr=8
-    ind_data85 = lac.load_ind("dtu_10mw_hawc2s_rigid_varTSR_u8005.ind") # tsr=8.5
-    ind_data9 = lac.load_ind("dtu_10mw_hawc2s_rigid_varTSR_u8006.ind") # tsr=9
-    ind_data_list = [ind_data6, ind_data65, ind_data7, ind_data75, ind_data8, ind_data85, ind_data9]
-    lab = [r"$tsr=6$",r"$tsr=6.5$",r"$tsr=7$",r"$tsr=7.5$",r"$tsr=8$",r"$tsr=8.5$",r"$tsr=9$"]
-    plot_spanwise(ind_data_list, lab, "spanwise_rigid_TSR.pdf")
+    # import t/c from ae file -> THE PROBLEM MIGHT BE HERE
+    r_ae, c_ae, tc_ae, _ =  lac.load_ae(path_scaled + "data/10MW_1a_ae.dat", unpack=True)
+    tc_hawc = np.interp(ind_scaled_opt["s_m"], r_ae, tc_ae)
+    print(f"tc_hawc : {tc_hawc}")
 
-    # Compare rigid vs flexible blade
-    pwrdata_tsr_flex = lac.load_pwr("dtu_10mw_hawc2s_flexible_varTSR.pwr")
-    lab = ["rigid", "flexible"]
-    plot_performance([pwrdata_tsr,pwrdata_tsr_flex], lab, "performanceflexrigid_varTSR.pdf")
-    plot_performance([pwrdata_tsr,pwrdata_tsr_flex], lab, "performanceflexrigid_varTSR.eps")
+    fig, ax = plt.subplots(1,2, figsize=(12,3))
 
-    ind_data6_flex = lac.load_ind("dtu_10mw_hawc2s_flexible_varTSR_u8000.ind") # tsr=6
-    ind_data9_flex = lac.load_ind("dtu_10mw_hawc2s_flexible_varTSR_u8006.ind") # tsr=9
-    ind_data_list = [ind_data6, ind_data6_flex, ind_data9, ind_data9_flex]
-    lab = [r"$TSR=6$ rigid", r"$TSR=6$ flex", r"$TSR=9$ rigid", r"$TSR=9$ flex"]
-    plot_spanwise(ind_data_list,lab,"spanwise_rigidflex_TSR.pdf")
-    plot_spanwise(ind_data_list,lab,"spanwise_rigidflex_TSR.eps")
+    ax[0].plot(tc_hawc, ind_scaled_opt["Cl"])
+    ax[0].plot(ind_scaled_dc["tc"], ind_scaled_dc["cl"])
+    ax[0].set_ylabel(r"$C_l$ [-]")
+    ax[0].set_xlabel(r"$t/c$ [-]")
 
+    ax[1].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["Cl"])
+    ax[1].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["cl"])
+    ax[1].set_ylabel(r"$C_l$ [-]")
+    ax[1].set_xlabel(r"$r/R$ [-]")
+
+    fig.show()
+    fig.legend(lab, loc='upper center', ncol=2)
+
+    plt.show()
