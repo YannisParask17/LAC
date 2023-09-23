@@ -307,7 +307,7 @@
     end rotating_threebladed_substructure;
 ;
 ; define operational data
-    operational_data_filename	./data/dtu_10mw_rigid_1pt.opt;	used for everything EXCEPT compute_optimal_pitch_angle
+    operational_data_filename	./data/dtu_10mw_rigid_varTSR.opt;	used for everything EXCEPT compute_optimal_pitch_angle
 ;
 ; HAWC2S commands (uncomment as needed)
 ;compute_optimal_pitch_angle use_operational_data ;  re-calculate opt file (pitch/rotor speed curve)

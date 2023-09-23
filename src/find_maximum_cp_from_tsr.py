@@ -116,7 +116,7 @@ def solve_CP(cl_des, r, t, tsr, R, a, B):
     CLP = CLP_fun(r, tsr, R, a, B, cl, cd, chord)
     CT = CT_fun(r, R, CLT)
     CP = CP_fun(r, R, CLP)
-    return CT, CP, chord, tc, cl, cd, twist, aoa
+    return CT, CP, chord, tc, cl, cd, twist, aoa, a
 
 tsr_list = np.linspace(6, 9, 40)
 CP_list = np.zeros(len(tsr_list))
@@ -238,9 +238,9 @@ plt.tight_layout()
 plt.show(block=True)
 
 
-CT, CP, chord, tc, cl, cd, twist, aoa = solve_CP(cl_des, r, t, tsr_max, R, a, B)
+CT, CP, chord, tc, cl, cd, twist, aoa, a = solve_CP(cl_des, r, t, tsr_max, R, a, B)
 
-df_new = pd.DataFrame({"CT": CT, "CP": CP, "chord": chord, "tc": tc, "cl": cl, "cd": cd, "twist": twist, "aoa": aoa})
+df_new = pd.DataFrame({"r" : r, "a" : a,"CT": CT, "CP": CP, "chord": chord, "tc": tc, "cl": cl, "cd": cd, "twist": twist, "aoa": aoa})
 df_new.to_json(json_out)
 
 
@@ -258,7 +258,7 @@ c2_def = load_c2def(htc_path)  # x, y , z , theta
 
 c2_def_new = c2_def.copy()
 c2_def_new[:, 2] *= scaling_factor      # Scale the z coordinate
-breakpoint()
+# breakpoint()
 twist_interp = - np.interp(c2_def_new[:, 2], rad_positions_ae, twist)
 c2_def_new[:, 3] = twist_interp               # Add new twist
 
@@ -266,3 +266,5 @@ save_c2def(c2def_save_path, c2_def_new)
 
 
 print("Done!")
+
+# %%
