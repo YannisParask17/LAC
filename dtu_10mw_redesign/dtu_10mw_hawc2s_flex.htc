@@ -105,38 +105,38 @@
       node_distribution	c2_def;
       damping_posdef	0 0 0 0.00153 0.00255 0.00033;	3% damping tuned by tkim 23/03/13, unable to fit 3rd and higher mode
       begin timoschenko_input;
-        filename	./data/10MW_1a_Blade_st.dat;
+        filename	./data/DTU_10MW_RWT_Blade_st.dat;
         set	1 1;	1 1=flexibe, 1 2=stiff
       end timoschenko_input;
       begin c2_def;	definition of centerline in main_body coordinates
-        nsec 27;
-        sec  1    0.00000e+00    7.00600e-05    4.60777e-16   -2.00000e+01 ;
-        sec  2   -2.06477e-05   -1.22119e-02    3.11273e+00   -2.00000e+01 ;
-        sec  3   -7.28810e-03   -2.49251e-02    6.22546e+00   -2.00000e+01 ;
-        sec  4   -1.89235e-02   -2.73351e-02    7.26308e+00   -2.00000e+01 ;
-        sec  5   -5.41282e-02   -2.82163e-02    9.02745e+00   -2.00000e+01 ;
-        sec  6   -1.26633e-01   -2.13210e-02    1.07929e+01   -2.00000e+01 ;
-        sec  7   -2.25666e-01   -1.28378e-02    1.26632e+01   -2.00000e+01 ;
-        sec  8   -2.88563e-01   -7.70659e-03    1.37028e+01   -2.00000e+01 ;
-        sec  9   -3.99194e-01   -4.88317e-03    1.55740e+01   -1.99960e+01 ;
-        sec 10   -5.76634e-01   -1.80296e-02    1.88996e+01   -1.81705e+01 ;
-        sec 11   -7.07136e-01   -5.01772e-02    2.22226e+01   -1.50588e+01 ;
-        sec 12   -7.91081e-01   -9.41228e-02    2.55440e+01   -1.19550e+01 ;
-        sec 13   -8.37195e-01   -1.48880e-01    2.88647e+01   -9.09749e+00 ;
-        sec 14   -8.53948e-01   -2.14514e-01    3.21850e+01   -6.42528e+00 ;
-        sec 15   -8.49367e-01   -2.90618e-01    3.55056e+01   -4.44266e+00 ;
-        sec 16   -7.93920e-01   -4.62574e-01    4.17318e+01   -2.39935e+00 ;
-        sec 17   -7.16284e-01   -6.88437e-01    4.83736e+01   -8.75206e-01 ;
-        sec 18   -6.34358e-01   -9.60017e-01    5.50157e+01    3.76989e-01 ;
-        sec 19   -5.53179e-01   -1.28424e+00    6.16575e+01    1.39203e+00 ;
-        sec 20   -4.75422e-01   -1.66402e+00    6.82990e+01    2.19327e+00 ;
-        sec 21   -4.03180e-01   -2.10743e+00    7.49401e+01    2.80980e+00 ;
-        sec 22   -3.30085e-01   -2.65630e+00    8.19962e+01    3.32444e+00 ;
-        sec 23   -3.10140e-01   -2.78882e+00    8.35527e+01    3.42707e+00 ;
-        sec 24   -2.86719e-01   -2.92517e+00    8.51094e+01    3.52606e+00 ;
-        sec 25   -2.55823e-01   -3.06577e+00    8.66661e+01    3.62162e+00 ;
-        sec 26   -2.07891e-01   -3.20952e+00    8.82228e+01    3.71413e+00 ;
-        sec 27   -8.98940e-02   -3.33685e+00    8.96109e+01    3.79389e+00 ;
+        nsec	27;
+        sec	1 0 7.006e-05 4.44089e-16 -14.5;
+        sec	2 -2.06477e-05 -0.0122119 3 -14.5;
+        sec	3 -0.0072881 -0.0249251 6 -14.4851;
+        sec	4 -0.0189235 -0.0273351 7.00004 -14.461;
+        sec	5 -0.0541282 -0.0282163 8.70051 -14.3388;
+        sec	6 -0.126633 -0.021321 10.402 -14.0201;
+        sec	7 -0.225666 -0.0128378 12.2046 -13.3904;
+        sec	8 -0.288563 -0.00770659 13.2065 -12.9371;
+        sec	9 -0.399194 -0.00488317 15.01 -11.9445;
+        sec	10 -0.576634 -0.0180296 18.2151 -9.98243;
+        sec	11 -0.707136 -0.0501772 21.4178 -8.45147;
+        sec	12 -0.791081 -0.0941228 24.6189 -7.46417;
+        sec	13 -0.837195 -0.14888 27.8193 -6.72916;
+        sec	14 -0.853948 -0.214514 31.0194 -6.08842;
+        sec	15 -0.849367 -0.290618 34.2197 -5.49322;
+        sec	16 -0.79392 -0.462574 40.2204 -4.39222;
+        sec	17 -0.716284 -0.688437 46.6217 -3.09315;
+        sec	18 -0.634358 -0.960017 53.0232 -1.75629;
+        sec	19 -0.553179 -1.28424 59.4245 -0.50065;
+        sec	20 -0.475422 -1.66402 65.8255 0.601964;
+        sec	21 -0.40318 -2.10743 72.2261 1.5556;
+        sec	22 -0.330085 -2.6563 79.0266 2.51935;
+        sec	23 -0.31014 -2.78882 80.5267 2.7295;
+        sec	24 -0.286719 -2.92517 82.0271 2.93201;
+        sec	25 -0.255823 -3.06577 83.5274 3.11874;
+        sec	26 -0.207891 -3.20952 85.0277 3.28847;
+        sec	27 -0.089894 -3.33685 86.3655 3.42796;
       end c2_def;
     end main_body;
 ;
@@ -281,7 +281,7 @@
     link	1 mbdy_c2_def blade1;
     link	2 mbdy_c2_def blade2;
     link	3 mbdy_c2_def blade3;
-    ae_filename	./data/10MW_1a_ae.dat; 
+    ae_filename	./data/DTU_10MW_RWT_ae.dat;
     pc_filename	./data/DTU_10MW_RWT_pc.dat;
     induction_method	1;	0=none, 1=normal
     aerocalc_method	1;	0=no aero calculations, 1=with aero calculations
@@ -310,21 +310,22 @@
     operational_data_filename	./data/dtu_10mw_flex.opt;	used for everything EXCEPT compute_optimal_pitch_angle
     begin operational_data;	used for compute_optimal_pitch_angle
       windspeed	4 25 22;	cut-in [m/s], cut-out [m/s], points [-] -- used if operational_data_file_wind is 0
-      genspeed	0 400;	min, max generator speed [rpm]
+      genspeed	0 480;	min, max generator speed [rpm]
       gearratio	50;	gear ratio [-]
       minpitch	0;	min. pitch angle [deg]
-      opt_lambda	7.38;	optimal TSR [-]
+      opt_lambda	8;	optimal TSR [-]
       maxpow	10638.3;	max. aerodynamic power [kW]
       prvs_turbine	1;	1=pitch-regulated, variable-speed turbine
       operational_data_file_wind	1;	0=use wind defined in windspeed, 1=use wind defined in operational_data_filename above
       include_torsiondeform	1;	0=rigid blade, 1=flexible blade
       set_torque_limit	1;	no torque limits if set to 1
     end operational_data;
+;
 ; HAWC2S commands (uncomment as needed)
-compute_optimal_pitch_angle use_operational_data;  re-calculate opt file (pitch/rotor speed curve)
-compute_steady_states  nobladedeform  tipcorrect  induction  nogradients ;  compute steady states, needed for aeroelastic calculations
+;compute_optimal_pitch_angle use_operational_data ;  re-calculate opt file (pitch/rotor speed curve)
+compute_steady_states  bladedeform  tipcorrect  induction  nogradients ;  compute steady states, needed for aeroelastic calculations
 save_power ;	save steady-state values to .pwr
-save_induction ;	save steady-state spanwise values to many .ind files, 3 for each wind speed
+;save_induction ;	save steady-state spanwise values to many .ind files, 3 for each wind speed
 ;compute_stability_analysis windturbine 12 ;  compute/save aeroelastic campbell diagram (.cmb), XX modes
 ;save_modal_amplitude ;  save modal amplitudes and phrases to .amb file
   end hawcstab2;
