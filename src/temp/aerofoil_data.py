@@ -87,7 +87,8 @@ def plot_polar(polar_data_list, savename=None):
     Visualizes polar data for each aerofoil section of the blade
     '''
 
-    fig, ax = plt.subplots(1,3, figsize=(12,6))
+    fig, ax = plt.subplots(1,3, figsize=(12, 6))
+    #fig, ax = plt.subplots(1,3, figsize=(8, 4))
     lab = []
 
     for polar_data in polar_data_list:
@@ -112,7 +113,8 @@ def plot_polar(polar_data_list, savename=None):
             ax[0].set_xlabel(r'$C_d$ [-]')
             ax[0].set_ylabel(r'$C_l$ [-]')
             ax[0].set_xlim((0,.25))
-            ax[0].set_ylim((1,2))
+            ax[0].set_ylim((-.1,2))
+            #ax[0].set_ylim((1,2))
             ax[0].grid(True)
 
             ax[1].set_xlabel(r'$\alpha$ [deg]')
@@ -127,8 +129,10 @@ def plot_polar(polar_data_list, savename=None):
             ax[2].grid()
 
             fig.legend(lab, loc='upper center', ncol=4, fontsize=9)
+            # fig.legend(lab, loc='upper center', ncol=3, fontsize=9)
+            #fig.legend(lab, loc='upper center', bbox_to_anchor=(0.5, 1.4), ncol=3, fontsize=9)
     
-    plt.tight_layout()    
+    plt.tight_layout()
     if savename:
         plt.savefig(f'../../results/{savename}', bbox_inches='tight')
 

@@ -307,10 +307,21 @@
     end rotating_threebladed_substructure;
 ;
 ; define operational data
-    operational_data_filename	./data/dtu_10mw_rigid_1pt.opt;	used for everything EXCEPT compute_optimal_pitch_angle
-;
+    operational_data_filename	./data/dtu_10mw_flex.opt;	used for everything EXCEPT compute_optimal_pitch_angle
+    begin operational_data;	used for compute_optimal_pitch_angle
+      windspeed	4 25 22;	cut-in [m/s], cut-out [m/s], points [-] -- used if operational_data_file_wind is 0
+      genspeed	0 400;	min, max generator speed [rpm]
+      gearratio	50;	gear ratio [-]
+      minpitch	0;	min. pitch angle [deg]
+      opt_lambda	7.38;	optimal TSR [-]
+      maxpow	10638.3;	max. aerodynamic power [kW]
+      prvs_turbine	1;	1=pitch-regulated, variable-speed turbine
+      operational_data_file_wind	1;	0=use wind defined in windspeed, 1=use wind defined in operational_data_filename above
+      include_torsiondeform	1;	0=rigid blade, 1=flexible blade
+      set_torque_limit	1;	no torque limits if set to 1
+    end operational_data;
 ; HAWC2S commands (uncomment as needed)
-;compute_optimal_pitch_angle use_operational_data ;  re-calculate opt file (pitch/rotor speed curve)
+compute_optimal_pitch_angle use_operational_data;  re-calculate opt file (pitch/rotor speed curve)
 compute_steady_states  nobladedeform  tipcorrect  induction  nogradients ;  compute steady states, needed for aeroelastic calculations
 save_power ;	save steady-state values to .pwr
 save_induction ;	save steady-state spanwise values to many .ind files, 3 for each wind speed
