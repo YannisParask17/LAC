@@ -272,7 +272,6 @@ if __name__ == "__main__":
     path_dtu10mw = "../dtu_10mw/"
     path_scaled = "../dtu_10mw_redesign/"
 
-    # %%
 
     # import hawc results
     ind_scaled_opt = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u4000.ind")
@@ -423,4 +422,39 @@ if __name__ == "__main__":
     lab = ["DTU10MW", "Scaled"]
     plot_deflections([ind_dtu10mw_flex, ind_scaled_flex], labels=lab, save_name='deflections_comparison.pdf')
 
+
+    # spanwise Cp and CT comparison dtu10mw vs scaled 
+    fig, ax = plt.subplots(1,2, figsize=(12,3))   
+    ax[0].plot(ind_dtu10mw_flex["s_m"]/max(ind_dtu10mw_flex["s_m"]), ind_dtu10mw_flex["CP"])
+    ax[0].plot(ind_scaled_flex["s_m"]/max(ind_scaled_flex["s_m"]), ind_scaled_flex["CP"])
+    ax[0].set_ylabel(r"$C_P$ [-]")
+    ax[0].set_xlabel(r"$r/R$ [-]")
+    ax[0].grid()
+
+    ax[1].plot(ind_dtu10mw_flex["s_m"]/max(ind_dtu10mw_flex["s_m"]), ind_dtu10mw_flex["CT"])
+    ax[1].plot(ind_scaled_flex["s_m"]/max(ind_scaled_flex["s_m"]), ind_scaled_flex["CT"])
+    ax[1].set_xlabel(r"$r/R$ [-]")
+    ax[1].set_ylabel(r"$C_T$ [-]")
+    ax[1].grid()
+
+    lab = ["DTU10MW-flex", "Scaled-flex"]
+    fig.legend(lab, loc='upper center', ncol=2)
+    fig.savefig('../results/spanwiseCPCT_comparison.pdf', bbox_inches='tight')
+    fig.show()
+
     plt.show()
+
+    # compare Cp and CT at optimal tsr for u=8m/s  for dtu10mw and scaled turbine
+    CP_dtu10mw_8ms = pwr_dtu10mw["Cp"][pwr_dtu10mw["V_ms"]==8]
+    CT_dtu10mw_8ms = pwr_dtu10mw["Ct"][pwr_dtu10mw["V_ms"]==8]
+
+    CP_scaled_8ms = pwr_scaled["Cp"][pwr_scaled["V_ms"]==8]
+    CT_scaled_8ms = pwr_scaled["Ct"][pwr_scaled["V_ms"]==8]
+
+    print("DTU10MW")
+    print(f"CP : {CP_dtu10mw_8ms} \t CT : {CT_dtu10mw_8ms}")
+    print("\nScaled design")
+    print(f"CP : {CP_scaled_8ms} \t CT : {CT_scaled_8ms}")
+    
+    
+# %%
