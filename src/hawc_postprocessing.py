@@ -193,6 +193,77 @@ def plot_performance(pwr_data_list, labels=None, save_name=None):
 
     plt.show()
     return None
+
+def plot_powercurve(pwr_data_list, labels=None, save_name=None):
+    """
+    Getting dictionary with power and thrust for different wind speeds
+    and generates the power curve 
+    """
+    fig, ax = plt.subplots(2,2, figsize=(12,3))
+    for pwr_data in pwr_data_list:
+        ax[0,0].plot(pwr_data["V_ms"], pwr_data["P_kW"])
+
+        ax[0,1].plot(pwr_data["V_ms"], pwr_data["T_kN"])
+
+        ax[1,0].plot(pwr_data["V_ms"], pwr_data["Cp"])
+
+        ax[1,1].plot(pwr_data["V_ms"], pwr_data["Ct"] )
+        
+    ax[0,0].set_ylabel(r"Mechanical Power [kW]")
+    ax[0,1].set_ylabel(r"Thrust [kN]")
+    ax[1,0].set_ylabel(r"$C_P$ [-]")
+    ax[1,1].set_ylabel(r"$C_T$ (-)")
+    ax[1,0].set_xlabel("Wind speed [m/s]")
+    ax[1,1].set_xlabel("Wind speed [m/s]")
+
+    ax[0, 0].set_xticklabels([])
+    ax[0, 1].set_xticklabels([])
+
+    ax[0,0].grid()
+    ax[0,1].grid()
+    ax[1,0].grid()
+    ax[1,1].grid()
+
+    if labels:
+        fig.legend(labels, loc='upper center', ncol=2)
+
+    if save_name:
+        print("Saving figure...")
+        plt.savefig(f"../results/{save_name}", bbox_inches="tight")
+        print("Done")
+
+    plt.show()
+    return None
+
+def plot_deflections(ind_data_list, labels=None, save_name=None):
+    """
+    Getting dictionary with power and thrust for different wind speeds
+    and generates the power curve 
+    """
+    fig, ax = plt.subplots(1,2, figsize=(12,3))
+    for ind_data in ind_data_list:
+        ax[0].plot(ind_data["s_m"]/max(ind_data["s_m"]), ind_data["UX0_m"])
+
+        ax[1].plot(ind_data["s_m"]/max(ind_data["s_m"]), ind_data["UY0_m"])
+        
+    ax[0].set_ylabel(r"Edgewise deflection [m]")
+    ax[0].set_xlabel(r"$r/R$ [-]")
+    ax[1].set_ylabel(r"Flapwise deflection [m]")
+    ax[1].set_xlabel(r"$r/R$ [-]")
+
+    ax[0].grid()
+    ax[1].grid()
+
+    if labels:
+        fig.legend(labels, loc='upper center', ncol=2)
+
+    if save_name:
+        print("Saving figure...")
+        plt.savefig(f"../results/{save_name}", bbox_inches="tight")
+        print("Done")
+
+    plt.show()
+    return None
     
 
 if __name__ == "__main__":
@@ -298,7 +369,7 @@ if __name__ == "__main__":
     ax[1, 1].set_xlabel(r"$r/R$ [-]")
 
     # And for the AOA
-    breakpoint()
+    # breakpoint()
     ax[2, 0].plot(tc_hawc, np.rad2deg(ind_scaled_opt["aoa_rad"]))
     ax[2, 0].plot(ind_scaled_dc["tc"], (ind_scaled_dc["aoa"]))
     ax[2, 0].set_ylabel(r"aoa $[^\circ]$")
@@ -315,8 +386,41 @@ if __name__ == "__main__":
     ax[1, 1].set_xticklabels([])
 
     [[ax_c.grid() for ax_c in axs]for axs in ax]
-    # fig.show()
+    fig.show()
     fig.legend(lab, loc='upper center', ncol=2, bbox_to_anchor=(0.5, 0.97))
     fig.savefig('../results/cl_comparison.pdf', bbox_inches='tight')
+
+
+    # Rotor speed vs wind speed
+    pwr_scaled = lac.load_pwr(path_scaled + "dtu_10mw_hawc2s_rigid_1point.pwr")
+    print(pwr_scaled.keys())
+
+    fig, ax = plt.subplots(1,2, figsize=(8,3))   
+    ax[0].plot(pwr_scaled["V_ms"], pwr_scaled["Speed_rpm"])
+    ax[0].set_xlabel("Wind speed [m/s]")
+    ax[0].set_ylabel("Rotor speed [rpm]")
+    ax[0].grid()
+
+    ax[1].plot(pwr_scaled["V_ms"], pwr_scaled["Pitch_deg"])
+    ax[1].set_xlabel("Wind speed [m/s]")
+    ax[1].set_ylabel("Pitch angle [deg]")
+    ax[1].grid()
+
+    fig.show()
+    fig.savefig("../results/omega_pitch_vs_windspeed.pdf", bbox_inches='tight')
+
+
+    # power and thrust vs wind speed
+    pwr_dtu10mw = lac.load_pwr(path_dtu10mw + "dtu_10mw_hawc2s_rigid.pwr")
+    lab = ["DTU10MW", "Scaled"]
+    plot_powercurve([pwr_dtu10mw, pwr_scaled], labels=lab, save_name="comparison_powercurve.pdf")
+
+    
+
+    # deflections in the spanwise direction
+    ind_scaled_flex = lac.load_ind(path_scaled + 'dtu_10mw_hawc2s_flex_u8000.ind') # for optimal tsr
+    ind_dtu10mw_flex = lac.load_ind(path_dtu10mw + 'dtu_10mw_hawc2s_flexible_varTSR_u8004.ind')
+    lab = ["DTU10MW", "Scaled"]
+    plot_deflections([ind_dtu10mw_flex, ind_scaled_flex], labels=lab, save_name='deflections_comparison.pdf')
 
     plt.show()
