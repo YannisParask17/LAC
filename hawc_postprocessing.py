@@ -156,14 +156,11 @@ def plot_geometry(geom_dict, save_name=None):
     
     return None
 
-
 def rpm2rads(omega_rpm):
     return omega_rpm * (2*np.pi) / 60
-
-
+    
 def rads2rpm(omega_rads):
     return omega_rads * 60 / (2*np.pi)
-
 
 def plot_performance(pwr_data_list, labels=None, save_name=None):
     """
@@ -193,78 +190,9 @@ def plot_performance(pwr_data_list, labels=None, save_name=None):
 
     plt.show()
     return None
-
-def plot_powercurve(pwr_data_list, labels=None, save_name=None):
-    """
-    Getting dictionary with power and thrust for different wind speeds
-    and generates the power curve 
-    """
-    fig, ax = plt.subplots(2,2, figsize=(12,3))
-    for pwr_data in pwr_data_list:
-        ax[0,0].plot(pwr_data["V_ms"], pwr_data["P_kW"])
-
-        ax[0,1].plot(pwr_data["V_ms"], pwr_data["T_kN"])
-
-        ax[1,0].plot(pwr_data["V_ms"], pwr_data["Cp"])
-
-        ax[1,1].plot(pwr_data["V_ms"], pwr_data["Ct"] )
-        
-    ax[0,0].set_ylabel(r"Mechanical Power [kW]")
-    ax[0,1].set_ylabel(r"Thrust [kN]")
-    ax[1,0].set_ylabel(r"$C_P$ [-]")
-    ax[1,1].set_ylabel(r"$C_T$ (-)")
-    ax[1,0].set_xlabel("Wind speed [m/s]")
-    ax[1,1].set_xlabel("Wind speed [m/s]")
-
-    ax[0, 0].set_xticklabels([])
-    ax[0, 1].set_xticklabels([])
-
-    ax[0,0].grid()
-    ax[0,1].grid()
-    ax[1,0].grid()
-    ax[1,1].grid()
-
-    if labels:
-        fig.legend(labels, loc='upper center', ncol=2)
-
-    if save_name:
-        print("Saving figure...")
-        plt.savefig(f"../results/{save_name}", bbox_inches="tight")
-        print("Done")
-
-    plt.show()
-    return None
-
-def plot_deflections(ind_data_list, labels=None, save_name=None):
-    """
-    Getting dictionary with power and thrust for different wind speeds
-    and generates the power curve 
-    """
-    fig, ax = plt.subplots(1,2, figsize=(12,3))
-    for ind_data in ind_data_list:
-        ax[0].plot(ind_data["s_m"]/max(ind_data["s_m"]), ind_data["UX0_m"])
-
-        ax[1].plot(ind_data["s_m"]/max(ind_data["s_m"]), ind_data["UY0_m"])
-        
-    ax[0].set_ylabel(r"Edgewise deflection [m]")
-    ax[0].set_xlabel(r"$r/R$ [-]")
-    ax[1].set_ylabel(r"Flapwise deflection [m]")
-    ax[1].set_xlabel(r"$r/R$ [-]")
-
-    ax[0].grid()
-    ax[1].grid()
-
-    if labels:
-        fig.legend(labels, loc='upper center', ncol=2)
-
-    if save_name:
-        print("Saving figure...")
-        plt.savefig(f"../results/{save_name}", bbox_inches="tight")
-        print("Done")
-
-    plt.show()
-    return None
     
+
+
 
 if __name__ == "__main__":
 
@@ -275,11 +203,11 @@ if __name__ == "__main__":
     # %%
 
     # import hawc results
-    ind_scaled_opt = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u4000.ind")
-    ind_scaled_rated = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u11100.ind")
-    ind_scaled_14 = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u14000.ind")
-    ind_scaled_18 = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u18000.ind")
-    ind_scaled_25 = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u25000.ind")
+    ind_scaled_opt = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u4000.ind") 
+    ind_scaled_rated = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u11100.ind") 
+    ind_scaled_14 = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u14000.ind") 
+    ind_scaled_18 = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u18000.ind") 
+    ind_scaled_25 = lac.load_ind(path_scaled + "dtu_10mw_hawc2s_rigid_1point_u25000.ind") 
     print(ind_scaled_opt.keys())
 
     # plot spanwise for different operational points
@@ -293,7 +221,7 @@ if __name__ == "__main__":
     # plot hawc vs design code spanwise results
     lab = ["HAWC2", "Design code"]
 
-    fig, ax = plt.subplots(3, 2, figsize=(11, 4.2))
+    fig, ax = plt.subplots(3,2, figsize=(13,5))
     ax[0, 0].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["a"])
     ax[0, 0].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["a"])
     ax[0, 0].set_ylabel(r"$a$ [-]")
@@ -320,107 +248,42 @@ if __name__ == "__main__":
     ax[2, 1].set_xlabel(r"$r/R$ [-]")
     ax[2, 1].set_ylabel(r"$C_T$ [-]")
 
-    ax[0, 0].set_xticklabels([])
-    ax[1, 0].set_xticklabels([])
-    ax[0, 1].set_xticklabels([])
-    ax[1, 1].set_xticklabels([])
-    
-    ax[0, 0].grid(axis='both')
+    ax[0, 0].grid()
     ax[0, 1].grid()
     ax[1, 0].grid()
     ax[1, 1].grid()
     ax[2, 0].grid()
     ax[2, 1].grid()
 
-    fig.legend(lab, loc='upper center', ncol=2, bbox_to_anchor=(0.5, 0.97))
+    fig.legend(lab, loc='upper center', ncol=2)
     fig.savefig('../results/spanwise_comparison.pdf', bbox_inches='tight')
+    fig.show()
+
 
     # side-by-side plots of the actual lift
     # coefficient and the design lift coefficient versus relative thickness (left plot) and versus radius
-    # (right plot) for design pitch and TSR.
+    # (right plot) for design pitch and TSR. 
 
     # import t/c from ae file -> THE PROBLEM MIGHT BE HERE
-    r_ae, c_ae, tc_ae, _ = lac.load_ae(path_scaled + "data/10MW_1a_ae.dat", unpack=True)
-    tc_hawc = np.interp(ind_scaled_opt["s_m"], r_ae, tc_ae)  # Bringing tc in the same spacing of the ind file
+    r_ae, c_ae, tc_ae, _ =  lac.load_ae(path_scaled + "data/10MW_1a_ae.dat", unpack=True)
+    tc_hawc = np.interp(ind_scaled_opt["s_m"], r_ae, tc_ae)
     print(f"tc_hawc : {tc_hawc}")
 
-    fig, ax = plt.subplots(3, 2, figsize=(11, 4.2))
+    fig, ax = plt.subplots(1,2, figsize=(12,3))
 
-    # Left plot:  Cl over t/c
-    ax[0, 0].plot(tc_hawc, ind_scaled_opt["Cl"])
-    ax[0, 0].plot(ind_scaled_dc["tc"], ind_scaled_dc["cl"])
-    ax[0, 0].set_ylabel(r"$C_l$ [-]")
-    ax[0, 0].set_xlabel(r"$t/c$ [-]")
-
-    ax[0, 1].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["Cl"])
-    ax[0, 1].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["cl"])
-    ax[0, 1].set_ylabel(r"$C_l$ [-]")
-    ax[0, 1].set_xlabel(r"$r/R$ [-]")
-
-    # Same for the Cl/cd
-    ax[1, 0].plot(tc_hawc, ind_scaled_opt["Cl"]/ind_scaled_opt["Cd"])
-    ax[1, 0].plot(ind_scaled_dc["tc"], ind_scaled_dc["cl"]/ind_scaled_dc["cd"])
-    ax[1, 0].set_ylabel(r"$C_l / C_d$ [-]")
-    ax[1, 0].set_xlabel(r"$t/c$ [-]")
-
-    ax[1, 1].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["Cl"] / ind_scaled_opt["Cd"])
-    ax[1, 1].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["cl"]/ind_scaled_dc["cd"])
-    ax[1, 1].set_ylabel(r"$C_l/C_d$ [-]")
-    ax[1, 1].set_xlabel(r"$r/R$ [-]")
-
-    # And for the AOA
-    # breakpoint()
-    ax[2, 0].plot(tc_hawc, np.rad2deg(ind_scaled_opt["aoa_rad"]))
-    ax[2, 0].plot(ind_scaled_dc["tc"], (ind_scaled_dc["aoa"]))
-    ax[2, 0].set_ylabel(r"aoa $[^\circ]$")
-    ax[2, 0].set_xlabel(r"$t/c$ [-]")
-
-    ax[2, 1].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), np.rad2deg(ind_scaled_opt["aoa_rad"]))
-    ax[2, 1].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), (ind_scaled_dc["aoa"]))
-    ax[2, 1].set_ylabel(r"aoa $[^\circ]$")
-    ax[2, 1].set_xlabel(r"$r/R$ [-]")
-    
-    ax[0, 0].set_xticklabels([])
-    ax[1, 0].set_xticklabels([])
-    ax[0, 1].set_xticklabels([])
-    ax[1, 1].set_xticklabels([])
-
-    [[ax_c.grid() for ax_c in axs]for axs in ax]
-    fig.show()
-    fig.legend(lab, loc='upper center', ncol=2, bbox_to_anchor=(0.5, 0.97))
-    fig.savefig('../results/cl_comparison.pdf', bbox_inches='tight')
-
-
-    # Rotor speed vs wind speed
-    pwr_scaled = lac.load_pwr(path_scaled + "dtu_10mw_hawc2s_rigid_1point.pwr")
-    print(pwr_scaled.keys())
-
-    fig, ax = plt.subplots(1,2, figsize=(8,3))   
-    ax[0].plot(pwr_scaled["V_ms"], pwr_scaled["Speed_rpm"])
-    ax[0].set_xlabel("Wind speed [m/s]")
-    ax[0].set_ylabel("Rotor speed [rpm]")
+    ax[0].plot(tc_hawc, ind_scaled_opt["Cl"])
+    ax[0].plot(ind_scaled_dc["tc"], ind_scaled_dc["cl"])
+    ax[0].set_ylabel(r"$C_l$ [-]")
+    ax[0].set_xlabel(r"$t/c$ [-]")
     ax[0].grid()
 
-    ax[1].plot(pwr_scaled["V_ms"], pwr_scaled["Pitch_deg"])
-    ax[1].set_xlabel("Wind speed [m/s]")
-    ax[1].set_ylabel("Pitch angle [deg]")
+    ax[1].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["Cl"])
+    ax[1].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["cl"])
+    ax[1].set_ylabel(r"$C_l$ [-]")
+    ax[1].set_xlabel(r"$r/R$ [-]")
     ax[1].grid()
 
     fig.show()
-    fig.savefig("../results/omega_pitch_vs_windspeed.pdf", bbox_inches='tight')
-
-
-    # power and thrust vs wind speed
-    pwr_dtu10mw = lac.load_pwr(path_dtu10mw + "dtu_10mw_hawc2s_rigid.pwr")
-    lab = ["DTU10MW", "Scaled"]
-    plot_powercurve([pwr_dtu10mw, pwr_scaled], labels=lab, save_name="comparison_powercurve.pdf")
-
-    
-
-    # deflections in the spanwise direction
-    ind_scaled_flex = lac.load_ind(path_scaled + 'dtu_10mw_hawc2s_flex_u8000.ind') # for optimal tsr
-    ind_dtu10mw_flex = lac.load_ind(path_dtu10mw + 'dtu_10mw_hawc2s_flexible_varTSR_u8004.ind')
-    lab = ["DTU10MW", "Scaled"]
-    plot_deflections([ind_dtu10mw_flex, ind_scaled_flex], labels=lab, save_name='deflections_comparison.pdf')
+    fig.legend(lab, loc='upper center', ncol=2)
 
     plt.show()
