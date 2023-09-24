@@ -116,13 +116,13 @@ def solve_CP(cl_des, r, t, tsr, R, a, B):
     CLP = CLP_fun(r, tsr, R, a, B, cl, cd, chord)
     CT = CT_fun(r, R, CLT)
     CP = CP_fun(r, R, CLP)
-    return CT, CP, chord, tc, cl, cd, twist, aoa, a
+    return CT, CP, chord, tc, cl, cd, twist, aoa, a, CLT, CLP
 
 tsr_list = np.linspace(6, 9, 40)
 CP_list = np.zeros(len(tsr_list))
 CT_list = np.zeros(len(tsr_list))
 for i, tsr in enumerate(tsr_list):
-    CT, CP, chord, tc, cl, cd, twist, aoa = solve_CP(cl_des, r, t, tsr, R, a, B)
+    CT, CP, chord, tc, cl, cd, twist, aoa, _, _, _ = solve_CP(cl_des, r, t, tsr, R, a, B)
     CP_list[i] = CP
     CT_list[i] = CT
     print(i)
@@ -238,9 +238,9 @@ plt.tight_layout()
 plt.show(block=True)
 
 
-CT, CP, chord, tc, cl, cd, twist, aoa, a = solve_CP(cl_des, r, t, tsr_max, R, a, B)
+CT, CP, chord, tc, cl, cd, twist, aoa, a, CLT, CLP = solve_CP(cl_des, r, t, tsr_max, R, a, B)
 
-df_new = pd.DataFrame({"r" : r, "a" : a,"CT": CT, "CP": CP, "chord": chord, "tc": tc, "cl": cl, "cd": cd, "twist": twist, "aoa": aoa})
+df_new = pd.DataFrame({"r" : r, "a" : a,"CT": CT, "CP": CP, "CLP" : CLP, "CLT" : CLT, "chord": chord, "tc": tc, "cl": cl, "cd": cd, "twist": twist, "aoa": aoa})
 df_new.to_json(json_out)
 
 
