@@ -20,9 +20,9 @@ chord_max = 6.0     # Maximum chord size [m]
 chord_root = 5.38   # Chord at the root [m]
 
 
-# Switches 
+# Switches
 
-plot_thickness = True
+plot_thickness = False
 
 # IO of the AE file
 data_path = "../dtu_10mw"
@@ -50,9 +50,6 @@ def thickness(r):
     t_poly = np.polyval(p_edge, r)  # evaluate polynomial
     t = np.minimum(t_poly, chord_root)  # clip at max thickness
     return t
-
-
-
 
 
 # Aero dynamic polar design functions and the values (t/c vs. cl, cd, aoa)
@@ -117,6 +114,7 @@ def solve_CP(cl_des, r, t, tsr, R, a, B):
     CT = CT_fun(r, R, CLT)
     CP = CP_fun(r, R, CLP)
     return CT, CP, chord, tc, cl, cd, twist, aoa, a, CLT, CLP
+
 
 tsr_list = np.linspace(6, 9, 40)
 CP_list = np.zeros(len(tsr_list))
@@ -212,7 +210,7 @@ for i, tsr in enumerate(tsr_list):
 CP_max = np.argmax(CP_list)
 tsr_max = tsr_list[CP_max]
 
-fig, ax1 = plt.subplots()
+fig, ax1 = plt.subplots(figsize=(5, 2.5))
 print(tsr_list)
 ax2 = ax1.twinx()
 ax1.plot(tsr_list, CP_list, "b--", label="CP")
@@ -228,13 +226,14 @@ lines1, labels1 = ax1.get_legend_handles_labels()
 lines2, labels2 = ax2.get_legend_handles_labels()
 lines = lines1 + lines2
 labels = labels1 + labels2
-ax1.legend(lines, labels, loc='best')
+ax1.legend(lines, labels, loc='upper center', ncol=3, bbox_to_anchor=(0.5, 1.4))
 
 # lns = lns1+lns2
 # labs = [l.get_label() for l in lns]
 # ax1.legend(lns, labs, loc=[0.02, 0.87])
 
 plt.tight_layout()
+plt.savefig('../results/aero_design/cp_ct.pdf', bbox_inches='tight')
 plt.show(block=True)
 
 
