@@ -349,30 +349,30 @@ if __name__ == "__main__":
     ax[0, 0].plot(tc_hawc, ind_scaled_opt["Cl"])
     ax[0, 0].plot(ind_scaled_dc["tc"], ind_scaled_dc["cl"])
     ax[0, 0].set_ylabel(r"$C_l$ [-]")
-    ax[0, 0].set_xlabel(r"$t/c$ [-]")
+    # ax[0, 0].set_xlabel(r"$t/c$ [-]")
 
     ax[0, 1].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["Cl"])
     ax[0, 1].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["cl"])
     ax[0, 1].set_ylabel(r"$C_l$ [-]")
-    ax[0, 1].set_xlabel(r"$r/R$ [-]")
+    # ax[0, 1].set_xlabel(r"$r/R$ [-]")
 
     # Same for the Cl/cd
     ax[1, 0].plot(tc_hawc, ind_scaled_opt["Cl"]/ind_scaled_opt["Cd"])
     ax[1, 0].plot(ind_scaled_dc["tc"], ind_scaled_dc["cl"]/ind_scaled_dc["cd"])
     ax[1, 0].set_ylabel(r"$C_l / C_d$ [-]")
-    ax[1, 0].set_xlabel(r"$t/c$ [-]")
+    # ax[1, 0].set_xlabel(r"$t/c$ [-]")
 
     ax[1, 1].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), ind_scaled_opt["Cl"] / ind_scaled_opt["Cd"])
     ax[1, 1].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), ind_scaled_dc["cl"]/ind_scaled_dc["cd"])
     ax[1, 1].set_ylabel(r"$C_l/C_d$ [-]")
-    ax[1, 1].set_xlabel(r"$r/R$ [-]")
+    # ax[1, 1].set_xlabel(r"$r/R$ [-]")
 
     # And for the AOA
     # breakpoint()
     ax[2, 0].plot(tc_hawc, np.rad2deg(ind_scaled_opt["aoa_rad"]))
     ax[2, 0].plot(ind_scaled_dc["tc"], (ind_scaled_dc["aoa"]))
     ax[2, 0].set_ylabel(r"aoa $[^\circ]$")
-    ax[2, 0].set_xlabel(r"$t/c$ [-]")
+    ax[2, 0].set_xlabel(r"$t/c$ [%]")
 
     ax[2, 1].plot(ind_scaled_opt["s_m"]/max(ind_scaled_opt["s_m"]), np.rad2deg(ind_scaled_opt["aoa_rad"]))
     ax[2, 1].plot(ind_scaled_dc["r"]/max(ind_scaled_dc["r"]), (ind_scaled_dc["aoa"]))
