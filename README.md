@@ -2,6 +2,11 @@
 
 Scripts, Tools and other stuff for the DTU LAC course in Fall semester 2023
 
+## Comments/Remarks for next assignment 
+- Everyone uploads their script to git
+- File organisation : maybe have a main function to call all the script or have 1 script for each task
+- For each graph -> put a comment in the overleaf with the script name that has been produced with
+
 ## To dos
  
 <<<<<<< HEAD
