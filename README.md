@@ -10,6 +10,7 @@ Scripts, Tools and other stuff for the DTU LAC course in Fall semester 2023
 ## To dos
  
 <<<<<<< HEAD
+- Check if I (Yannis) plotted the power curve for the flexible or the rigid blade (to investigate the power curve -> the overshoot in power )
 - Clean up code and document everything so it is usable later
 - Michael tries finishing hawc inputs
     - Twist
