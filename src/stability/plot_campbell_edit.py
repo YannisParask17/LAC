@@ -33,7 +33,7 @@ def rpm2hz(rpm):
     return (rpm/60)
 
 
-breakpoint()
+# breakpoint()
 # analysis type
 for antype in ['structural', 'aeroelastic']:
     cmb_path = cmb_paths[antype]
