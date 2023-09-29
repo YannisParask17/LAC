@@ -17,13 +17,21 @@ import numpy as np
 import matplotlib.pyplot as plt
 from lacbox.io import load_cmb
 
+s_name = 'aeroelastic_f_d_single_blade_plot.py'
 # -----------------------------------------#
 # Data processing
 # -----------------------------------------#
 plotting = True
 # Path to the .cmb file
+opt_path = '../../IIIB_scaled_turbine/data/IIIB_scaled_turbine_flex.opt'  # path to opt file, to be added as an exercise
+result_path = '../../results/stability/'
 cmb_type = "aeroelastic"
-cmb_path= "dtu_10mw_single_blade_aero_modes.cmb"
+#cmb_paths = {'structural': '../../IIIB_scaled_turbine/10mw_3b_single_blade_structure.cmb',
+#             'aeroelastic': '../../IIIB_scaled_turbine/10mw_3b_single_blade.cmb'
+#             }
+
+cmb_path = '../../IIIB_scaled_turbine/10mw_3b_single_blade.cmb'
+
 mode_names = ['1st flap', '1st edge', '2nd flap', '2nd edge']
 turbine_name = "DTU 10MW"
 
@@ -54,8 +62,9 @@ if plotting:
     fig.suptitle(f'{cmb_type.capitalize()} Campbell diagram for {turbine_name}',
                  y=0.84)
     fig.tight_layout(rect=[0, 0, 1, 0.87])
-    plt.savefig(cmb_path.replace('.cmb', '.pdf'), bbox_inches='tight')
-    plt.show()
+    plt.savefig(result_path + s_name.replace('.py', '.pdf'), bbox_inches='tight')
+    print(f"Figure saved to {result_path + s_name.replace('.py', '.pdf')} ")
+plt.show()
 
 
 # -----------------------------------------#
