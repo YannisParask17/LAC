@@ -19,7 +19,7 @@ mode_names = {'structural': ['1st Tower FA', '1st Tower SS', '1st Backward whirl
               'aeroelastic': ['1st Tower FA', '1st Tower SS', '1st BW flap', '1st symmetric flap',
                               '1st FW flap', '1st BW edge',
                               '1st FW edge', '2nd BW flap',
-                              '2nd FW flap', '1st symmetric edge', '2nd symmetric flap', '1P', '3P']}
+                              '2nd FW flap', '1st symmetric edge', '2nd symmetric flap', '1P', '3P', '6P']}
 
 
 # Read opt data
@@ -53,6 +53,7 @@ for antype in ['structural', 'aeroelastic']:
     axs[0].plot(wsp, dfreqs, marker='.')
     axs[0].plot(opt_data.u, rpm2hz(opt_data.rpm), 'k--', label='1P')
     axs[0].plot(opt_data.u, 3* rpm2hz(opt_data.rpm), 'k-.', label='3P')
+    axs[0].plot(opt_data.u, 6* rpm2hz(opt_data.rpm), 'k.-.', label='6P')
     axs[0].set(xlabel='Wind speed [m/s]', ylabel='Damped nat. frequencies [Hz]')
     axs[0].grid()
 
