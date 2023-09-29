@@ -11,7 +11,7 @@ from sklearn.metrics import r2_score
 # -------------------------------------------------------------------- #
 # Switches
 # -------------------------------------------------------------------- # show_figures = False
-show_plots = False
+show_plots = True
 task_4 = False
 # -------------------------------------------------------------------- #
 # Parameters
@@ -99,7 +99,7 @@ ae = load_ae(ae_path)
 # pass data to variables
 radius, chord, tc_ratio, pcset = load_ae(ae_path, unpack=True)
 thickness = tc_ratio*chord/100
-
+breakpoint()
 # Get the centerline from the c2def block in the htc file
 c2_def = load_c2def(htc_path)  # x, y , z , theta
 
