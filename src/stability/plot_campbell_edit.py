@@ -1,9 +1,10 @@
+# %%
 import matplotlib.pyplot as plt
 
 from lacbox.io import load_cmb
 import numpy as np
 import pandas as pd
-
+# %%
 turbine_name = '10 MW - IIIB'
 opt_path = '../../IIIB_scaled_turbine/data/IIIB_scaled_turbine_flex.opt'  # path to opt file, to be added as an exercise
 cmb_paths = {'structural': '../../IIIB_scaled_turbine/10mw_3b_whole_turbine_structure.cmb',
@@ -17,7 +18,7 @@ mode_names = {'structural': ['1st Tower FA', '1st Tower SS', '1st Backward whirl
               'aeroelastic': ['1st Tower FA', '1st Tower SS', '1st BW flap', '1st symmetric flap',
                               '1st FW flap', '1st BW edge',
                               '1st FW edge', '2nd BW flap',
-                              '2nd FW flap', '2nd symmetric flap', '1st symmetric edge']}
+                              '2nd FW flap', '2nd symmetric flap', '1st symmetric edge', '1P', '3P']}
 
 
 # Read opt data
@@ -41,7 +42,7 @@ for antype in ['structural', 'aeroelastic']:
     # load campbell diagram, skip if missing
     try:
         wsp, dfreqs, zetas = load_cmb(cmb_path, cmb_type=antype)
-    except FileNotFoundError:
+    except:
         print(f'File {cmb_path} not found! Skipping.')
         continue
     
@@ -49,8 +50,8 @@ for antype in ['structural', 'aeroelastic']:
 
     # left plot: damped nat freqs in ground-fixed frame
     axs[0].plot(wsp, dfreqs, marker='.')
-    #axs[0].plot(opt_data.u, rpm2hz(opt_data.rpm), 'k--', label='1P')
-    #axs[0].plot(opt_data.u, 3* rpm2hz(opt_data.rpm), 'k-.', label='3P')
+    axs[0].plot(opt_data.u, rpm2hz(opt_data.rpm), 'k--', label='1P')
+    axs[0].plot(opt_data.u, 3* rpm2hz(opt_data.rpm), 'k-.', label='3P')
     axs[0].set(xlabel='Wind speed [m/s]', ylabel='Damped nat. frequencies [Hz]')
     axs[0].grid()
 
@@ -61,8 +62,9 @@ for antype in ['structural', 'aeroelastic']:
 
     # add legend with 6 columns in center
     #fig.legend(loc='outside lower center', handles=lines,
-    fig.legend(loc='outside lower center', bbox_to_anchor=(0.5, -0.2), handles=lines,
-               labels=mode_names[antype], ncols=4)
+    # fig.legend(loc='outside lower center', bbox_to_anchor=(0.5, -0.2), handles=lines,
+            #    labels=mode_names[antype], ncols=4)
+    fig.legend(loc='outside lower center', bbox_to_anchor=(0.5, -0.25), labels=mode_names[antype], ncols=5)
 
     # add figure title and scale nicely
     fig.suptitle(f'{antype.capitalize()} Campbell diagram for {turbine_name}',
