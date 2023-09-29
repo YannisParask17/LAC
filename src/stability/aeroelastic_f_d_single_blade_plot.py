@@ -43,7 +43,7 @@ opt_data = pd.read_csv(opt_path, delim_whitespace=True, skiprows=1, header=None,
                        names=['u', 'pitch_deg', 'rpm', 'power', 'thrust'])
 
 
-mode_names = ['1st flap', '1st edge', '2nd flap', '2nd edge', '1P', '3P']
+mode_names = ['1st flap', '1st edge', '2nd flap', '2nd edge', '1P', '3P', '6P']
 turbine_name = "IIIB"
 
 # Load the data
@@ -62,6 +62,7 @@ if plotting:
     axs[0].plot(wsp, dfreqs, marker='.')
     axs[0].plot(opt_data.u, rpm2hz(opt_data.rpm), 'k--')
     axs[0].plot(opt_data.u, 3* rpm2hz(opt_data.rpm), 'k-.')
+    axs[0].plot(opt_data.u, 6* rpm2hz(opt_data.rpm), 'k.-.')
     axs[0].set(xlabel='Wind speed [m/s]', ylabel='Damped nat. frequencies [Hz]')
     axs[0].grid()
 

@@ -18,7 +18,7 @@ mode_names = {'structural': ['1st Tower FA', '1st Tower SS', '1st Backward whirl
               'aeroelastic': ['1st Tower FA', '1st Tower SS', '1st BW flap', '1st symmetric flap',
                               '1st FW flap', '1st BW edge',
                               '1st FW edge', '2nd BW flap',
-                              '2nd FW flap', '2nd symmetric flap', '1st symmetric edge', '1P', '3P']}
+                              '2nd FW flap', '2nd symmetric flap', '1st symmetric edge', '1P', '3P', '6P']}
 
 
 # Read opt data
