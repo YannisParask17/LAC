@@ -73,7 +73,7 @@ if plotting:
 
     # add legend with 6 columns in center
     fig.legend(loc='outside lower center',
-               labels=mode_names, bbox_to_anchor=(0.5, -0.2), ncols=3)
+               labels=mode_names, bbox_to_anchor=(0.5, -0.2), ncols=4)
 
 
     # add figure title and scale nicely
