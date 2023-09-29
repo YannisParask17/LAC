@@ -16,6 +16,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 from lacbox.io import load_cmb
+import pandas as pd
+
+
+def rpm2hz(rpm):
+    return (rpm/60)
 
 s_name = 'aeroelastic_f_d_single_blade_plot.py'
 # -----------------------------------------#
@@ -32,12 +37,21 @@ cmb_type = "aeroelastic"
 
 cmb_path = '../../IIIB_scaled_turbine/10mw_3b_single_blade.cmb'
 
-mode_names = ['1st flap', '1st edge', '2nd flap', '2nd edge']
+# Read opt data
+#opt_data = np.loadtxt(opt_path, delimiter='\t', skiprows=1)
+opt_data = pd.read_csv(opt_path, delim_whitespace=True, skiprows=1, header=None,
+                       names=['u', 'pitch_deg', 'rpm', 'power', 'thrust'])
+
+
+mode_names = ['1st flap', '1st edge', '2nd flap', '2nd edge', '1P', '3P']
 turbine_name = "IIIB"
 
 # Load the data
 wsp, dfreqs, zetas = load_cmb(cmb_path, cmb_type)  # wind speed, damped natural freqs, and damping values
+# breakpoint()
 
+# cmb_data = np.loadtxt(cmb_path, skiprows=1)  # wind speed, damped natural freqs, and damping values
+# wsp, dfreqs, zetas = cmb_path[:,0], cmb_path[:,1:5], cmb_path[:,5:]
 # print the shape
 dfreqs.shape  # n_wsp x n_modes
 
@@ -46,6 +60,8 @@ if plotting:
 
     # left plot: damped nat freqs in ground-fixed frame
     axs[0].plot(wsp, dfreqs, marker='.')
+    axs[0].plot(opt_data.u, rpm2hz(opt_data.rpm), 'k--')
+    axs[0].plot(opt_data.u, 3* rpm2hz(opt_data.rpm), 'k-.')
     axs[0].set(xlabel='Wind speed [m/s]', ylabel='Damped nat. frequencies [Hz]')
     axs[0].grid()
 
@@ -55,8 +71,9 @@ if plotting:
     axs[1].grid()
 
     # add legend with 6 columns in center
-    fig.legend(loc='outside upper center', handles=lines,
-               labels=mode_names, ncols=4)
+    fig.legend(loc='outside lower center',
+               labels=mode_names, bbox_to_anchor=(0.5, -0.2), ncols=3)
+
 
     # add figure title and scale nicely
     fig.suptitle(f'{cmb_type.capitalize()} Campbell diagram for {turbine_name}',
