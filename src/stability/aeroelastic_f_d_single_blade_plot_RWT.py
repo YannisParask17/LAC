@@ -28,23 +28,22 @@ s_name = 'aeroelastic_f_d_single_blade_plot.py'
 # -----------------------------------------#
 plotting = True
 # Path to the .cmb file
-opt_path = '../../IIIB_scaled_turbine/data/IIIB_scaled_turbine_flex.opt'  # path to opt file, to be added as an exercise
+opt_path = '../../dtu_10mw/data/dtu_10mw_flex_minrotspd.opt'  # path to opt file, to be added as an exercise
 result_path = '../../results/stability/'
 cmb_type = "aeroelastic"
 #cmb_paths = {'structural': '../../IIIB_scaled_turbine/10mw_3b_single_blade_structure.cmb',
 #             'aeroelastic': '../../IIIB_scaled_turbine/10mw_3b_single_blade.cmb'
 #             }
 
-cmb_path = '../../IIIB_scaled_turbine/10mw_3b_single_blade.cmb'
+cmb_path = '../../dtu_10mw/dtu_10mw_single_blade_aero_modes.cmb'
 
 # Read opt data
 #opt_data = np.loadtxt(opt_path, delimiter='\t', skiprows=1)
 opt_data = pd.read_csv(opt_path, delim_whitespace=True, skiprows=1, header=None,
                        names=['u', 'pitch_deg', 'rpm', 'power', 'thrust'])
 
-
 mode_names = ['1st flap', '1st edge', '2nd flap', '2nd edge', '1P', '3P', '6P']
-turbine_name = "IIIB"
+turbine_name = "IA"
 
 # Load the data
 wsp, dfreqs, zetas = load_cmb(cmb_path, cmb_type)  # wind speed, damped natural freqs, and damping values
