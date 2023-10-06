@@ -1,4 +1,4 @@
-# get the paraemters for controls 
+# get the paraemters for controls
 
 
 import numpy as np
@@ -42,11 +42,12 @@ def get_kp(zeta, omega, i_r, i_g, n_g, eta, dq_domega, dq_dtheta):
 
 
 def get_ki(omega, i_r, i_g, n_g, dq_dtheta):
-    """ 
+    """
     Get Ki in part #!/usr/bin/env python3
     """
     ki = (omega**2 * (i_r + n_g**2 * i_g)) / (- dq_dtheta)
     return ki
+
 
 
 eta = 0.94
