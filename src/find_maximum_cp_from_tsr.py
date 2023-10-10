@@ -25,10 +25,10 @@ chord_root = 5.38   # Chord at the root [m]
 plot_thickness = True
 
 # IO of the AE file
-data_path = "../dtu_10mw"
+data_path = "../IIIB_scaled_turbine"
 
-ae_path = '../dtu_10mw/data/DTU_10MW_RWT_ae.dat'
-htc_path = data_path + '/dtu_10mw_hawc2s_rigid_1point.htc'
+ae_path = '../IIIB_scaled_turbine/data/IIIB_scaled_turbine_ae.dat'
+htc_path = data_path + '/IIIB_scaled_turbine.htc'
 
 # Out
 c2def_save_path = '../results/hawc_files/c2_def_scaled.txt'
@@ -59,7 +59,7 @@ cl_des, cd_des, aoa_des, tc_vals, cl_vals, cd_vals, aoa_vals = get_design_functi
 # Computing the spacing of the elements from the ae file
 ae_data = load_ae(ae_path)      # Get the RWT data
 scaling_factor = R/r_old
-rad_positions_ae = ae_data[:, 0]* R/r_old
+rad_positions_ae = ae_data[:-4, 0]* R/r_old
 r = r_hub + rad_positions_ae
 
 # Solving for the relative thickness (t/c)
