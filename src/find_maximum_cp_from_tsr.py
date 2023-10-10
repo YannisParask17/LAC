@@ -65,7 +65,6 @@ r = r_hub + rad_positions_ae
 # Solving for the relative thickness (t/c)
 # Computing absolute thickness
 t = thickness(r-r_hub)
-breakpoint()
 # Plot the thickness
 if plot_thickness:  # Super inefficient code, but good enough
     # pass data to variables
@@ -80,7 +79,6 @@ if plot_thickness:  # Super inefficient code, but good enough
     plt.legend()
     plt.savefig("../results/aero_design/thickness_limited.pdf", bbox_inches='tight')
     plt.show()
-    breakpoint()
 
 
 def solve_CP(cl_des, r, t, tsr, R, a, B):
@@ -120,7 +118,6 @@ tsr_list = np.linspace(6, 9, 40)
 CP_list = np.zeros(len(tsr_list))
 CT_list = np.zeros(len(tsr_list))
 for i, tsr in enumerate(tsr_list):
-    breakpoint()
     CT, CP, chord, tc, cl, cd, twist, aoa, _, _, _ = solve_CP(cl_des, r, t, tsr, R, a, B)
     CP_list[i] = CP
     CT_list[i] = CT
@@ -210,7 +207,6 @@ for i, tsr in enumerate(tsr_list):
 
 CP_max = np.argmax(CP_list)
 tsr_max = tsr_list[CP_max]
-breakpoint()
 
 fig, ax1 = plt.subplots(figsize=(5, 2.5))
 print(tsr_list)
@@ -259,7 +255,6 @@ c2_def = load_c2def(htc_path)  # x, y , z , theta
 
 c2_def_new = c2_def.copy()
 c2_def_new[:, 2] *= scaling_factor      # Scale the z coordinate
-# breakpoint()
 twist_interp = - np.interp(c2_def_new[:, 2], rad_positions_ae, twist)
 c2_def_new[:, 3] = twist_interp               # Add new twist
 
