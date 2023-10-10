@@ -2,7 +2,7 @@ import numpy as np
 from scipy.optimize import curve_fit
 import matplotlib.pyplot as plt
 
-file_path = "./hawc2s_files/IIIB_scaled_turbine_flex_ctrl_tuning.txt"
+file_path = "./hawc2s_files/IIIB_scaled_turbine_flex_C1_omega_005_zeta07_ctrl_tuning.txt"
 
 results = np.loadtxt(file_path, skiprows=17)
 # Define the function you want to fit
