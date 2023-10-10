@@ -307,8 +307,8 @@
     end rotating_threebladed_substructure;
 ;
   begin controller_tuning ;
-  partial_load 10000 100000;  999;0.05 0.7; edit fn [hz], zeta [-]
-  full_load 0.06 0.7 ; edit fn [hz], zeta [-]
+  partial_load 0.05 0.7;  999;0.05 0.7; edit fn [hz], zeta [-]
+  full_load 0.05 0.7 ; edit fn [hz], zeta [-]
   gain_scheduling 1 ; 1 linear, 2 quadratic
   constant_power 1 ; 0 constant torque, 1 constant power
   end controller_tuning ;

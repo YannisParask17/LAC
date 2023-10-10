@@ -13,11 +13,12 @@
  ***********************************************************************
 ________________________________________________________________________
   Log file output
-                                                       Time : 13:19:20
+                                                       Time : 13:30:51
                                                        Date : 10:10.2023
 ________________________________________________________________________
- Opening main command file: IIIB_scaled_turbine_flex.htc
- Current directory is Z:\home\mi\Documents\dtu\LAC\7_week_7\IIIB_scaled_turbine
+ Opening main command file: IIIB_scaled_turbine_flex_omega_005_zeta07.htc
+ Current directory is 
+ Z:\home\mi\repos\LAC\02_control_IIIB_scaled_turbine\hawc2s_files
  Reading data of main body : tower
  Succes opening ./data/IIIB_scaled_turbine_Tower_st.dat
  timoschenko input commands read with succes
