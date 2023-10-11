@@ -13,10 +13,10 @@
  ***********************************************************************
 ________________________________________________________________________
   Log file output
-                                                       Time : 13:30:51
-                                                       Date : 10:10.2023
+                                                       Time : 14:35:47
+                                                       Date : 11:10.2023
 ________________________________________________________________________
- Opening main command file: IIIB_scaled_turbine_flex_omega_005_zeta07.htc
+ Opening main command file: IIIB_scaled_turbine_flex_C1_omega_005_zeta07.htc
  Current directory is 
  Z:\home\mi\repos\LAC\02_control_IIIB_scaled_turbine\hawc2s_files
  Reading data of main body : tower
@@ -165,7 +165,7 @@ Processing computation no. 30 of 31
 Processing computation no. 31 of 31
  ...done
  iregions:           1           8           9          31
- maxpow [kW]:   10634.5715786030     
+ maxpow [kW]:   10634.5715784859     
  maxgen [rpm]:   8.00000000000000     
  Updating gains for controller!
  Continue log

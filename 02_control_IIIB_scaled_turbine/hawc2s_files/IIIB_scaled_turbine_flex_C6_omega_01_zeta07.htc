@@ -317,8 +317,8 @@
     ; edit 
     begin operational_data;	used for compute_optimal_pitch_angle
       windspeed	4 25 22; keep	cut-in [m/s], cut-out [m/s], points [-] -- used if operational_data_file_wind is 0
-      genspeed	0 400;	keep min, max generator speed [rpm]
-      gearratio	50;	keep gear ratio [-]
+      genspeed	0 8;	keep min, max generator speed [rpm]
+      gearratio	1;	keep gear ratio [-]
       minpitch	0;	keep min. pitch angle [deg]
       opt_lambda	7.15; edit	optimal TSR [-]
       maxpow	10638.3;	max. aerodynamic power [kW]
