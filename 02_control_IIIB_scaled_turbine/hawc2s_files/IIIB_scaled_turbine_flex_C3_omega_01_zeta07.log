@@ -13,12 +13,12 @@
  ***********************************************************************
 ________________________________________________________________________
   Log file output
-                                                       Time : 14:52:53
+                                                       Time : 16:27:35
                                                        Date : 11:10.2023
 ________________________________________________________________________
- Opening main command file: IIIB_scaled_turbine_flex_C3_omega_01_zeta07.htc
- Current directory is 
- Z:\home\mi\repos\LAC\02_control_IIIB_scaled_turbine\hawc2s_files
+ Opening main command file: 
+ hawc2s_files/IIIB_scaled_turbine_flex_C3_omega_01_zeta07.htc
+ Current directory is Z:\home\mi\repos\LAC\02_control_IIIB_scaled_turbine
  Reading data of main body : tower
  Succes opening ./data/IIIB_scaled_turbine_Tower_st.dat
  timoschenko input commands read with succes
@@ -165,7 +165,7 @@ Processing computation no. 30 of 31
 Processing computation no. 31 of 31
  ...done
  iregions:           1           8           9          31
- maxpow [kW]:   10634.5715784859     
+ maxpow [kW]:   10634.5715786030     
  maxgen [rpm]:   8.00000000000000     
  Updating gains for controller!
  Continue log

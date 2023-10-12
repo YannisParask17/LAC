@@ -1,0 +1,20 @@
+ ***********************************************************************
+ *  Build information for HAWCStab2
+ *  Aeroservoelastic stability tool for wind turbines
+ *  Intel, version         2021 ,     20201112
+ *  WINDOWS 64-bit
+ ***********************************************************************
+ *  GIT-TAG        = v2.15.6
+ *  GIT-BRANCH     = 
+ *  BUILD_TYPE     = Windows64 RELEASE
+ *  BUILDER        = ContainerAdministrator
+ *  COMPUTER_NAME  = RUNNER-CWSASYZT
+ *  BUILD_DATE     = Mon 07/31/2023
+ ***********************************************************************
+________________________________________________________________________
+  Log file output
+                                                       Time : 16:27:32
+                                                       Date : 11:10.2023
+________________________________________________________________________
+The file 'hawc2s_files/IIIB_scaled_turbine_flex_C3_omega_01_zeta07' does not exist
+ Continue log

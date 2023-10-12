@@ -309,7 +309,7 @@
   begin controller_tuning ;
   partial_load 0.1 0.7;  999;0.05 0.7; edit fn [hz], zeta [-]
   full_load 0.1 0.7 ; edit fn [hz], zeta [-]
-  gain_scheduling 1 ; 1 linear, 2 quadratic
+  gain_scheduling 2 ; 1 linear, 2 quadratic
   constant_power 0 ; 0 constant torque, 1 constant power
   end controller_tuning ;
 ; define operational data

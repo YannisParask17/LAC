@@ -307,17 +307,17 @@
     end rotating_threebladed_substructure;
 ;
   begin controller_tuning ;
-  partial_load 0.05 0.7;  999;0.05 0.7; edit fn [hz], zeta [-]
-  full_load 0.05 0.7 ; edit fn [hz], zeta [-]
-  gain_scheduling 2 ; 1 linear, 2 quadratic
-  constant_power 0 ; 0 constant torque, 1 constant power
+  partial_load 0.0625 0.7;  999;0.05 0.7; edit fn [hz], zeta [-]
+  full_load 0.0625 0.7 ; edit fn [hz], zeta [-]
+  gain_scheduling 2 ; 1 linear, 2 quadratic edit 
+  constant_power 1 ; 0 constant torque, 1 constant power
   end controller_tuning ;
 ; define operational data
     operational_data_filename	./data/IIIB_scaled_turbine_flex.opt;	used for everything EXCEPT compute_optimal_pitch_angle
     ; edit 
     begin operational_data;	used for compute_optimal_pitch_angle
       windspeed	4 25 22; keep	cut-in [m/s], cut-out [m/s], points [-] -- used if operational_data_file_wind is 0
-      genspeed	0 8;	keep min, max generator speed [rpm]
+      genspeed	0 8;	edit keep min, max generator speed [rpm]
       gearratio	1;	keep gear ratio [-]
       minpitch	0;	keep min. pitch angle [deg]
       opt_lambda	7.15; edit	optimal TSR [-]
