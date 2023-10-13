@@ -5,8 +5,8 @@ I =   0.189147E+09 [kg*m^2]
 Kp =   0.103989E+09 [Nm/(rad/s)]
 Ki =   0.291689E+08 [Nm/rad]
 PI pitch angle controller in region 3 (constant speed, constant power)
-Kp =   0.210657E+01 [rad/(rad/s)]
-Ki =   0.515742E+00 [rad/rad]
+Kp =   0.197419E+01 [rad/(rad/s)]
+Ki =   0.444148E+00 [rad/rad]
 K1 =       12.66155 [deg], K2 =      454.14291 [deg^2] (dq/dtheta =     -987.10800 kNm/deg)
 Additional terms due to the Aerodynamic damping
 Kp2 =   0.266770E-01 [rad/(rad/s)]

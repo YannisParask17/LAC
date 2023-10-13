@@ -308,7 +308,8 @@
 ;
   begin controller_tuning ;
   partial_load 0.0625 0.7;  999;0.05 0.7; edit fn [hz], zeta [-]
-  full_load 0.0625 0.7 ; edit fn [hz], zeta [-]
+  ;full_load 0.0625 0.7 ;  edit fn [hz], zeta [-]
+  full_load 0.058 0.7 ;  edit fn [hz], zeta [-]
   gain_scheduling 2 ; 1 linear, 2 quadratic edit 
   constant_power 1 ; 0 constant torque, 1 constant power
   end controller_tuning ;

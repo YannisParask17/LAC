@@ -2,7 +2,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 from lacbox.io import ReadHAWC2
 
-fname =  './res/dtu_10mw_step.hdf5'
+#fname = './res/iIIB_C7.hdf5'
+fname = './res/iiib_c1.hdf5'
 
 h2res = ReadHAWC2(fname)
 
@@ -23,7 +24,8 @@ axes[1].set(ylabel='Pitch Angle [deg]')
 axes[2].plot(h2res.t, h2res.data[:, 9])
 axes[2].set(ylabel='Rotor Speed [s]')
 
-axes[3].plot(h2res.t, h2res.data[:, 11])
+axes[3].plot(h2res.t, h2res.data[:, 110])
 axes[3].set(ylabel='Power [kW]',
           xlabel='Time [s]')
 plt.tight_layout()
+plt.show()
