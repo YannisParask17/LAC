@@ -512,17 +512,73 @@
         ;constant	21 12.66155;  K1 in the output ctrl_tuning file	Coefficient of linear term in aerodynamic gain scheduling, KK1 [deg] -> most important stuff
         ;constant	22 454.14291; K2 in -"-	Coefficient of quadratic term in aerodynamic gain scheduling, KK2 [deg^2] &
         ; ------------------ 
-        ; --------------- C7 -> update with lower frequency 
+        ; ; --------------- C7 -> update with lower frequency 
+        ; constant	11 0.151308E+08; Optimal Cp tracking K factor [Nm/(rad/s)^2]
+        ; constant	12 0.831912E+08; Proportional gain of torque controller [Nm/(rad/s)] Region 2.5
+        ; constant	13 0.186681E+08; Integral gain of torque controller [Nm/rad]
+        ; constant	15 1; 1;	Generator control switch [1=constant power, 0=constant torque]
+        ; constant	16 0.188173E+01; Proportional gain of pitch controller [rad/(rad/s)]
+        ; constant	17 0.304197E+00; Integral gain of pitch controller [rad/rad]
+        ; constant	21 12.66155;  K1 in the output ctrl_tuning file	Coefficient of linear term in aerodynamic gain scheduling, KK1 [deg] -> most important stuff
+        ; constant	22 454.14291; K2 in -"-	Coefficient of quadratic term in aerodynamic gain scheduling, KK2 [deg^2] &
+        ; ; ------------------ 
+        ; 
+
+                ; --------------- C7 -> omega = 0.048, zeta = 0.7
+        ; constant	11 0.151308E+08; Optimal Cp tracking K factor [Nm/(rad/s)^2]
+        ; constant	12 0.831912E+08; Proportional gain of torque controller [Nm/(rad/s)] Region 2.5
+        ; constant	13 0.186681E+08; Integral gain of torque controller [Nm/rad]
+        ; constant	15 1; 1;	Generator control switch [1=constant power, 0=constant torque]
+        ; constant	16 0.168000E+01; Proportional gain of pitch controller [rad/(rad/s)]
+        ; constant	17 0.304197E+00; Integral gain of pitch controller [rad/rad]
+        ; constant	21 12.66155;  K1 in the output ctrl_tuning file	Coefficient of linear term in aerodynamic gain scheduling, KK1 [deg] -> most important stuff
+        ; constant	22 454.14291; K2 in -"-	Coefficient of quadratic term in aerodynamic gain scheduling, KK2 [deg^2] &
+        ; ------------------ 
+
+        ;         ; --------------- C7 -> omega = 0.052, zeta = 0.7
+        ; constant	11 0.151308E+08; Optimal Cp tracking K factor [Nm/(rad/s)^2]
+        ; constant	12 0.831912E+08; Proportional gain of torque controller [Nm/(rad/s)] Region 2.5
+        ; constant	13 0.186681E+08; Integral gain of torque controller [Nm/rad]
+        ; constant	15 1; 1;	Generator control switch [1=constant power, 0=constant torque]
+        ; constant	16 0.179768E+01; Proportional gain of pitch controller [rad/(rad/s)]
+        ; constant	17 0.357009E+00; Integral gain of pitch controller [rad/rad]
+        ; constant	21 12.66155;  K1 in the output ctrl_tuning file	Coefficient of linear term in aerodynamic gain scheduling, KK1 [deg] -> most important stuff
+        ; constant	22 454.14291; K2 in -"-	Coefficient of quadratic term in aerodynamic gain scheduling, KK2 [deg^2] &
+        ; ; ; ------------------ 
+
+                ; --------------- C7 -> omega = 0.054, zeta = 0.7
+        ; constant	11 0.151308E+08; Optimal Cp tracking K factor [Nm/(rad/s)^2]
+        ; constant	12 0.831912E+08; Proportional gain of torque controller [Nm/(rad/s)] Region 2.5
+        ; constant	13 0.186681E+08; Integral gain of torque controller [Nm/rad]
+        ; constant	15 1; 1;	Generator control switch [1=constant power, 0=constant torque]
+        ; constant	16 0.185651E+01; Proportional gain of pitch controller [rad/(rad/s)]
+        ; constant	17 0.384999E+00; Integral gain of pitch controller [rad/rad]
+        ; constant	21 12.66155;  K1 in the output ctrl_tuning file	Coefficient of linear term in aerodynamic gain scheduling, KK1 [deg] -> most important stuff
+        ; constant	22 454.14291; K2 in -"-	Coefficient of quadratic term in aerodynamic gain scheduling, KK2 [deg^2] &
+        ; ; ------------------ 
+
+        ;          ; --------------- C7 -> omega = 0.058, zeta = 0.7
+        ; constant	11 0.151308E+08; Optimal Cp tracking K factor [Nm/(rad/s)^2]
+        ; constant	12 0.831912E+08; Proportional gain of torque controller [Nm/(rad/s)] Region 2.5
+        ; constant	13 0.186681E+08; Integral gain of torque controller [Nm/rad]
+        ; constant	15 1; 1;	Generator control switch [1=constant power, 0=constant torque]
+        ; constant	16 0.197419E+01; Proportional gain of pitch controller [rad/(rad/s)]
+        ; constant	17 0.444148E+00; Integral gain of pitch controller [rad/rad]
+        ; constant	21 12.66155;  K1 in the output ctrl_tuning file	Coefficient of linear term in aerodynamic gain scheduling, KK1 [deg] -> most important stuff
+        ; constant	22 454.14291; K2 in -"-	Coefficient of quadratic term in aerodynamic gain scheduling, KK2 [deg^2] &
+        ; ; ; ------------------ 
+
+                      ; --------------- C7 -> omega = 0.0625, zeta = 0.7
         constant	11 0.151308E+08; Optimal Cp tracking K factor [Nm/(rad/s)^2]
         constant	12 0.831912E+08; Proportional gain of torque controller [Nm/(rad/s)] Region 2.5
         constant	13 0.186681E+08; Integral gain of torque controller [Nm/rad]
         constant	15 1; 1;	Generator control switch [1=constant power, 0=constant torque]
-        constant	16 0.188173E+01; Proportional gain of pitch controller [rad/(rad/s)]
-        constant	17 0.304197E+00; Integral gain of pitch controller [rad/rad]
+        constant	16 0.210657E+01; Proportional gain of pitch controller [rad/(rad/s)]
+        constant	17 0.515742E+00; Integral gain of pitch controller [rad/rad]
         constant	21 12.66155;  K1 in the output ctrl_tuning file	Coefficient of linear term in aerodynamic gain scheduling, KK1 [deg] -> most important stuff
         constant	22 454.14291; K2 in -"-	Coefficient of quadratic term in aerodynamic gain scheduling, KK2 [deg^2] &
-        ; ------------------ 
-        ; 
+        ; ; ------------------ 
+
         constant	18 0;	Differential gain of pitch controller [rad/(rad/s^2)]
         constant	19 4e-09;	Proportional power error gain [rad/W]
         constant	20 4e-09;	Integral power error gain [rad/(Ws)]
@@ -737,7 +793,14 @@
     ;filename	./res/iiib_c4;	name of output file (excluding extension)
     ;filename	./res/iiib_c5;	name of output file (excluding extension)
     ;filename	./res/iiib_c6;	name of output file (excluding extension)
-    filename	./res/iiib_c7;	name of output file (excluding extension)
+    ; filename	./res/iiib_c7;	name of output file (excluding extension)
+
+    ; filename	./res/iiib_c7_omega0048_zeta07;	name of output file (excluding extension)
+    ; filename	./res/iiib_c7_omega0052_zeta07;	name of output file (excluding extension)
+    ; filename	./res/iiib_c7_omega0054_zeta07;	name of output file (excluding extension)
+    ; filename	./res/iiib_c7_omega0058_zeta07;	name of output file (excluding extension)
+    filename	./res/iiib_c7_omega00625_zeta07;	name of output file (excluding extension)
+
     data_format	gtsdf;	file format
     buffer	9999;	leave a lot in memory before writing to file
     time	100 1000;	time to record data
