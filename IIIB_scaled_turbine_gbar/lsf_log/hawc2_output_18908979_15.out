@@ -1,0 +1,120 @@
+Wed Oct 25 14:06:14 CEST 2023
+whoami
+s223597
+hostname -I
+10.66.85.24 10.66.31.24 fd23:711a:2e3c:49e5:9a03:9b03:74:c280 
+running task 15/20...
+running HAWC2 on htc_steady/notilt/dtu_10mw_steady_notilt_05.0.htc...
+ ***********************************************************************
+ *  Build information for HAWC2MB
+ *  Aeroelastic tool HAWC2MB
+ *  Intel, version         2021 ,     20201112
+ *  Linux
+ ***********************************************************************
+ *  GIT-TAG        = 13.0.0
+ *  GIT-BRANCH     = 
+ *  BUILD_TYPE     = Linux64 RELEASE
+ *  BUILDER        = gitlab-runner
+ *  COMPUTER_NAME  = runner-ekfmjxy-project-399-concurrent-0
+ *  BUILD_DATE     = 2023-05-12
+ ***********************************************************************
+ ***********************************************************************
+ *  Build information for HAWC2MB
+ *  Aeroelastic tool HAWC2MB
+ *  Intel, version         2021 ,     20201112
+ *  Linux
+ ***********************************************************************
+ *  GIT-TAG        = 13.0.0
+ *  GIT-BRANCH     = 
+ *  BUILD_TYPE     = Linux64 RELEASE
+ *  BUILDER        = gitlab-runner
+ *  COMPUTER_NAME  = runner-ekfmjxy-project-399-concurrent-0
+ *  BUILD_DATE     = 2023-05-12
+ ***********************************************************************
+ Controller dll initialization is successed!!
+ Pitch Servo 1.2 loaded...
+ Tower clearance DLL (mblade, ver. 1.0) loaded...
+done
+runtime: 492 seconds
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 18908979[15]: <hawc2[1-20]%20> in cluster <dcc> Done
+
+Job <hawc2[1-20]%20> was submitted from host <gbarlogin1> by user <s223597> in cluster <dcc> at Wed Oct 25 14:06:10 2023
+Job was executed on host(s) <n-62-31-24>, in queue <hpc>, as user <s223597> in cluster <dcc> at Wed Oct 25 14:06:11 2023
+</zhome/56/9/184736> was used as the home directory.
+</zhome/56/9/184736/hawc2sims/02_control_IIIB_scaled_turbine> was used as the working directory.
+Started at Wed Oct 25 14:06:11 2023
+Terminated at Wed Oct 25 14:14:27 2023
+Results reported at Wed Oct 25 14:14:27 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#
+#BSUB -J hawc2[1-20]%20
+#BSUB -q hpc 
+#BSUB -n 1
+#BSUB -W 01:00
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=2GB]"
+#BSUB -u s223597@dtu.dk
+##BSUB -B
+##BSUB -N
+#BSUB -o lsf_log/hawc2_output_%J_%I.out
+#BSUB -e lsf_log/hawc2_error_%J_%I.err 
+
+
+date
+START_TIME=`date +%s`
+echo whoami
+whoami
+echo hostname -I
+hostname -I
+
+echo "running task $LSB_JOBINDEX/20..."
+
+
+# Read the list of htc files to run and store them in a bash array named FILE_LIST
+readarray -t FILE_LIST < to_run.txt
+
+# Get the htc filename for this job
+FILE_NAME=${FILE_LIST[$LSB_JOBINDEX - 1]}
+
+# Run HAWC2
+echo "running HAWC2 on $FILE_NAME..."
+module load hawc2
+HAWC2MB.exe "$FILE_NAME"
+
+
+END_TIME=`date +%s`
+echo done
+echo "runtime: $(($END_TIME-$START_TIME)) seconds"
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   492.24 sec.
+    Max Memory :                                 55 MB
+    Average Memory :                             51.00 MB
+    Total Requested Memory :                     2048.00 MB
+    Delta Memory :                               1993.00 MB
+    Max Swap :                                   -
+    Max Processes :                              4
+    Max Threads :                                5
+    Run time :                                   566 sec.
+    Turnaround time :                            497 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <lsf_log/hawc2_error_18908979_15.err> for stderr output of this job.
+

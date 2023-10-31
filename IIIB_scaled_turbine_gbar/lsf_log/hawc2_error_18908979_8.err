@@ -1,0 +1,10 @@
+Loaded module: hawc2/13.0
+DLL loaded with success HAWC2License.so
+Using HAWC2License.so, version: 3.12-49-g5421f0c-dirty
+ License verified - OK
+ Opening main command file: htc_steady/notilt/dtu_10mw_steady_notilt_21.0.htc
+ Current directory is 
+ /zhome/56/9/184736/hawc2sims/02_control_IIIB_scaled_turbine
+ Continue on no convergence = true
+ Creating file folder log/
+ Creating file folder notilt

@@ -1,0 +1,24 @@
+Loaded dependency [python3/3.9.11]: gcc/10.3.0-binutils-2.36.1
+Loaded module: python3/3.9.11
+
+Loading python3/3.9.11
+  Loading requirement: gcc/10.3.0-binutils-2.36.1
+Traceback (most recent call last):
+  File "/zhome/56/9/184736/hawc2sims/02_control_IIIB_scaled_turbine/postprocess_hawc2.py", line 15, in <module>
+    stats_df = process_statistics(res_dir, save_path)
+  File "/zhome/56/9/184736/hawc2_gbar_launcher/dtulac/lacbox/postprocess.py", line 471, in process_statistics
+    new_df.loc[ichan-1, del_stats] = eq_load(signal, m=m_vals, neq=neq)[0]
+  File "/zhome/56/9/184736/hawc2_gbar_launcher/dtulac/lacbox/postprocess.py", line 298, in eq_load
+    return eq_load_and_cycles(signals, no_bins, m, neq, rainflow_func)[0]
+  File "/zhome/56/9/184736/hawc2_gbar_launcher/dtulac/lacbox/postprocess.py", line 392, in eq_load_and_cycles
+    cycles, ampl_bin_mean, ampl_bin_edges, _, _ = cycle_matrix(signals, no_bins, 1, rainflow_func)
+  File "/zhome/56/9/184736/hawc2_gbar_launcher/dtulac/lacbox/postprocess.py", line 346, in cycle_matrix
+    ampls, means = rainflow_func(signals[:])
+  File "/zhome/56/9/184736/hawc2_gbar_launcher/dtulac/lacbox/postprocess.py", line 241, in rainflow_windap
+    signal = np.round(signal).astype(np.int)
+  File "/zhome/56/9/184736/.local/lib/python3.9/site-packages/numpy/__init__.py", line 324, in __getattr__
+    raise AttributeError(__former_attrs__[attr])
+AttributeError: module 'numpy' has no attribute 'int'.
+`np.int` was a deprecated alias for the builtin `int`. To avoid this error in existing code, use `int` by itself. Doing this will not modify any behavior and is safe. When replacing `np.int`, you may wish to use e.g. `np.int64` or `np.int32` to specify the precision. If you wish to review your current use, check the release note link for additional information.
+The aliases was originally deprecated in NumPy 1.20; for more details and guidance see the original release note at:
+    https://numpy.org/devdocs/release/1.20.0-notes.html#deprecations
