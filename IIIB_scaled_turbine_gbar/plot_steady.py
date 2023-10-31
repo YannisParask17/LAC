@@ -38,7 +38,7 @@ def load_hawc2s(path):
 
 hawc2s_path = 'data/IIIB_scaled_turbine_flex.opt'  # path to .pwr or .opt file
 stats_path = 'postprocess_hawc2/steady/iiib_scaled_turbine_steady_stats.hdf5'  # path to mean steady stats
-subfolder = 'notilt'  # which subfolder to plot: tilt, notilt, notiltrigid, notiltnodragrigid
+subfolder = '.'  # which subfolder to plot: tilt, notilt, notiltrigid, notiltnodragrigid
 
 geneff = 0.94  # generator/gearbox efficienty [%]
 Mgrav = 6250  # yaw-bearing pitch moment due to gravity [kNm]
@@ -67,7 +67,7 @@ i_wind = 15  # wind channel, needed for plotting versus wind speed
 # load the HAWC2 data from the stats file. Isolate the simulations with no tilt.
 stats_df = pd.read_hdf(stats_path, 'stats_df')
 df = stats_df[stats_df.subfolder == subfolder]
-
+breakpoint()
 # load the stuff we need from the HAWC2S opt/pwr file for the operational data comparisons
 h2s_u, h2s_pitch, h2s_rotspd, h2s_paero, h2s_thrust, h2s_aerotrq = load_hawc2s(hawc2s_path)
 
