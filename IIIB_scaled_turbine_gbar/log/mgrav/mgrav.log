@@ -1,0 +1,279 @@
+ Logfile: ./log/mgrav/mgrav.log is open for log outputs
+ ***********************************************************************
+ *  Build information for HAWC2MB
+ *  Aeroelastic tool HAWC2MB
+ *  Intel, version         2021 ,     20201112
+ *  WINDOWS 64-bit
+ ***********************************************************************
+ *  GIT-TAG        = 13.0.4
+ *  GIT-BRANCH     = 
+ *  BUILD_TYPE     = Windows64 RELEASE
+ *  BUILDER        = ContainerAdministrator
+ *  COMPUTER_NAME  = RUNNER-UYZRLEJ3
+ *  BUILD_DATE     = Mon 07/31/2023
+ ***********************************************************************
+________________________________________________________________________
+  Log file output
+                                                       Time : 13:53:59
+                                                       Date : 01:11.2023
+________________________________________________________________________
+ Newmark commands read with succes
+ Simulation commands read with succes
+ Reading data of main body : tower
+ Succes opening ./data/IIIB_scaled_turbine_Tower_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body tower commands read with succes
+ Reading data of main body : towertop
+ Succes opening ./data/IIIB_scaled_turbine_Towertop_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body towertop commands read with succes
+ Reading data of main body : shaft
+ Succes opening ./data/IIIB_scaled_turbine_Shaft_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body shaft commands read with succes
+ Reading data of main body : hub1
+ Succes opening ./data/IIIB_scaled_turbine_Hub_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body hub1 commands read with succes
+ Reading data of main body : hub2
+ Topologi main body hub2 commands read with succes
+ Reading data of main body : hub3
+ Topologi main body hub3 commands read with succes
+ Reading data of main body : blade1
+ Succes opening ./data/IIIB_scaled_turbine_Blade_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body blade1 commands read with succes
+ Reading data of main body : blade2
+ Topologi main body blade2 commands read with succes
+ Reading data of main body : blade3
+ Topologi main body blade3 commands read with succes
+ Base orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ relative orientation input commands read with succes
+ Orientation input commands read with succes
+ Fix0 constraint input commands read with succes
+ Fix1 constraint input commands read with succes
+ Bearing1 constraint input commands read with succes
+ Fix1 constraint input commands read with succes
+ Fix1 constraint input commands read with succes
+ Fix1 constraint input commands read with succes
+ bearing2 constraint input commands read with succes
+ bearing2 constraint input commands read with succes
+ bearing2 constraint input commands read with succes
+ constraint input commands read with succes
+ Topologi commands read with succes
+ Tower shadow (potential2 flow) commands read with succes
+ Mann commands read with succes
+ Wind commands read with succes
+ *** ERROR *** Command unknown and ignored. Line number:          328 
+  Masterfile name: ./htc_mgrav/dtu_10mw_steady_notilt_0_mgrav.htc
+ aerodrag element commands read with succes
+ aerodrag element commands read with succes
+ Aerodrag commands read with succes
+ Aerodynamic commands read with succes
+ *** ERROR *** Error in command line          401  Masterfile name: 
+ ./htc_mgrav/dtu_10mw_steady_notilt_0_mgrav.htc
+ *** ERROR *** Error in command line          410  Masterfile name: 
+ ./htc_mgrav/dtu_10mw_steady_notilt_0_mgrav.htc
+ output commands read with succes
+ Output commands read
+ Dll type2 input commands read with succes
+ output commands read with succes
+ Output commands read
+ Actions commands read
+ Dll type2 input commands read with succes
+ output commands read with succes
+ Output commands read
+ Actions commands read
+ Dll type2 input commands read with succes
+ output commands read with succes
+ Output commands read
+ Actions commands read
+ Dll type2 input commands read with succes
+ output commands read with succes
+ Output commands read
+ Dll type2 input commands read with succes
+ DLL commands read with succes
+ output commands read with succes
+ Output commands read
+ Initialization of structure
+ Initializing of aero rotor...
+ Initialization of rotor aerodynamics
+ Succes opening ./data/IIIB_scaled_turbine_ae.dat
+ Succes opening ./data/IIIB_scaled_turbine_pc.dat
+ Initialization of rotor induction
+ Initialization of wind
+ Initialization of external type2 DLL
+ External DLL ./control/dtu_we_controller_64.dll is attempted to open
+DLL does not exist: ./control/dtu_we_controller_64.dll
+DLL does not exist: Z:\home\mi\repos\LAC\IIIB_scaled_turbine_gbar/./control/dtu_we_controller_64.dll
+DLL does not exist: C:\users\mi\AppData\Roaming\HAWC2\./control/dtu_we_controller_64.dll
+DLL does not exist: ./control/dtu_we_controller.dll
+DLL does not exist: Z:\home\mi\repos\LAC\IIIB_scaled_turbine_gbar/./control/dtu_we_controller.dll
+DLL does not exist: C:\users\mi\AppData\Roaming\HAWC2\./control/dtu_we_controller.dll
+DLL does not exist: Z:/home/mi/repos/LAC/IIIB_scaled_turbine_gbar/./control/dtu_we_controller_64.dll
+DLL does not exist: C:/users/mi/AppData/Roaming/HAWC2/./control/dtu_we_controller_64.dll
+DLL does not exist: Z:/home/mi/repos/LAC/IIIB_scaled_turbine_gbar/./control/dtu_we_controller.dll
+DLL does not exist: C:/users/mi/AppData/Roaming/HAWC2/./control/dtu_we_controller.dll
+*** WARNING *** DLL load failed with warning
+ *** ERROR *** DLL ./control/dtu_we_controller_64.dll
+  could not be loaded - error!
+*** WARNING *** Symbol not found in dll: init_regulation_advanced
+ *** ERROR *** The DLL subroutine init_regulation_advanced
+  could not be found - not used
+*** WARNING *** Symbol not found in dll: update_regulation
+ *** ERROR *** The DLL subroutineupdate_regulation could not be loaded - error!
+*** WARNING *** Symbol not found in dll: message
+ *** INFO *** The DLL subroutine message could not be loaded - bypassed!
+ Initialization of external type2 DLL
+ External DLL ./control/generator_servo_64.dll is attempted to open
+DLL does not exist: ./control/generator_servo_64.dll
+DLL does not exist: Z:\home\mi\repos\LAC\IIIB_scaled_turbine_gbar/./control/generator_servo_64.dll
+DLL does not exist: C:\users\mi\AppData\Roaming\HAWC2\./control/generator_servo_64.dll
+DLL does not exist: ./control/generator_servo.dll
+DLL does not exist: Z:\home\mi\repos\LAC\IIIB_scaled_turbine_gbar/./control/generator_servo.dll
+DLL does not exist: C:\users\mi\AppData\Roaming\HAWC2\./control/generator_servo.dll
+DLL does not exist: Z:/home/mi/repos/LAC/IIIB_scaled_turbine_gbar/./control/generator_servo_64.dll
+DLL does not exist: C:/users/mi/AppData/Roaming/HAWC2/./control/generator_servo_64.dll
+DLL does not exist: Z:/home/mi/repos/LAC/IIIB_scaled_turbine_gbar/./control/generator_servo.dll
+DLL does not exist: C:/users/mi/AppData/Roaming/HAWC2/./control/generator_servo.dll
+*** WARNING *** DLL load failed with warning
+ *** ERROR *** DLL ./control/generator_servo_64.dll could not be loaded - error!
+*** WARNING *** Symbol not found in dll: init_generator_servo
+ *** ERROR *** The DLL subroutine init_generator_servo
+  could not be found - not used
+*** WARNING *** Symbol not found in dll: update_generator_servo
+ *** ERROR *** The DLL subroutineupdate_generator_servo
+  could not be loaded - error!
+*** WARNING *** Symbol not found in dll: message
+ *** INFO *** The DLL subroutine message could not be loaded - bypassed!
+ Initialization of external type2 DLL
+ External DLL ./control/mech_brake_64.dll is attempted to open
+DLL does not exist: ./control/mech_brake_64.dll
+DLL does not exist: Z:\home\mi\repos\LAC\IIIB_scaled_turbine_gbar/./control/mech_brake_64.dll
+DLL does not exist: C:\users\mi\AppData\Roaming\HAWC2\./control/mech_brake_64.dll
+DLL does not exist: ./control/mech_brake.dll
+DLL does not exist: Z:\home\mi\repos\LAC\IIIB_scaled_turbine_gbar/./control/mech_brake.dll
+DLL does not exist: C:\users\mi\AppData\Roaming\HAWC2\./control/mech_brake.dll
+DLL does not exist: Z:/home/mi/repos/LAC/IIIB_scaled_turbine_gbar/./control/mech_brake_64.dll
+DLL does not exist: C:/users/mi/AppData/Roaming/HAWC2/./control/mech_brake_64.dll
+DLL does not exist: Z:/home/mi/repos/LAC/IIIB_scaled_turbine_gbar/./control/mech_brake.dll
+DLL does not exist: C:/users/mi/AppData/Roaming/HAWC2/./control/mech_brake.dll
+*** WARNING *** DLL load failed with warning
+ *** ERROR *** DLL ./control/mech_brake_64.dll could not be loaded - error!
+*** WARNING *** Symbol not found in dll: init_mech_brake
+ *** ERROR *** The DLL subroutine init_mech_brake could not be found - not used
+*** WARNING *** Symbol not found in dll: update_mech_brake
+ *** ERROR *** The DLL subroutineupdate_mech_brake could not be loaded - error!
+*** WARNING *** Symbol not found in dll: message
+ *** INFO *** The DLL subroutine message could not be loaded - bypassed!
+ Initialization of external type2 DLL
+ External DLL ./control/servo_with_limits_64.dll is attempted to open
+DLL does not exist: ./control/servo_with_limits_64.dll
+DLL does not exist: Z:\home\mi\repos\LAC\IIIB_scaled_turbine_gbar/./control/servo_with_limits_64.dll
+DLL does not exist: C:\users\mi\AppData\Roaming\HAWC2\./control/servo_with_limits_64.dll
+DLL does not exist: ./control/servo_with_limits.dll
+DLL does not exist: Z:\home\mi\repos\LAC\IIIB_scaled_turbine_gbar/./control/servo_with_limits.dll
+DLL does not exist: C:\users\mi\AppData\Roaming\HAWC2\./control/servo_with_limits.dll
+DLL does not exist: Z:/home/mi/repos/LAC/IIIB_scaled_turbine_gbar/./control/servo_with_limits_64.dll
+DLL does not exist: C:/users/mi/AppData/Roaming/HAWC2/./control/servo_with_limits_64.dll
+DLL does not exist: Z:/home/mi/repos/LAC/IIIB_scaled_turbine_gbar/./control/servo_with_limits.dll
+DLL does not exist: C:/users/mi/AppData/Roaming/HAWC2/./control/servo_with_limits.dll
+*** WARNING *** DLL load failed with warning
+ *** ERROR *** DLL ./control/servo_with_limits_64.dll
+  could not be loaded - error!
+*** WARNING *** Symbol not found in dll: init_servo_with_limits
+ *** ERROR *** The DLL subroutine init_servo_with_limits
+  could not be found - not used
+*** WARNING *** Symbol not found in dll: update_servo_with_limits
+ *** ERROR *** The DLL subroutineupdate_servo_with_limits
+  could not be loaded - error!
+*** WARNING *** Symbol not found in dll: message
+ *** INFO *** The DLL subroutine message could not be loaded - bypassed!
+ Initialization of external type2 DLL
+ External DLL ./control/towerclearance_mblade_64.dll is attempted to open
+DLL does not exist: ./control/towerclearance_mblade_64.dll
+DLL does not exist: Z:\home\mi\repos\LAC\IIIB_scaled_turbine_gbar/./control/towerclearance_mblade_64.dll
+DLL does not exist: C:\users\mi\AppData\Roaming\HAWC2\./control/towerclearance_mblade_64.dll
+DLL does not exist: ./control/towerclearance_mblade.dll
+DLL does not exist: Z:\home\mi\repos\LAC\IIIB_scaled_turbine_gbar/./control/towerclearance_mblade.dll
+DLL does not exist: C:\users\mi\AppData\Roaming\HAWC2\./control/towerclearance_mblade.dll
+DLL does not exist: Z:/home/mi/repos/LAC/IIIB_scaled_turbine_gbar/./control/towerclearance_mblade_64.dll
+DLL does not exist: C:/users/mi/AppData/Roaming/HAWC2/./control/towerclearance_mblade_64.dll
+DLL does not exist: Z:/home/mi/repos/LAC/IIIB_scaled_turbine_gbar/./control/towerclearance_mblade.dll
+DLL does not exist: C:/users/mi/AppData/Roaming/HAWC2/./control/towerclearance_mblade.dll
+*** WARNING *** DLL load failed with warning
+ *** ERROR *** DLL ./control/towerclearance_mblade_64.dll
+  could not be loaded - error!
+*** WARNING *** Symbol not found in dll: initialize
+ *** ERROR *** The DLL subroutine initialize could not be found - not used
+*** WARNING *** Symbol not found in dll: update
+ *** ERROR *** The DLL subroutineupdate could not be loaded - error!
+*** WARNING *** Symbol not found in dll: message
+ *** INFO *** The DLL subroutine message could not be loaded - bypassed!
+ Creating link between structure and aerodynamics
+ Creating link between structure and aerodrag
+ Initialization of Aerodrag
+ Starting simulation
+Constraint residual is .6468E-13 < .10E-06. Max residual in constraint 46
+Dynamic stall method:  2 used for entire rotor
+    ... initialization of unified dynamic stall model.
+DS model deactivated: blade  1 at 0mm. Max f_sep=  0.00, dclda=  0.00, thickness=100.00. See manual to change limit values
+DS model deactivated: blade  1 at 92mm. Max f_sep=  0.00, dclda=  0.00, thickness= 99.99. See manual to change limit values
+DS model deactivated: blade  1 at 368mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.96. See manual to change limit values
+DS model deactivated: blade  1 at 827mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.91. See manual to change limit values
+DS model deactivated: blade  1 at 1467mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.85. See manual to change limit values
+DS model deactivated: blade  1 at 2285mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.72. See manual to change limit values
+DS model deactivated: blade  1 at 3279mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.40. See manual to change limit values
+DS model deactivated: blade  1 at 4443mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.03. See manual to change limit values
+DS model deactivated: blade  1 at 5773mm. Max f_sep=  4.24, dclda=  0.01, thickness= 97.16. See manual to change limit values
+DS model deactivated: blade  1 at 7264mm. Max f_sep=  4.24, dclda=  0.04, thickness= 92.05. See manual to change limit values
+DS model deactivated: blade  1 at 8910mm. Max f_sep=  4.24, dclda=  0.06, thickness= 85.88. See manual to change limit values
+DS model deactivated: blade  1 at 10703mm. Max f_sep=  4.24, dclda=  0.10, thickness= 78.92. See manual to change limit values
+DS model deactivated: blade  1 at 12637mm. Max f_sep=  4.24, dclda=  0.13, thickness= 71.57. See manual to change limit values
+DS model deactivated: blade  1 at 14703mm. Max f_sep=  4.24, dclda=  0.16, thickness= 64.27. See manual to change limit values
+DS model deactivated: blade  1 at 16893mm. Max f_sep=  1.12, dclda=  2.35, thickness= 57.38. See manual to change limit values
+DS model deactivated: blade  1 at 19198mm. Max f_sep=  1.12, dclda=  2.74, thickness= 51.19. See manual to change limit values
+DS model deactivated: blade  2 at 0mm. Max f_sep=  0.00, dclda=  0.00, thickness=100.00. See manual to change limit values
+DS model deactivated: blade  2 at 92mm. Max f_sep=  0.00, dclda=  0.00, thickness= 99.99. See manual to change limit values
+DS model deactivated: blade  2 at 368mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.96. See manual to change limit values
+DS model deactivated: blade  2 at 827mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.91. See manual to change limit values
+DS model deactivated: blade  2 at 1467mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.85. See manual to change limit values
+DS model deactivated: blade  2 at 2285mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.72. See manual to change limit values
+DS model deactivated: blade  2 at 3279mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.40. See manual to change limit values
+DS model deactivated: blade  2 at 4443mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.03. See manual to change limit values
+DS model deactivated: blade  2 at 5773mm. Max f_sep=  4.24, dclda=  0.01, thickness= 97.16. See manual to change limit values
+DS model deactivated: blade  2 at 7264mm. Max f_sep=  4.24, dclda=  0.04, thickness= 92.05. See manual to change limit values
+DS model deactivated: blade  2 at 8910mm. Max f_sep=  4.24, dclda=  0.06, thickness= 85.88. See manual to change limit values
+DS model deactivated: blade  2 at 10703mm. Max f_sep=  4.24, dclda=  0.10, thickness= 78.92. See manual to change limit values
+DS model deactivated: blade  2 at 12637mm. Max f_sep=  4.24, dclda=  0.13, thickness= 71.57. See manual to change limit values
+DS model deactivated: blade  2 at 14703mm. Max f_sep=  4.24, dclda=  0.16, thickness= 64.27. See manual to change limit values
+DS model deactivated: blade  2 at 16893mm. Max f_sep=  1.12, dclda=  2.35, thickness= 57.38. See manual to change limit values
+DS model deactivated: blade  2 at 19198mm. Max f_sep=  1.12, dclda=  2.74, thickness= 51.19. See manual to change limit values
+DS model deactivated: blade  3 at 0mm. Max f_sep=  0.00, dclda=  0.00, thickness=100.00. See manual to change limit values
+DS model deactivated: blade  3 at 92mm. Max f_sep=  0.00, dclda=  0.00, thickness= 99.99. See manual to change limit values
+DS model deactivated: blade  3 at 368mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.96. See manual to change limit values
+DS model deactivated: blade  3 at 827mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.91. See manual to change limit values
+DS model deactivated: blade  3 at 1467mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.85. See manual to change limit values
+DS model deactivated: blade  3 at 2285mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.72. See manual to change limit values
+DS model deactivated: blade  3 at 3279mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.40. See manual to change limit values
+DS model deactivated: blade  3 at 4443mm. Max f_sep=  4.24, dclda=  0.00, thickness= 99.03. See manual to change limit values
+DS model deactivated: blade  3 at 5773mm. Max f_sep=  4.24, dclda=  0.01, thickness= 97.16. See manual to change limit values
+DS model deactivated: blade  3 at 7264mm. Max f_sep=  4.24, dclda=  0.04, thickness= 92.05. See manual to change limit values
+DS model deactivated: blade  3 at 8910mm. Max f_sep=  4.24, dclda=  0.06, thickness= 85.88. See manual to change limit values
+DS model deactivated: blade  3 at 10703mm. Max f_sep=  4.24, dclda=  0.10, thickness= 78.92. See manual to change limit values
+DS model deactivated: blade  3 at 12637mm. Max f_sep=  4.24, dclda=  0.13, thickness= 71.57. See manual to change limit values
+DS model deactivated: blade  3 at 14703mm. Max f_sep=  4.24, dclda=  0.16, thickness= 64.27. See manual to change limit values
+DS model deactivated: blade  3 at 16893mm. Max f_sep=  1.12, dclda=  2.35, thickness= 57.38. See manual to change limit values
+DS model deactivated: blade  3 at 19198mm. Max f_sep=  1.12, dclda=  2.74, thickness= 51.19. See manual to change limit values
