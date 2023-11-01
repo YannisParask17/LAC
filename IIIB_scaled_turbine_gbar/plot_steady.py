@@ -67,7 +67,7 @@ i_wind = 15  # wind channel, needed for plotting versus wind speed
 # load the HAWC2 data from the stats file. Isolate the simulations with no tilt.
 stats_df = pd.read_hdf(stats_path, 'stats_df')
 df = stats_df[stats_df.subfolder == subfolder]
-breakpoint()
+# breakpoint()
 # load the stuff we need from the HAWC2S opt/pwr file for the operational data comparisons
 h2s_u, h2s_pitch, h2s_rotspd, h2s_paero, h2s_thrust, h2s_aerotrq = load_hawc2s(hawc2s_path)
 
