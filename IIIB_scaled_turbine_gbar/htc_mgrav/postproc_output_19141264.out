@@ -1,0 +1,101 @@
+Fri Nov  3 09:52:38 CET 2023
+whoami
+s223466
+hostname -I
+10.66.85.4 10.66.31.4 fd23:711a:2e3c:49e5:9a03:9b03:74:c3f8 
+Postprocessing HAWC2...
+
+1 HAWC2 HDF5 time series to process.
+
+Processing 1/1...
+
+Results saved to file "mgrav_res.csv".
+
+done
+runtime: 5 seconds
+
+------------------------------------------------------------
+Sender: LSF System <lsfadmin@hpc.dtu.dk>
+Subject: Job 19141264: <postprocess_hawc2> in cluster <dcc> Done
+
+Job <postprocess_hawc2> was submitted from host <gbarlogin1> by user <s223466> in cluster <dcc> at Fri Nov  3 09:52:36 2023
+Job was executed on host(s) <n-62-31-4>, in queue <hpc>, as user <s223466> in cluster <dcc> at Fri Nov  3 09:52:38 2023
+</zhome/7f/2/184461> was used as the home directory.
+</zhome/7f/2/184461/IIIB_scaled_turbine_gbar/htc_mgrav> was used as the working directory.
+Started at Fri Nov  3 09:52:38 2023
+Terminated at Fri Nov  3 09:52:44 2023
+Results reported at Fri Nov  3 09:52:44 2023
+
+Your job looked like:
+
+------------------------------------------------------------
+# LSBATCH: User input
+#!/bin/sh
+#
+#BSUB -J postprocess_hawc2
+#BSUB -q hpc 
+#BSUB -n 1
+#BSUB -W 03:00
+#BSUB -R "span[hosts=1]"
+#BSUB -R "rusage[mem=2GB]"
+#BSUB -o postproc_output_%J.out
+#BSUB -e postproc_error_%J.err 
+
+# CHECK BEFORE SUBMITTING THIS SCRIPT TO THE CLUSTER:
+#   1. The filenames, directories, and settings in postprocess_hawc2.py are correct.
+#   2. The results folders, the postprocess_hawc.py file, and this .sh are all in the same directory.
+#   3. You have installed the lacbox as instructed during lecture.
+#
+# This script should save the results files as specified in postprocess_hawc2.py.
+# IF ANYTHING GOES WRONG:
+#   E.g., the job finishes, you refresh the folder but there is no stats file.
+#   Read the lsf log files, especially the error file (paths above), to get more info.
+
+# Print some basic information to LSF log file
+date
+START_TIME=`date +%s`
+echo whoami
+whoami
+echo hostname -I
+hostname -I
+
+echo "Postprocessing HAWC2..."
+
+
+# Load the Python module
+module load python3/3.9.11
+
+# Call Python on the post-processing script
+python3 postprocess_hawc2.py
+
+
+# Say goodbye
+END_TIME=`date +%s`
+echo done
+echo "runtime: $(($END_TIME-$START_TIME)) seconds"
+
+------------------------------------------------------------
+
+Successfully completed.
+
+Resource usage summary:
+
+    CPU time :                                   4.98 sec.
+    Max Memory :                                 -
+    Average Memory :                             -
+    Total Requested Memory :                     2048.00 MB
+    Delta Memory :                               -
+    Max Swap :                                   -
+    Max Processes :                              -
+    Max Threads :                                -
+    Run time :                                   20 sec.
+    Turnaround time :                            8 sec.
+
+The output (if any) is above this job summary.
+
+
+
+PS:
+
+Read file <postproc_error_19141264.err> for stderr output of this job.
+

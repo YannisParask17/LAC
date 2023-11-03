@@ -3,11 +3,11 @@
 ;
 ; -------  edit
   begin simulation;
-    time_stop	100;	total time to simulate
+    time_stop	400;	total time to simulate
     solvertype	1;	1=dense newmark, 2=sparse newmark (12.7+)
     on_no_convergence	continue;
     convergence_limits	1000 1 1e-07;
-    logfile	./log/notilt/dtu_10mw_steady_notilt_05.0.log;	
+    logfile	./htc_mgrav/mgrav.log;	
 ;logfile	./log/iiib_c2.log;
 ;logfile	./log/iiib_c3.log;
 ;logfile	./log/iiib_c4.log;
@@ -325,6 +325,7 @@
       box_dim_w	32 6.266129032258065;
     end mann;
   end wind;
+  end	wind;	
 ;
   begin aerodrag;	aerodynamic drag
     begin aerodrag_element;	drag due to tower
@@ -703,7 +704,7 @@
 ;filename	./res/iiib_c5;	name of output file (excluding extension)
 ;filename	./res/iiib_c6;	name of output file (excluding extension)
 ; filename	./res/iiib_c7;	name of output file (excluding extension)
-    filename	./res_steady/notilt/dtu_10mw_steady_notilt_05.0;	name of output file (excluding extension)
+    filename	./htc_mgrav/mgrav_res/mgrav;	name of output file (excluding extension)
     data_format	gtsdf;	file format
     buffer	9999;	leave a lot in memory before writing to file
     time	200 400;	time to record data
