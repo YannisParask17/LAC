@@ -1,0 +1,13 @@
+#%%
+from pathlib import Path
+import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+from lacbox.io import ReadHAWC2
+# %%
+res_path = r"postprocess_hawc2\steady\iiib_scaled_turbine_steady_stats.hdf5"
+stats_df = pd.read_hdf(res_path, 'stats_df')
+
+# %%
+# The DELs are in del3, del4, del5...
+
