@@ -60,7 +60,7 @@ df_dtu10mw = stats_df_dtu10mw[stats_df_dtu10mw.subfolder == subfolder_dtu10mw]
 h2s_u, h2s_pitch, h2s_rotspd, h2s_paero, h2s_thrust, h2s_aerotrq = load_hawc2s(hawc2s_path)
 
 # initialize the figure and axes
-fig, axs = plt.subplots(5, figsize=(16, 9), clear=True)
+fig, axs = plt.subplots(5, figsize=(16, 18), clear=True)
 
 # loop over each channels and plot the steady state with the theory line
 for iplot, (ichan, name) in enumerate(channels_oper.items()):
@@ -201,7 +201,7 @@ dz_tb = 115.63 + dz_yb  # distance from hub center to tower base [m]
 
 i = 0
 # initialize the figure and axes
-fig, axs = plt.subplots(7, figsize=(16, 9), clear=True)
+fig, axs = plt.subplots(7, figsize=(16, 18), clear=True)
 
 # loop over each channels and plot the steady state with the theory line
 for iplot, (ichan, name) in enumerate(channels.items()):
