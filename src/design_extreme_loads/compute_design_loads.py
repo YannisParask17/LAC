@@ -52,7 +52,6 @@ i_wind = 15  # wind channel, needed for plotting versus wind speed
 # load the HAWC2 data from the stats file. Isolate the simulations with no tilt.
 stats_df = pd.read_hdf(stats_path, 'stats_df')
 df = stats_df[stats_df.subfolder == subfolder]
-
 # load the HAWC2 data from the stats file. Isolate the simulations with no tilt.
 stats_df_dtu10mw = pd.read_hdf(stats_path_dtu10mw, 'stats_df')
 df_dtu10mw = stats_df_dtu10mw[stats_df_dtu10mw.subfolder == subfolder_dtu10mw]
@@ -87,6 +86,7 @@ if False:
 
 
         # PART 1. HAWC2 operational data versus HAWC2S "theory" from opt/pwr file.
+        breakpoint()
         if 'pitch angle' in name.lower():  # pitch angle
             u_theory = h2s_u
             theory = h2s_pitch
@@ -201,6 +201,8 @@ for iplot, (ichan, name) in enumerate(channels.items()):
     h2_wind = df.loc[df.ichan == i_wind, 'mean']
     HAWC2val = df.loc[df.ichan == ichan, ['mean', 'max', 'min']]
     max_val = np.max(df.loc[df.ichan == ichan, ['max']])
+    min_val = np.min(df.loc[df.ichan == ichan, ['min']])
+    abs_val = np.max([max_val, abs(min_val)])
     # hawc2 channels we need for the theoretical calculations
     h2_thrust = df.loc[df.ichan == 13, ['mean', 'max', 'min']]  # thrust [kN]
     h2_aero_trq = df.loc[df.ichan == 81, ['mean', 'max', 'min']] / geneff * 1e-3  # aerodynamic torque [kNm]
@@ -213,7 +215,7 @@ for iplot, (ichan, name) in enumerate(channels.items()):
     # hawc2 channels we need for the theoretical calculations
     h2_thrust_dtu10mw = df_dtu10mw.loc[df_dtu10mw.ichan == 13, ['mean', 'max', 'min']]  # thrust [kN]
     h2_aero_trq_dtu10mw = df_dtu10mw.loc[df.ichan == 81, ['mean', 'max', 'min']] / geneff * 1e-3  # aerodynamic torque [kNm]
-    # breakpoint()
+    breakpoint()
 
 
     # # PART 1. HAWC2 operational data versus HAWC2S "theory" from opt/pwr file.
@@ -238,7 +240,7 @@ for iplot, (ichan, name) in enumerate(channels.items()):
     if ' FA' in name:  # tower-base fore-aft
         u_theory = h2_wind
         theory = h2_thrust['mean'] * dz_tb - Mgrav
-        max_fa = max_val
+        max_fa = abs_val
     elif ' SS' in name:  # tower-base side-side
         u_theory = h2_wind
         theory = h2_aero_trq['mean']  # CORRECT ME!!!
@@ -246,24 +248,24 @@ for iplot, (ichan, name) in enumerate(channels.items()):
     elif 'bearing tilt' in name.lower():  # yaw bearing pitch
         u_theory = h2_wind
         theory = h2_thrust['mean'] * dz_yb - Mgrav   # CORRECT ME!!!
-        max_bearing_tilt = max_val
+        max_bearing_tilt = abs_val
     elif 'bearing roll' in name.lower():  # yaw bearing roll
         u_theory = h2_wind
         theory = h2_aero_trq['mean']  # CORRECT ME!!!
-        max_bearing_roll = max_val
+        max_bearing_roll = abs_val
     elif 'torsion' in name.lower():  # shaft torsion
         u_theory = h2_wind
         theory = -h2_aero_trq['mean']  # CORRECT ME!!!
-        max_torsion = max_val
+        max_torsion = abs_val
     elif 'out-of-plane' in name.lower():  # blade root out-of-plane moment
         u_theory = h2_wind
 
         theory = np.full_like(u_theory, np.nan)  # leave me -- no theory for OoP moment
-        max_oop_moment = max_val
+        max_oop_moment = abs_val
     elif 'in-plane' in name.lower():  # blade root in-plane moment
         u_theory = h2_wind
         theory = h2_aero_trq['mean']/3  # CORRECT ME!!!
-        max_ip_moment = max_val
+        max_ip_moment = abs_val
     
     # other values have no theory
     else:
