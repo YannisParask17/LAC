@@ -32,33 +32,6 @@ print(del4_df)
 del10_df = stats_df[['filename', 'ichan','del10']][stats_df.ichan.isin(index_comp)]
 
 
-
-# %%
-
-# initialize the figure and axes
-fig, axs = plt.subplots(len(channels), figsize=(16, 9*4), sharex = True, clear=True)
-
-# loop over each channels
-for iplot, (ichan, name) in enumerate(channels.items()):
-    wind = stats_df.loc[stats_df.ichan == wind_channel, 'mean']
-    val = stats_df.loc[stats_df.ichan == ichan, ['del4','del10']]
-
-    # plot the results
-    ax = axs.flatten()[iplot]
-    if iplot >= len(channels)-2:
-        ax.scatter(wind,val.del10)
-    else:
-        ax.scatter(wind,val.del4)
-    ax.grid('on')
-    ax.set(xlabel='Wind speed [m/s]', ylabel=name, xlim=[4, 25])
-
-# Add legend
-ax.lines[1].set_label("Redesign-IIIB")  # Set the label for the line
-ax.lines[4].set_label('DTU10MW-IA')  # Set the label for the line
-fig.legend(loc='outside upper center', ncol=3)
-fig.tight_layout()
-plt.show()
-
 # %%
 
 res_path_lst = [
