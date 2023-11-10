@@ -15,11 +15,15 @@ wind_channel = 15
 
 #%%
 # Loading data
+debug_10mw = False
 
 res_path = r"postprocess_hawc2\turbulent\iiib_scaled_turbine_turb_tcb.hdf5"
-# res_path = r"postprocess_hawc2\turbulent\dtu_10mw_turb_stats.hdf5"
+if debug_10mw:
+    res_path = r"postprocess_hawc2\turbulent\dtu_10mw_turb_stats.hdf5"
+
 
 stats_df = pd.read_hdf(res_path, 'stats_df')
+if debug_10mw: stats_df = stats_df[stats_df.subfolder=='tcb']
 
 power = stats_df.loc[stats_df.ichan == power_channel, 'mean'].to_numpy()
 ws_arr = stats_df.loc[stats_df.ichan == wind_channel, 'mean'].to_numpy()

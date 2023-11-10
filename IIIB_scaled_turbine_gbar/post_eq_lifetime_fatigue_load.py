@@ -6,8 +6,43 @@ import pandas as pd
 from lacbox.io import ReadHAWC2
 from scipy.stats import weibull_min
 
-# define the channels and names to plot
-channels = {19: 'DEL Tower-base FA [kNm]',
+
+
+#%%
+
+n_T = 20*365*24*60*60 # Number of cycles in a lifetime of a 1 Hz load
+n_T = 630720000 # To make sure
+n_eq = 1e7 # Number of cycles of equivalent load
+
+#Mean hub wind speed and turbulence intensity
+# Class IA
+U_mean = 10
+TI = 0.16
+subfolder='tca' 
+# Class IIIB
+# U_mean = 7.5
+# TI = 0.14 
+# subfolder = 'tcb'
+
+
+# %%
+# Loading data
+
+if subfolder=='tca':
+    res_path = r"postprocess_hawc2\turbulent\dtu_10mw_turb_stats.hdf5"
+
+    # define the channels and names to plot
+    channels = {19: 'DEL Tower-base FA [kNm]',
+                20: 'DEL Tower-base SS [kNm]',
+                22: 'DEL Yaw-bearing tilt [kNm]',
+                23: 'DEL Yaw-bearing roll [kNm]',
+                27: 'DEL Shaft torsion [kNm]',
+                28: 'DEL Out-of-plane BRM [kNm]',
+                29: 'DEL In-plane BRM [kNm]'}
+    
+elif subfolder=='tcb':
+    res_path = r"postprocess_hawc2\turbulent\iiib_scaled_turbine_turb_tcb.hdf5"
+    channels = {19: 'DEL Tower-base FA [kNm]',
             20: 'DEL Tower-base SS [kNm]',
             22: 'DEL Yaw-bearing tilt [kNm]',
             23: 'DEL Yaw-bearing roll [kNm]',
@@ -16,21 +51,16 @@ channels = {19: 'DEL Tower-base FA [kNm]',
             121: 'DEL In-plane BRM [kNm]'}
 
 wind_channel = 15
-# %%
-# Loading data
-
-# res_path = r"postprocess_hawc2\turbulent\iiib_scaled_turbine_turb_tcb.hdf5"
-res_path = r"postprocess_hawc2\turbulent\dtu_10mw_turb_stats.hdf5"
 
 stats_df = pd.read_hdf(res_path, 'stats_df')
+stats_df = stats_df[stats_df.subfolder == subfolder]
 
 ws_arr = stats_df.loc[stats_df.ichan == wind_channel, 'mean'].to_numpy()
 ws_arr = ws_arr.round()
 uniq_ws = np.unique(ws_arr.round())
 
 #%%
-#Equivalent load for each wind speed. We average them
-debug = True
+#Equivalent load for each wind speed bin. We average them
 
 S_DEL_ws = pd.DataFrame(columns = ['ws', 'ichan', 'del'])
 for iplot, (ichan, name) in enumerate(channels.items()):
@@ -47,11 +77,7 @@ for iplot, (ichan, name) in enumerate(channels.items()):
         # Masking out the rest of wind speeds
         mask = np.isclose(ws_arr, ws, atol=tolerance)
         m_over_S = S_arr[mask]**m
-        if debug:
-            print(S_arr)
-            print(S_arr[mask])
-            debug = False
-        S_del_average = (1/len(m_over_S)*(m_over_S.sum()))**(1/m)
+        S_del_average = (np.mean(m_over_S))**(1/m)
         # Adding the results in a new row
         S_DEL_ws.loc[len(S_DEL_ws.index)] = [ws, ichan, S_del_average]
 
@@ -74,23 +100,11 @@ S_DEL_ws_real = [ 7944.72329887,  9183.96204826, 11579.11146875, 13755.74930197,
  19581.83237752, 20076.26913128, 20509.85822179, 20889.12547177,
  23042.72379119, 24550.08751361, 24124.02236404, 26693.54227915]
 
-diff_S_DEL = (S_DEL_ws['del'][S_DEL_ws.ichan==120] - S_DEL_ws_real)/S_DEL_ws_real*100
+diff_S_DEL = (S_DEL_ws['del'][S_DEL_ws.ichan==28] - S_DEL_ws_real)/S_DEL_ws_real*100
 print(f"Percentage error of DEL out-of-plane BRM for each WS bin:\n {diff_S_DEL}")
     
 # %%
-
-n_T = 20*365*24*60*60 # Number of cycles in a lifetime of a 1 Hz load
-n_T = 630720000 # To make sure
-n_eq = 1e7 # Number of cycles of equivalent load
-
-#Mean hub wind speed and turbulence intensity
-# Class IA
-U_mean = 10
-TI = 0.16
-# Class IIIB
-# U_mean = 7.5
-# TI = 0.14 
-
+##Wind speed bins probabilities
 # Weibull distribution
 C = (2/np.sqrt(np.pi))*U_mean
 k = 2 # We can use this value as default
@@ -133,6 +147,10 @@ prob_U_real = [0.06442809, 0.0709227,  0.07472189, 0.07591763, 0.0747455,  0.071
  0.06675382, 0.06080169, 0.05413969, 0.04717648, 0.04026251, 0.03367663,
  0.02762128, 0.02222493, 0.01755019, 0.01360521, 0.01035688, 0.00774379,
  0.00568809, 0.0041053]
+
+diff_prob_lt = ( prob_U - prob_U_real)/prob_U_real*100
+print(f'Percentage error of probabilities in % for each channel: \n {diff_prob_lt}')
+
 
 plt.figure()
 plt.plot(uniq_ws, prob_U, label = 'mine')

@@ -1,3 +1,9 @@
+"""
+Rehacer código usando los tms de las simulaciones.
+Primero hacer con las simulaciones que dan de DTU 10MW
+"""
+
+#%%
 from lacbox.io import ReadHAWC2
 
 from pathlib import Path
@@ -26,13 +32,14 @@ def load_hawc2s(path):
         aerotrq = paero / rotspd  # aerodynamic torque [Nm]
     return u, pitch, rotspd, paero, thrust, aerotrq
 
+#%%
 #Mean hub wind speed and turbulence intensity
 U_mean = 7.5
 TI = 0.14 
 
 # Weibull distribution
 C = (2/np.sqrt(np.pi))*U_mean
-k = 2 # We can use this value as default
+k = 1.7 # We can use this value as default
 
 print(f"C = {C}")
 print(f"k = {k}")
@@ -41,7 +48,11 @@ hawc2s_path = r"data/IIIB_scaled_turbine_flex.opt" # path to .pwr or .opt file
 
 U, _, _, P_aero, _, _ = load_hawc2s(hawc2s_path)
 
-prob_U = weibull_min.pdf(U, k, scale = C)
+bin_lim_sup = U + 0.5
+bin_lim_inf = U - 0.5
+prob_U = weibull_min.cdf(bin_lim_sup, k, scale = C) - weibull_min.cdf(bin_lim_inf, k, scale = C)
+
+# prob_U = weibull_min.pdf(U, k, scale = C)
 
 # Mean power production
 P_mean =  np.trapz(P_aero*prob_U, U)
@@ -51,7 +62,6 @@ AEP = P_mean*365*24
 # Capacity factor
 cp = AEP/(10E6*365*24)
 print("AEP: ", AEP, "CP: ", cp)
-
 
 AEP_list = []
 for i in np.arange(4, 25):
@@ -76,7 +86,9 @@ plt.show()
 U_new = np.linspace(4, 25, 100)
 P_aero_new = np.interp(U_new, U, P_aero)
 prob_U_ew = weibull_min.pdf(U_new, k, scale = C)
-# Weibull distribution plot
+
+
+#%%
 fig, ax = plt.subplots(figsize = (10, 4))
 ax.plot(U_new, prob_U_ew)
 ax.set(xlabel = "Wind Speed [m/s]",
@@ -86,4 +98,15 @@ plt.grid()
 fig.suptitle(f"Weibull Distribution (C: {C:.1f}, k: {k:.1f})")
 plt.savefig("Weibull.pdf")
 plt.show()
-# plt.show()
+
+#%%
+# Weibull distribution plot
+prob_U_real = [0.09822154, 0.10112075, 0.09843279, 0.09128194, 0.08103839, 0.06910383,
+ 0.05673472, 0.04492539, 0.03435648, 0.02540085, 0.01817049, 0.01258493,
+ 0.00844375, 0.00549053, 0.0034614,  0.00211633, 0.00125524, 0.00072242,
+ 0.0004035,  0.00021877]
+plt.plot(U_new, prob_U_ew)
+U = np.arange(5,25)
+plt.plot(U, prob_U_real)
+plt.show()
+# %%
