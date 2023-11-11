@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 from lacbox.io import ReadHAWC2
 from lacbox.test import test_data_path
 from pathlib import Path
+from matplotlib.ticker import FormatStrFormatter
+
 
 def load_hawc2s(path):
     """load channels from a pwr or opt file"""
@@ -27,11 +29,11 @@ def load_hawc2s(path):
 
 
 
-hawc2s_path = 'data/IIIB_scaled_turbine_flex.opt'  # path to .pwr or .opt file
-stats_path = 'postprocess_hawc2/turbulent/iiib_scaled_turbine_turb_tcb.hdf5'  # path to mean steady stats
+hawc2s_path = 'IIIB_scaled_turbine/data/IIIB_scaled_turbine_flex.opt'  # path to .pwr or .opt file
+stats_path = 'IIIB_scaled_turbine_gbar/postprocess_hawc2/turbulent/iiib_scaled_turbine_turb_tcb.hdf5'  # path to mean steady stats
 subfolder = '.'  # which subfolder to plot: tilt, notilt, notiltrigid, notiltnodragrigid
 subfolder_dtu10mw = 'tca'  # which subfolder to plot: tilt, notilt, notiltrigid, notiltnodragrigid
-stats_path_dtu10mw = 'postprocess_hawc2/turbulent/dtu_10mw_turb_stats.hdf5'  # path to mean steady stats
+stats_path_dtu10mw = 'IIIB_scaled_turbine_gbar/postprocess_hawc2/turbulent/dtu_10mw_turb_stats.hdf5'  # path to mean steady stats
 save_path = '' 
 
 geneff = 0.94  # generator/gearbox efficienty [%]
@@ -58,7 +60,7 @@ df_dtu10mw = stats_df_dtu10mw[stats_df_dtu10mw.subfolder == subfolder_dtu10mw]
 h2s_u, h2s_pitch, h2s_rotspd, h2s_paero, h2s_thrust, h2s_aerotrq = load_hawc2s(hawc2s_path)
 
 # initialize the figure and axes
-fig, axs = plt.subplots(5, figsize=(16, 9), clear=True)
+fig, axs = plt.subplots(5, figsize=(16, 18), clear=True)
 
 # loop over each channels and plot the steady state with the theory line
 for iplot, (ichan, name) in enumerate(channels_oper.items()):
@@ -142,32 +144,43 @@ for iplot, (ichan, name) in enumerate(channels_oper.items()):
         theory_label = None
     elif np.array_equal(u_theory, h2s_u):
         theory_label = 'HAWC2S'
-        linestyle, color = ':', 'r'
+        linestyle, color = ':', 'k'
     else:
         theory_label = 'Theoretical equation'
-        linestyle, color = '--', '#ffa500'
+        linestyle, color = ':', 'k'
 
     # plot the results
     ax = axs.flatten()[iplot]
-    ax.plot(u_theory[i_theory], theory[i_theory], linestyle=linestyle, c=color)  # theoretical line
-    ax.plot(h2_wind[i_h2], HAWC2val[i_h2], 'o',  color='C0')  # HAWC2 steady results
-    ax.plot(h2_wind_dtu10mw[i_h2_dtu10mw], HAWC2val_dtu10mw[i_h2_dtu10mw], 'x', color='C1')  # HAWC2 steady results
-
+    pl = ax.plot(u_theory[i_theory], theory[i_theory], linestyle=linestyle, c=color, label = "HAWC2S")  # theoretical line
+    # ax.plot(h2_wind[i_h2], HAWC2val[i_h2], 'o',  color='C0')  # HAWC2 steady results
+    # ax.plot(h2_wind_dtu10mw[i_h2_dtu10mw], HAWC2val_dtu10mw[i_h2_dtu10mw], 'x', color='C1')  # HAWC2 steady results
+    bp1 = ax.boxplot(np.mean(HAWC2val[i_h2].reshape(20, 6, 3), axis=1).tolist(), positions = np.mean(h2_wind[i_h2].reshape(20, 6, 1), axis=1).T[0], 
+               boxprops = {'linestyle':'-', 'linewidth' : 1, "color" : "blue"},
+               whiskerprops = {'linestyle':'-', 'linewidth' : 1, "color" : "blue"},
+               capprops = {'linestyle':'-', 'linewidth' : 1, "color" : "blue"},
+               medianprops = {'linestyle':'-', 'linewidth' : 1, "color" : "blue"})
+    bp2 = ax.boxplot(np.mean(HAWC2val_dtu10mw[i_h2_dtu10mw].reshape(20, 6, 3), axis=1).tolist(), positions = np.mean(h2_wind_dtu10mw[i_h2_dtu10mw].reshape(20, 6, 1), axis=1).T[0], 
+               boxprops = {'linestyle':'-', 'linewidth' : 1, "color" : "red"},
+                whiskerprops = {'linestyle':'-', 'linewidth' : 1, "color" : "red"},
+               capprops = {'linestyle':'-', 'linewidth' : 1, "color" : "red"},
+                medianprops = {'linestyle':'-', 'linewidth' : 1, "color" : "red"})
     ax.grid('on')
     ax.set(xlabel='Wind speed [m/s]' if iplot > 8 else None, ylabel=name, xlim=[4, 25])
-
+    ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
 # Add legend
-ax.lines[0].set_label(theory_label)  # Set the label for the line
-ax.lines[1].set_label("Redesign-IIIB")  # Set the label for the line
-ax.lines[4].set_label('DTU10MW-IA')  # Set the label for the line
-fig.legend(loc='outside upper center', ncol=3)
+# ax.lines[0].set_label(theory_label)  # Set the label for the line
+# ax.lines[1].set_label("Redesign (IIIB)")  # Set the label for the line
+# ax.lines[2].set_label('DTU10MW (IA)')  # Set the label for the line
+
+# for item in ['boxes', 'whiskers', 'fliers', 'medians', 'caps']:
+#         plt.setp(bp1[item], color="red")
+
+fig.legend([pl[0] ,bp1["boxes"][0], bp2["boxes"][0]], ["HAWC2S", 'Redesign (IIIB)', 'DTU10MW (IA)'], loc='outside upper center', ncol=3)
+# fig.legend(loc='outside upper center', ncol=3)
 fig.suptitle(subfolder)
 fig.tight_layout()
-fig.savefig('task1_operation.eps')
-plt.show()
-
-
-
+fig.savefig('task1_operation.pdf')
+plt.show(block = True)
 
 
 # LOADS IN TURBULENCE
@@ -186,9 +199,9 @@ Mgrav = 6250  # yaw-bearing pitch moment due to gravity [kNm]
 dz_yb = 2.75 + 7.1*np.sin(5*np.pi/180)  # distance from hub center to yaw bearing [m]
 dz_tb = 115.63 + dz_yb  # distance from hub center to tower base [m]
 
-
+i = 0
 # initialize the figure and axes
-fig, axs = plt.subplots(7, figsize=(16, 9), clear=True)
+fig, axs = plt.subplots(7, figsize=(16, 18), clear=True)
 
 # loop over each channels and plot the steady state with the theory line
 for iplot, (ichan, name) in enumerate(channels.items()):
@@ -275,26 +288,39 @@ for iplot, (ichan, name) in enumerate(channels.items()):
         linestyle, color = ':', 'r'
     else:
         theory_label = 'Theoretical equation'
-        linestyle, color = '--', '#ffa500'
+        linestyle, color = ':', 'k'
 
     # plot the results
     ax = axs.flatten()[iplot]
-    ax.plot(u_theory[i_theory], theory[i_theory], linestyle=linestyle, c=color)  # theoretical line
-    ax.plot(h2_wind[i_h2], HAWC2val[i_h2], 'o',  color='C0')  # HAWC2 steady results
-    ax.plot(h2_wind_dtu10mw[i_h2_dtu10mw], HAWC2val_dtu10mw[i_h2_dtu10mw], 'x', color='C1')  # HAWC2 steady results
+    pl = ax.plot(u_theory[i_theory], theory[i_theory], linestyle=linestyle, c=color)  # theoretical line
+    # ax.plot(h2_wind[i_h2], HAWC2val[i_h2], 'o',  color='C0')  # HAWC2 steady results
+    # ax.plot(h2_wind_dtu10mw[i_h2_dtu10mw], HAWC2val_dtu10mw[i_h2_dtu10mw], 'x', color='C1')  # HAWC2 steady results
 
+    bp1 = ax.boxplot(np.mean(HAWC2val[i_h2].reshape(20, 6, 3), axis=1).tolist(), positions = np.mean(h2_wind[i_h2].reshape(20, 6, 1), axis=1).T[0], 
+               boxprops = {'linestyle':'-', 'linewidth' : 1, "color" : "blue"},
+               whiskerprops = {'linestyle':'-', 'linewidth' : 1, "color" : "blue"},
+               capprops = {'linestyle':'-', 'linewidth' : 1, "color" : "blue"},
+                medianprops = {'linestyle':'-', 'linewidth' : 1, "color" : "blue"})
+    bp2 = ax.boxplot(np.mean(HAWC2val_dtu10mw[i_h2_dtu10mw].reshape(20, 6, 3), axis=1).tolist(), positions = np.mean(h2_wind_dtu10mw[i_h2_dtu10mw].reshape(20, 6, 1), axis=1).T[0], 
+                boxprops = {'linestyle':'-', 'linewidth' : 1, "color" : "red"},
+                whiskerprops = {'linestyle':'-', 'linewidth' : 1, "color" : "red"},
+                capprops = {'linestyle':'-', 'linewidth' : 1, "color" : "red"},
+                medianprops = {'linestyle':'-', 'linewidth' : 1, "color" : "red"})
+    ax.yaxis.set_label_coords(-0.045-0.015*(i%2), 0.5)
     ax.grid('on')
     ax.set(xlabel='Wind speed [m/s]' if iplot > 8 else None, ylabel=name, xlim=[4, 25])
-
+    ax.xaxis.set_major_formatter(FormatStrFormatter('%.2f'))
+    i += 1
+fig.legend([pl[0] ,bp1["boxes"][0], bp2["boxes"][0]], ["Theoretical equation", 'Redesign (IIIB)', 'DTU10MW (IA)'], loc='outside upper center', ncol=3)
 # Add legend
-ax.lines[0].set_label(theory_label)  # Set the label for the line
-ax.lines[1].set_label("Redesign-IIIB")  # Set the label for the line
-ax.lines[4].set_label('DTU10MW-IA')  # Set the label for the line
-fig.legend(loc='outside upper center', ncol=3)
+# ax.lines[0].set_label(theory_label)  # Set the label for the line
+# ax.lines[1].set_label("Redesign-IIIB")  # Set the label for the line
+# ax.lines[4].set_label('DTU10MW-IA')  # Set the label for the line
+# fig.legend(loc='outside upper center', ncol=3)
 fig.suptitle(subfolder)
 fig.tight_layout()
-fig.savefig('task1_loads_stats.eps')
-plt.show()
+fig.savefig('task1_loads_stats.pdf')
+plt.show(block = True)
 
 # ===============================================================
 # To-do
