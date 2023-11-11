@@ -29,13 +29,21 @@ def load_hawc2s(path):
     return u, pitch, rotspd, paero, thrust, aerotrq
 
 
+def rel(a, b):
+    """
+        a: new val
+        b: ref val
+        outputs relative difference
+    """
+    return ((a-b)/b) * 100
+
 
 hawc2s_path = '../../IIIB_scaled_turbine_gbar/data/IIIB_scaled_turbine_flex.opt'  # path to .pwr or .opt file
 stats_path = '../../IIIB_scaled_turbine_gbar/postprocess_hawc2/turbulent/iiib_scaled_turbine_turb_tcb.hdf5'  # path to mean steady stats
 subfolder = '.'  # which subfolder to plot: tilt, notilt, notiltrigid, notiltnodragrigid
 subfolder_dtu10mw = 'tca'  # which subfolder to plot: tilt, notilt, notiltrigid, notiltnodragrigid
 stats_path_dtu10mw = '../../IIIB_scaled_turbine_gbar/postprocess_hawc2/turbulent/dtu_10mw_turb_stats.hdf5'  # path to mean steady stats
-save_path = '' 
+save_path = ''
 
 geneff = 0.94  # generator/gearbox efficienty [%]
 
@@ -86,7 +94,6 @@ if False:
 
 
         # PART 1. HAWC2 operational data versus HAWC2S "theory" from opt/pwr file.
-        breakpoint()
         if 'pitch angle' in name.lower():  # pitch angle
             u_theory = h2s_u
             theory = h2s_pitch
@@ -167,7 +174,7 @@ if False:
     fig.legend(loc='outside upper center', ncol=3)
     fig.suptitle(subfolder)
     fig.tight_layout()
-    fig.savefig('task1_operation.eps')
+    fig.savefig('task1_operation.pdf', bbox_inches='tight')
     plt.show()
 
 
@@ -180,6 +187,7 @@ channels = {19: 'Tower-base FA [kNm]',
             22: 'Yaw-bearing tilt [kNm]',
             23: 'Yaw-bearing roll [kNm]',
             27: 'Shaft torsion [kNm]',
+            #119: 'Tip deflection [m]',
             120: 'Out-of-plane BRM [kNm]',
             121: 'In-plane BRM [kNm]'}
 i_wind = 15  # wind channel, needed for plotting versus wind speed
@@ -191,6 +199,7 @@ dz_yb = 2.75 + 7.1*np.sin(5*np.pi/180)  # distance from hub center to yaw bearin
 dz_tb = 115.63 + dz_yb  # distance from hub center to tower base [m]
 
 
+breakpoint()
 # initialize the figure and axes
 fig, axs = plt.subplots(7, figsize=(16, 9), clear=True)
 
@@ -215,7 +224,6 @@ for iplot, (ichan, name) in enumerate(channels.items()):
     # hawc2 channels we need for the theoretical calculations
     h2_thrust_dtu10mw = df_dtu10mw.loc[df_dtu10mw.ichan == 13, ['mean', 'max', 'min']]  # thrust [kN]
     h2_aero_trq_dtu10mw = df_dtu10mw.loc[df.ichan == 81, ['mean', 'max', 'min']] / geneff * 1e-3  # aerodynamic torque [kNm]
-    breakpoint()
 
 
     # # PART 1. HAWC2 operational data versus HAWC2S "theory" from opt/pwr file.
@@ -244,7 +252,7 @@ for iplot, (ichan, name) in enumerate(channels.items()):
     elif ' SS' in name:  # tower-base side-side
         u_theory = h2_wind
         theory = h2_aero_trq['mean']  # CORRECT ME!!!
-        max_ss = max_val
+        max_ss = abs_val
     elif 'bearing tilt' in name.lower():  # yaw bearing pitch
         u_theory = h2_wind
         theory = h2_thrust['mean'] * dz_yb - Mgrav   # CORRECT ME!!!
@@ -257,6 +265,7 @@ for iplot, (ichan, name) in enumerate(channels.items()):
         u_theory = h2_wind
         theory = -h2_aero_trq['mean']  # CORRECT ME!!!
         max_torsion = abs_val
+    
     elif 'out-of-plane' in name.lower():  # blade root out-of-plane moment
         u_theory = h2_wind
 
@@ -307,8 +316,12 @@ ax.lines[4].set_label('DTU10MW-IA')  # Set the label for the line
 fig.legend(loc='outside upper center', ncol=3)
 fig.suptitle(subfolder)
 fig.tight_layout()
-#fig.savefig('task1_loads_stats.eps')
-#plt.show()
+# fig.savefig('task1_loads_stats.pdf', bbox_inches='tight')
+
+
+# tip deflection
+tip_defl_max = df[df.ichan==119]['max'].max()
+tip_defl_min = df[df.ichan==119]['min'].min()
 
 # ===============================================================
 # To-do
@@ -336,3 +349,16 @@ print(f"Max bearing_tilt:\t{max_bearing_tilt*safety_factor}")
 print(f"Max bearing_roll:\t{max_bearing_roll*safety_factor}")
 print(f"Max ip moment:\t{max_ip_moment*safety_factor}")
 print(f"Max oop moment:\t{max_oop_moment*safety_factor}")
+print(f"Tip deflection:\t{tip_defl_max}")
+print(f"Tip deflection:\t{tip_defl_min}")
+
+print("=========DESIGN LOADS relative diff.===")
+safety_factor = 1.35 * 1.25
+print(f"Max FA:\t{rel(max_fa*safety_factor, 363649 )}")
+print(f"Max SS:\t{rel(max_ss*safety_factor, 122789)}")
+print(f"Max bearing_tilt:\t{rel(max_bearing_tilt*safety_factor, 55819)}")
+print(f"Max bearing_roll:\t{rel(max_bearing_roll*safety_factor, 24419)}")
+print(f"Max torsion:\t{rel(max_torsion*safety_factor, 20726)}")
+print(f"Max oop moment:\t{rel(max_oop_moment*safety_factor,64965) }")
+print(f"Max ip moment:\t{rel(max_ip_moment*safety_factor, 35576)}")
+print(f"Tip deflection:\t{rel(tip_defl_min, 7.12)}")
