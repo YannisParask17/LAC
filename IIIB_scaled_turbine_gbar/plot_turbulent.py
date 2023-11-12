@@ -29,11 +29,11 @@ def load_hawc2s(path):
 
 
 
-hawc2s_path = 'IIIB_scaled_turbine/data/IIIB_scaled_turbine_flex.opt'  # path to .pwr or .opt file
-stats_path = 'IIIB_scaled_turbine_gbar/postprocess_hawc2/turbulent/iiib_scaled_turbine_turb_tcb.hdf5'  # path to mean steady stats
+hawc2s_path = 'data/IIIB_scaled_turbine_flex.opt'  # path to .pwr or .opt file
+stats_path = 'postprocess_hawc2/turbulent/iiib_scaled_turbine_turb_tcb.hdf5'  # path to mean steady stats
 subfolder = '.'  # which subfolder to plot: tilt, notilt, notiltrigid, notiltnodragrigid
 subfolder_dtu10mw = 'tca'  # which subfolder to plot: tilt, notilt, notiltrigid, notiltnodragrigid
-stats_path_dtu10mw = 'IIIB_scaled_turbine_gbar/postprocess_hawc2/turbulent/dtu_10mw_turb_stats.hdf5'  # path to mean steady stats
+stats_path_dtu10mw = 'postprocess_hawc2/turbulent/dtu_10mw_turb_stats.hdf5'  # path to mean steady stats
 save_path = '' 
 
 geneff = 0.94  # generator/gearbox efficienty [%]
@@ -190,18 +190,19 @@ channels = {19: 'Tower-base FA [kNm]',
             23: 'Yaw-bearing roll [kNm]',
             27: 'Shaft torsion [kNm]',
             120: 'Out-of-plane BRM [kNm]',
-            121: 'In-plane BRM [kNm]'}
+            121: 'In-plane BRM [kNm]',
+            119: 'Tower clearance [m]'}
 i_wind = 15  # wind channel, needed for plotting versus wind speed
 
 
-# NEEDS TO BE CHANGED : THIS IS FOR THE DTU10MW
-Mgrav = 6250  # yaw-bearing pitch moment due to gravity [kNm]
+# NEEDS TO BE CHANGED : THIS IS FOR THE DTU10MW - > Done
+Mgrav = 6416  # yaw-bearing pitch moment due to gravity [kNm] -> that's the correct one
 dz_yb = 2.75 + 7.1*np.sin(5*np.pi/180)  # distance from hub center to yaw bearing [m]
 dz_tb = 115.63 + dz_yb  # distance from hub center to tower base [m]
 
 i = 0
 # initialize the figure and axes
-fig, axs = plt.subplots(7, figsize=(16, 18), clear=True)
+fig, axs = plt.subplots(8, figsize=(22, 18), clear=True)
 
 # loop over each channels and plot the steady state with the theory line
 for iplot, (ichan, name) in enumerate(channels.items()):
@@ -265,7 +266,9 @@ for iplot, (ichan, name) in enumerate(channels.items()):
     elif 'in-plane' in name.lower():  # blade root in-plane moment
         u_theory = h2_wind
         theory = h2_aero_trq['mean']/3  # CORRECT ME!!!
-    
+    elif 'tower clearance' in name.lower():
+        u_theory = h2_wind
+        theory = np.full_like(u_theory, np.nan)  # leave me -- no theory for OoP moment
     # other values have no theory
     else:
         u_theory = h2_wind
