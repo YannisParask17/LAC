@@ -146,6 +146,7 @@ ax.bar(br2, np.divide(desload_dtu10mw, desload_dtu10mw), color ='g', width = bar
         edgecolor ='grey', label ='DTU10MW IA') 
 ax.set_xticks([r + barWidth for r in range(len(br1))], 
         labels)
+ax.set_ylabel('Normalised extreme design loads')
 ax.legend()
-fig.savefig("task5_evaluation_moments.pdf")
+fig.savefig("task5_evaluation_extreme.pdf")
 plt.show() 
