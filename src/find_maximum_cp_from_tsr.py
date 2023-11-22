@@ -8,13 +8,15 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # Inputs
-R = 92.5  # length of blade [m] -> Should not be blade length, but radius
+R = 92.5  # Should not be blade length, but radius
 r_old = 178.3/2
 # tsr = 9.0  # TSR [-]
 B = 3  # number of blades
 a = 1/3  # axial induction [-]
 r_hub = 2.8
-r2 = np.linspace(r_hub, R-0.6, 50)  # Rotor span [m] -> Defined in the rad positions from the ae file
+# r2 is not used
+# r2 = np.linspace(r_hub, R-0.6, 50)  # Rotor span [m] -> Defined in the rad positions from the ae file
+# r2 = np.linspace(r_hub, R-0.6, 50)  # Rotor span [m] -> Defined in the rad positions from the ae file
 
 chord_max = 6.0     # Maximum chord size [m]
 chord_root = 5.38   # Chord at the root [m]
@@ -27,7 +29,8 @@ plot_thickness = True
 # IO of the AE file
 data_path = "../IIIB_scaled_turbine"
 
-ae_path = '../IIIB_scaled_turbine/data/IIIB_scaled_turbine_ae.dat'
+#ae_path = '../IIIB_scaled_turbine/data/IIIB_scaled_turbine_ae.dat'
+ae_path = '../dtu_10mw/data/DTU_10MW_RWT_ae.dat'
 htc_path = data_path + '/IIIB_scaled_turbine.htc'
 
 # Out
@@ -59,7 +62,9 @@ cl_des, cd_des, aoa_des, tc_vals, cl_vals, cd_vals, aoa_vals = get_design_functi
 # Computing the spacing of the elements from the ae file
 ae_data = load_ae(ae_path)      # Get the RWT data
 scaling_factor = R/r_old
-rad_positions_ae = ae_data[:-4, 0]* R/r_old
+#rad_positions_ae = ae_data[:-4, 0]* R/r_old  # For some reason the last 4 elements are excluded
+rad_positions_ae = ae_data[:, 0]* R/r_old  # For some reason the last 4 elements were
+breakpoint()
 r = r_hub + rad_positions_ae
 
 # Solving for the relative thickness (t/c)
@@ -78,7 +83,7 @@ if plot_thickness:  # Super inefficient code, but good enough
     plt.grid()
     plt.legend()
     plt.savefig("../results/aero_design/thickness_limited.pdf", bbox_inches='tight')
-    plt.show()
+    #plt.show()
 
 
 def solve_CP(cl_des, r, t, tsr, R, a, B):
@@ -114,97 +119,18 @@ def solve_CP(cl_des, r, t, tsr, R, a, B):
     return CT, CP, chord, tc, cl, cd, twist, aoa, a, CLT, CLP
 
 
-tsr_list = np.linspace(6, 9, 40)
+tsr_list = np.linspace(7, 8, 40)
 CP_list = np.zeros(len(tsr_list))
 CT_list = np.zeros(len(tsr_list))
 for i, tsr in enumerate(tsr_list):
     CT, CP, chord, tc, cl, cd, twist, aoa, _, _, _ = solve_CP(cl_des, r, t, tsr, R, a, B)
     CP_list[i] = CP
     CT_list[i] = CT
-    print(i)
-
-# # %% Plotting design functions
-# tc_plot = np.linspace(0, 100, 100)
-# fig, axs = plt.subplots(3, 1)
-
-# axs[0].plot(tc_plot, cl_des(tc_plot), "k")
-# axs[0].plot(tc_vals, cl_vals, "ok")
-# axs[0].set_ylabel("$C_l$ [-]")
-
-# axs[1].plot(tc_plot, cd_des(tc_plot), "k")
-# axs[1].plot(tc_vals, cd_vals, "ok")
-# axs[1].set_ylabel("$C_d$ [-]")
-
-# axs[2].plot(tc_plot, aoa_des(tc_plot), "k")
-# axs[2].plot(tc_vals, aoa_vals, "ok")
-# axs[2].set_ylabel(r"$\alpha$ [-]")
-# axs[2].set_xlabel(r"$t/c$ [deg]")
-
-# fig.tight_layout()
-
-# fig.show()
-
-# # %% Plot the chord, twist and thickness
-# fig, axs = plt.subplots(3, 1, num=2, clear=True)
-# # t/c
-# axs[0].plot(r, tc_ideal, "C0--", lw=1)
-# axs[0].plot(r, tc, "C0")
-
-# axs[0].set_ylabel('Rel. thickness [%]')
-# # Chord
-# axs[1].plot(r, chord_ideal, "C0--", lw=1)
-# axs[1].plot(r, chord, "C0")
-# axs[1].set_ylabel('Chord [m]')
-# # Twist
-# axs[2].plot(r, twist_ideal, "C0--", lw=1)
-# axs[2].plot(r, twist, "C0")
-# axs[2].set_ylabel('Twist [deg]')
-# axs[2].set_xlabel('Rotor span [m]')
-# fig.tight_layout()
-# fig.show()
-
-# # %% Plot r vs. t/c, cl, cd, aoa
-# fig, ax = plt.subplots(2, 2, num=4, clear=True)
-# # t/c
-# ax[0, 0].plot(r, tc_ideal, "C0--", lw=1)
-# ax[0, 0].plot(r, tc, "C0")
-# ax[0, 0].set_ylabel("t/c [%]")
-# # cl
-# ax[0, 1].plot(r, cl_ideal, "C0--", lw=1)
-# ax[0, 1].plot(r, cl)
-# ax[0, 1].set_ylabel("$C_l$ [-]")
-# # cl/cd
-# ax[1, 0].plot(r, cd)
-# ax[1, 0].set_ylabel("$C_d$ [-]")
-# ax[1, 0].set_xlabel("Span [m]")
-# # aoa
-# ax[1, 1].plot(r, aoa)
-# ax[1, 1].set_ylabel(r"$\alpha$ [deg]")
-# ax[1, 1].set_xlabel("Span [m]")
-
-# # %% Plot r vs. CLT, CLP
-# fig, axs = plt.subplots(3, 1, num=3, clear=True)
-# axs[0].plot(r, CLT)
-# axs[0].axhline(y=8/9, ls="--", color="k", lw=1)
-# axs[0].grid('on')
-# axs[0].set_ylabel('Local thrust ($C_{LT}$) [-]')
-# axs[0].set_ylim(0, 1.0)
-# axs[1].plot(r, CLP)
-# axs[1].axhline(y=16/27, ls="--", color="k", lw=1)
-# axs[1].grid('on')
-# axs[1].set_ylabel('Local Power ($C_{LP}$) [-]')
-# axs[2].plot(r, a)
-# axs[2].axhline(y=1/3, ls="--", color="k", lw=1)
-# axs[2].grid('on')
-# axs[2].set_ylabel('Axial induction ($a$) [-]')
-# axs[2].set_xlabel('Rotor span [m]')
-# fig.suptitle(f"$C_T$={CT:1.3f}, $C_P$={CP:1.3f}")
-# fig.tight_layout()
-# fig.show()
+    print(f"i:\t{i}\n")
+    print(f"CP:\t{CP}")
 
 
 #  %% TSR vs CP
-
 CP_max = np.argmax(CP_list)
 tsr_max = tsr_list[CP_max]
 
@@ -243,10 +169,11 @@ df_new.to_json(json_out)
 
 # Change the ae file and save it
 ae_new = ae_data.copy()
-ae_new[:, 0] = rad_positions_ae     # radial position
-ae_new[:, 1] = chord    # Chord
-ae_new[:, 2] = tc       # T/C ratio
+ae_new[:, 0] = rad_positions_ae     # radial position -> scaled up by factor
+ae_new[:, 1] = chord    # Chord -> from the functions given by DTU
+ae_new[:, 2] = tc       # T/C ratio -> from functions given by dtu
 save_ae(out_path, ae_new)
+
 
 # Change the C2Def
 
@@ -254,6 +181,7 @@ save_ae(out_path, ae_new)
 c2_def = load_c2def(htc_path)  # x, y , z , theta
 
 c2_def_new = c2_def.copy()
+breakpoint()
 c2_def_new[:, 2] *= scaling_factor      # Scale the z coordinate
 twist_interp = - np.interp(c2_def_new[:, 2], rad_positions_ae, twist)
 c2_def_new[:, 3] = twist_interp               # Add new twist

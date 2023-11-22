@@ -61,6 +61,7 @@ prob_all = np.repeat(prob_U, num_seeds_ws)
 mean_power = np.zeros(len(uniq_ws))
 for idx, ws in enumerate(uniq_ws):
     mean_power[idx]=  power[np.isclose(ws_arr, ws, atol=1e-2)].mean()
+    breakpoint()
 # %%
 # Comparison
 
