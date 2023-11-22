@@ -1,3 +1,9 @@
+#%%
+
+# This code is a previous version than the one used in the report.
+# The S_chord was fix in that code. See the new version comment.
+
+
 # %%
 import numpy as np
 import matplotlib.pyplot as plt
