@@ -194,7 +194,7 @@ ax1.legend(lines, labels, loc='upper center', ncol=3, bbox_to_anchor=(0.5, 1.4))
 # ax1.legend(lns, labs, loc=[0.02, 0.87])
 
 plt.tight_layout()
-plt.savefig('../results/aero_design/cp_ct.pdf', bbox_inches='tight')
+# plt.savefig('../results/aero_design/cp_ct.pdf', bbox_inches='tight')
 plt.show(block = True)
 
 
