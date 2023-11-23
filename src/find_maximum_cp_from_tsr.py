@@ -119,7 +119,7 @@ def solve_CP(cl_des, r, t, tsr, R, a, B):
     return CT, CP, chord, tc, cl, cd, twist, aoa, a, CLT, CLP
 
 
-tsr_list = np.linspace(7, 8, 40)
+tsr_list = np.linspace(7, 7.2, 40)
 CP_list = np.zeros(len(tsr_list))
 CT_list = np.zeros(len(tsr_list))
 for i, tsr in enumerate(tsr_list):
