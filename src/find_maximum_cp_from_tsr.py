@@ -186,7 +186,7 @@ c2_def_new[:, 2] *= scaling_factor      # Scale the z coordinate
 twist_interp = - np.interp(c2_def_new[:, 2], rad_positions_ae, twist)
 c2_def_new[:, 3] = twist_interp               # Add new twist
 
-save_c2def(c2def_save_path, c2_def_new)
+# save_c2def(c2def_save_path, c2_def_new)
 
 
 print("Done!")

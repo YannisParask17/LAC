@@ -1,8 +1,10 @@
-#%%
+# %%
+# This fixes from the original code (one used in the report, not present in the repo):
+# - Not using the real S_thickness (the original sims to have used the S_chord)
+# - Using the blade span and not the rotor radius
 
-# This code is a previous version than the one used in the report.
-# The S_chord was fix in that code. See the new version comment.
-
+# NOTE: we used in our a report a better version of the code we have here.
+# That version had S_chord more less correct. The rest of things were as bad.
 
 # %%
 import numpy as np
@@ -21,21 +23,25 @@ st_data = load_st(path_st_file_DTU10MW, 0, 0)       # Loading st_data to overwri
 ae_path = '../dtu_10mw/data/DTU_10MW_RWT_ae.dat'
 r_RWT, c_RWT, tc_RWT, pcset_RWT = load_ae(ae_path, unpack=True)
 
-
+ae_path_redesign = r'..\results\hawc_files\10MW_1a_ae.dat'
+r_for_c_redesign, c_redesign, tc_redesign, _ = load_ae(ae_path_redesign, unpack=True)
+t_redesign = c_redesign*tc_redesign/100
 # Load structural data
 s0, t_skin0, t_blade0, w_cap0, chord0, t_cap0 = np.loadtxt(path_struct_params_10mw, unpack=True)
 
 # We interpolate to have the same number of points
 c_RWT = np.interp(s0, r_RWT, c_RWT)
+c_redesign = np.interp(s0, r_for_c_redesign, c_redesign)
+t_redesign = np.interp(s0, r_for_c_redesign, t_redesign)
 # %%
 # Dummy scaled chord and thickness (assuming S_R=R1/R0=1.05 -> c1=S_R*c0, t_blade1=S_R*t_blade0)
 # !! Use your own values !!
-R_dtu10mw = 89.15
-R_scaled = 92.5
+R_dtu10mw = 86.366
+R_scaled = 92.5-2.8
 S_radius = R_scaled/R_dtu10mw     #1.037  # Scaling factor
 # chord1 = S_radius*chord0
-chord1 = c_RWT
-t_blade1 = S_radius*t_blade0
+chord1 = c_redesign
+t_blade1 = t_redesign
 
 # Scaling factors
 S_chord = chord1/chord0
@@ -65,8 +71,7 @@ st_data["y_e"] *= S_thickness
 
 # Saving scaled ST-file
 # Uncomment to save the new ST-file
-save_st("../dtu_10mw_redesign/data/dtu_10mw_redesign_st.dat", st_data)
-save_st("../results/hawc_files/dtu_10mw_redesign_st.dat", st_data)
+save_st("../results/dtu_10mw_redesign_st_debug.dat", st_data)
 
 # Plotting m, I_x, I_y, I_p, S_chord, S_thickness
 fig, axs = plt.subplots(3, 2, figsize=(7, 6))

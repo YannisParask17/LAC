@@ -54,6 +54,10 @@ ws_bins[-1] = uniq_ws[-1] + 0.5
 weib_cdf = weibull_min.cdf(ws_bins, k, scale = C)
 prob_U = weib_cdf[1:] - weib_cdf[:-1]
 
+
+
+print(f"ws_bins = {ws_bins}")
+print(f"{prob_U}")
 #%%
 
 # Mean power production
@@ -84,7 +88,7 @@ print(f"Percentage error of probability for each WS bin:\n {diff_prob}")
 #GOOD
 # %%
 
-P_mean =  np.trapz(mean_power*prob_U, uniq_ws)
+P_mean =  np.sum(mean_power*prob_U)
 # Anual energy production
 AEP = P_mean*HOURS_IN_A_YEAR
 # %%
@@ -128,3 +132,7 @@ fig.suptitle(f"Weibull Distribution (C: {C:.1f}, k: {k:.1f})")
 plt.savefig("Weibull.pdf")
 plt.show()
 # %%
+
+print(prob_U)
+print(AEP)
+print(mean_power)
