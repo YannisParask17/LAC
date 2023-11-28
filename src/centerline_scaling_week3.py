@@ -7,7 +7,7 @@ from lacbox.io import load_st, load_ae, load_c2def, save_c2def, save_ae, load_pc
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from sklearn.metrics import r2_score
+# from sklearn.metrics import r2_score # For people with sklearn in the env.
 # -------------------------------------------------------------------- #
 # Switches
 # -------------------------------------------------------------------- # show_figures = False
@@ -67,14 +67,14 @@ def scale_rotor(rx, ix, iy, vx, verbose=False):
         ry = get_ry(vx, vy, ix, iy, rx)
 
         res = r_old - ry
-        if verbose:
-            print(vy)
-            print(ry)
-            print(res)
+        # if verbose:
+        #     print(vy)
+        #     print(ry)
+        #     print(res)
    
     if verbose:
         print(f"The new radius is:{ry}")
-        print(f"The new v is:{vy}")
+        print(f"The new Vrated is:{vy}")
     scaling_factor = ry/rx
     return ry, scaling_factor
 
@@ -92,14 +92,14 @@ ix = 0.16       # Class a
 iy = 0.14       # Class b
 vx = 11.4       # V rated for the 10 mw reference turbine
 
-radius_new, scaling_factor = scale_rotor(rx, ix, iy, vx)
+radius_new, scaling_factor = scale_rotor(rx, ix, iy, vx, verbose=True)
 # load aero data -> Thickness
 ae = load_ae(ae_path)
 
 # pass data to variables
 radius, chord, tc_ratio, pcset = load_ae(ae_path, unpack=True)
 thickness = tc_ratio*chord/100
-breakpoint()
+
 # Get the centerline from the c2def block in the htc file
 c2_def = load_c2def(htc_path)  # x, y , z , theta
 
@@ -118,9 +118,9 @@ df.to_csv(thickness_out_path, index=False)
 # Fit a polynomial to the thickness
 poly_coeffs = np.polyfit(radius_new, thickness_new, 8)
 thickness_poly = np.polyval(poly_coeffs, radius_new)
-r2 = r2_score(thickness_new, thickness_poly)
+# r2 = r2_score(thickness_new, thickness_poly)
 
-np.savetxt(polynomial_path, poly_coeffs)
+# np.savetxt(polynomial_path, poly_coeffs)
 
 
 if visualize_thickness:
@@ -132,14 +132,14 @@ if visualize_thickness:
     plt.ylabel("Thickness [m]")
     plt.grid()
     plt.legend()
-    plt.savefig("../results/aero_design/thickness.pdf", bbox_inches='tight')
+    # plt.savefig("../results/aero_design/thickness.pdf", bbox_inches='tight')
     plt.show()
 
 
 c2_def_new = c2_def.copy()
 c2_def_new[:, 2] *= scaling_factor  # Scale the z coordinate
 
-save_c2def(c2def_save_path, c2_def_new)
+# save_c2def(c2def_save_path, c2_def_new)
 
 if show_plots:
     fig, ax = plt.subplots(1, figsize=(9, 3.5))

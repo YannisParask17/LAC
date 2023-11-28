@@ -4,7 +4,7 @@ import numpy as np
 # I created this quickly. Check input data
 
 R_1 = 89.14
-V_1 = 10.4
+V_1 = 11.4
 I_1=0.16
 I_2=0.14
 

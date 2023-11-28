@@ -7,7 +7,7 @@
 import numpy as np
 import json
 import matplotlib.pyplot as plt
-from sklearn.metrics import r2_score
+# from sklearn.metrics import r2_score # For people with sklearn in the env.
 
 from aero_design_functions import get_design_functions
 
@@ -142,18 +142,18 @@ aoa1_p = aoa_des1(tc_list)
 aoa2_p = aoa_des2(tc_list)
 aoa3_p = aoa_des3(tc_list)
 
-r2_cl1 = r2_score(cl, cl1_p)
-r2_cl2 = r2_score(cl, cl2_p)
-r2_cl3 = r2_score(cl, cl3_p)
+# r2_cl1 = r2_score(cl, cl1_p)
+# r2_cl2 = r2_score(cl, cl2_p)
+# r2_cl3 = r2_score(cl, cl3_p)
 
-r2_cd1 = r2_score(cd, cd1_p)
-r2_cd2 = r2_score(cd, cd2_p)
-r2_cd3 = r2_score(cd, cd3_p)
+# r2_cd1 = r2_score(cd, cd1_p)
+# r2_cd2 = r2_score(cd, cd2_p)
+# r2_cd3 = r2_score(cd, cd3_p)
 
-r2_aoa1 = r2_score(aoa, aoa1_p)
-r2_aoa2 = r2_score(aoa, aoa2_p)
-r2_aoa3 = r2_score(aoa, aoa3_p)
-breakpoint()
+# r2_aoa1 = r2_score(aoa, aoa1_p)
+# r2_aoa2 = r2_score(aoa, aoa2_p)
+# r2_aoa3 = r2_score(aoa, aoa3_p)
+
 # Getting the Cl and CD from the design functions
 
 tc_plot = np.linspace(0, 100, 101)

@@ -25,15 +25,16 @@ chord_root = 5.38   # Chord at the root [m]
 plot_thickness = True
 
 # IO of the AE file
-data_path = "../IIIB_scaled_turbine"
+data_path = "../dtu_10mw"
 
-ae_path = '../IIIB_scaled_turbine/data/IIIB_scaled_turbine_ae.dat'
-htc_path = data_path + '/IIIB_scaled_turbine.htc'
+ae_path = '../dtu_10mw/data/DTU_10MW_RWT_ae.dat' 
+htc_path = r'..\dtu_10mw\dtu_10mw_hawc2s_rigid_1point.htc'
+
 
 # Out
-c2def_save_path = '../results/hawc_files/c2_def_scaled.txt'
-out_path = '../results/hawc_files/10MW_1a_ae.dat'
-json_out = "../results/design_parameters_at_max_cp.json"
+c2def_save_path = '../results/hawc_files/c2_def_scaled_JULIO.txt'
+out_path = '../results/hawc_files/10MW_IIIB_ae_JULIO.dat'
+json_out = "../results/design_parameters_at_max_cp_JULIO.json"
 
 # Function for the absolute thickness vs span for the 35 m blade
 def thickness(r):
@@ -58,13 +59,16 @@ cl_des, cd_des, aoa_des, tc_vals, cl_vals, cd_vals, aoa_vals = get_design_functi
 
 # Computing the spacing of the elements from the ae file
 ae_data = load_ae(ae_path)      # Get the RWT data
-scaling_factor = R/r_old
-rad_positions_ae = ae_data[:-4, 0]* R/r_old
-r = r_hub + rad_positions_ae
+r_old = ae_data[-1, 0]+r_hub
+scaling_factor = (R-r_hub)/(r_old-r_hub)
+rad_positions_ae = ae_data[:, 0]* scaling_factor
+r_lst = r_hub + rad_positions_ae
+r_lst[-1]=r_lst[-1]-0.05
+
 
 # Solving for the relative thickness (t/c)
 # Computing absolute thickness
-t = thickness(r-r_hub)
+t = thickness(r_lst-r_hub)
 # Plot the thickness
 if plot_thickness:  # Super inefficient code, but good enough
     # pass data to variables
@@ -72,7 +76,7 @@ if plot_thickness:  # Super inefficient code, but good enough
     thickness_plot = tc_ratio_plot*chord_plot/100
     plt.figure(figsize=(4.5, 2.2))
     plt.plot(radius_plot/r_old, thickness_plot, color='C0', label="RWT")
-    plt.plot((r-r_hub)/R, t, color='C1', label="Scaled")
+    plt.plot((r_lst-r_hub)/R, t, color='C1', label="Scaled")
     plt.xlabel("r/R (-)")
     plt.ylabel("Thickness (m)")
     plt.grid()
@@ -118,7 +122,7 @@ tsr_list = np.linspace(6, 9, 40)
 CP_list = np.zeros(len(tsr_list))
 CT_list = np.zeros(len(tsr_list))
 for i, tsr in enumerate(tsr_list):
-    CT, CP, chord, tc, cl, cd, twist, aoa, _, _, _ = solve_CP(cl_des, r, t, tsr, R, a, B)
+    CT, CP, chord, tc, cl, cd, twist, aoa, _, _, _ = solve_CP(cl_des, r_lst, t, tsr, R, a, B)
     CP_list[i] = CP
     CT_list[i] = CT
     print(i)
@@ -235,9 +239,9 @@ plt.tight_layout()
 plt.show(block=True)
 
 
-CT, CP, chord, tc, cl, cd, twist, aoa, a, CLT, CLP = solve_CP(cl_des, r, t, tsr_max, R, a, B)
+CT, CP, chord, tc, cl, cd, twist, aoa, a, CLT, CLP = solve_CP(cl_des, r_lst, t, tsr_max, R, a, B)
 
-df_new = pd.DataFrame({"r" : r, "a" : a,"CT": CT, "CP": CP, "CLP" : CLP, "CLT" : CLT, "chord": chord, "tc": tc, "cl": cl, "cd": cd, "twist": twist, "aoa": aoa})
+df_new = pd.DataFrame({"r" : r_lst, "a" : a,"CT": CT, "CP": CP, "CLP" : CLP, "CLT" : CLT, "chord": chord, "tc": tc, "cl": cl, "cd": cd, "twist": twist, "aoa": aoa})
 df_new.to_json(json_out)
 
 
