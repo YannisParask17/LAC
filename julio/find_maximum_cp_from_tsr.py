@@ -35,6 +35,10 @@ c2def_save_path = '../results/hawc_files/c2_def_scaled_JULIO.txt'
 out_path = '../results/hawc_files/10MW_IIIB_ae_JULIO.dat'
 json_out = "../results/design_parameters_at_max_cp_JULIO.json"
 
+c2def_save_path1 = '../results/hawc_files/c2_def_scaled.txt' # For origina design
+out_path1 = '../results/hawc_files/10MW_IIIB_ae.dat'
+json_out1 = "../results/design_parameters_at_max_cp_.json"
+
 # Function for the absolute thickness vs span for the 35 m blade
 def thickness(r):
     """Absolute thickness [m] as a function of blade span [m] with the adapted polynomial coeffs"""
@@ -270,7 +274,7 @@ ae_new = ae_data.copy()
 ae_new[:, 0] = rad_positions_ae     # radial position
 ae_new[:, 1] = chord    # Chord
 ae_new[:, 2] = tc       # T/C ratio
-save_ae(out_path, ae_new)
+save_ae(out_path1, ae_new)
 
 # Change the C2Def
 
@@ -282,7 +286,7 @@ c2_def_new[:, 2] *= scaling_factor      # Scale the z coordinate
 twist_interp = - np.interp(c2_def_new[:, 2], rad_positions_ae, twist)
 c2_def_new[:, 3] = twist_interp               # Add new twist
 
-save_c2def(c2def_save_path, c2_def_new)
+save_c2def(c2def_save_path1, c2_def_new)
 
 
 print("Done!")
@@ -369,3 +373,31 @@ ax1.legend(lines, labels, loc='upper center', ncol=2, bbox_to_anchor=(0.5, 1.35)
 
 
 # %%
+
+df_new = pd.DataFrame({"r" : r_lst, "a" : a_julio,"CT": CT_julio, "CP": CP_julio, "CLP" : CLP_julio, "CLT" : CLT_julio, "chord": chord_julio, "tc": tc_julio, "cl": cl_julio, "cd": cd_julio, "twist": twist_julio, "aoa": aoa_julio})
+df_new.to_json(json_out)
+
+
+# Change the ae file and save it
+ae_new = ae_data.copy()
+ae_new[:, 0] = rad_positions_ae     # radial position
+ae_new[:, 1] = chord_julio    # Chord
+ae_new[:, 2] = tc_julio       # T/C ratio
+save_ae(out_path, ae_new)
+
+
+
+#%%
+# Change the C2Def
+# Get the centerline from the c2def block in the htc file
+c2_def = load_c2def(htc_path)  # x, y , z , theta
+
+c2_def_new = c2_def.copy()
+c2_def_new[:, 2] *= scaling_factor      # Scale the z coordinate
+twist_interp = - np.interp(c2_def_new[:, 2], rad_positions_ae, twist)
+c2_def_new[:, 3] = twist_interp               # Add new twist
+
+save_c2def(c2def_save_path, c2_def_new)
+
+
+print("Done!")

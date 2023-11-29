@@ -1,0 +1,120 @@
+# %%
+import matplotlib.pyplot as plt
+import numpy as np
+from lacbox.aero import root_chord, min_tc_chord, max_twist
+from lacbox.io import load_ae, save_ae, load_c2def, save_c2def, load_pwr
+import json
+
+# %%
+r_hub = 2.8
+
+# Input files
+htc_path = r"..\dtu_10mw\dtu_10mw_hawc2s_rigid_1point.htc"
+ae_path = '../dtu_10mw/data/DTU_10MW_RWT_ae.dat' 
+redesign_data_path = "../results/design_parameters_at_max_cp_JULIO.json"
+
+# Computing the spacing of the elements from the ae file
+span_RWT, chord_RWT, tc_RWT, _  = load_ae(ae_path, unpack=True)      # Get the RWT data
+r_RWT = span_RWT + r_hub
+
+c2_def = load_c2def(htc_path)
+twist_RWT = - np.interp(span_RWT, c2_def[:, 2], c2_def[:,3])
+c2_def[:,3]
+
+with open(redesign_data_path, 'r') as json_file:
+    redesign_data_dict = json.load(json_file)
+
+r_new = list(redesign_data_dict['r'].values())
+chord_new = list(redesign_data_dict['chord'].values())
+tc_new = list(redesign_data_dict['tc'].values())
+twist_new = list(redesign_data_dict['twist'].values())
+# %% Plot the chord, twist and thickness
+
+fig, axs = plt.subplots(3, 1, num=2, clear=True, sharex=True)
+
+# t/c
+axs[0].grid(True)  # Add grid
+axs[0].plot(r_RWT, tc_RWT, color="tab:red",  lw=1, label='DTU 10MW RWT')
+axs[0].plot(r_new, tc_new, color="tab:blue", label='Redesign')
+
+axs[0].set_ylabel('Rel. thickness [%]')
+axs[0].legend()
+
+# Chord
+axs[1].grid(True)  # Add grid
+axs[1].plot(r_RWT, chord_RWT, color="tab:red",  lw=1)
+axs[1].plot(r_new, chord_new, color="tab:blue" )
+axs[1].set_ylim(bottom=0)
+axs[1].set_ylabel('Chord [m]')
+# Twist
+axs[2].grid(True)  # Add grid
+axs[2].plot(r_RWT, twist_RWT,color="tab:red",  lw=1)
+axs[2].plot(r_new, twist_new, color="tab:blue")
+axs[2].set_ylabel('Twist [deg]')
+
+axs[2].set_xlabel('Rotor span [m]')
+fig.tight_layout()
+fig.show()
+# %%
+
+# Path for the file
+pwr_path = r"..\IIIB_scaled_turbine_Julio\IIIB_scaled_turbine_rigid_varTSR_JULIO.pwr"
+# Load the data
+pwr_data = load_pwr(pwr_path)
+
+R = 92.5
+V=8
+
+ws_lst = pwr_data["V_ms"]
+pwr_lst = pwr_data["P_kW"]
+tsr_lst = pwr_data["Speed_rpm"]*np.pi/30*R/V
+Cp_lst = pwr_data["Cp"]
+Ct_lst = pwr_data["Ct"]
+tsr_max = tsr_lst[np.argmax(Cp_lst)]
+
+# %%
+# Path for the file
+pwr_path = r"..\IIIB_scaled_turbine_Julio\IIIB_scaled_turbine_JULIO.pwr"
+# Load the data
+pwr_data = load_pwr(pwr_path)
+
+#%%
+
+fig, axs = plt.subplots(2, 2, num=2, clear=True, sharex=True)
+
+axs[0,0].grid(True)
+axs[0,0].plot(ws_lst, pwr_lst)
+axs[0,0].set_ylabel("Mech. Power [kW]")
+
+axs[1,0].grid(True)
+axs[1,0].plot(ws_lst, Cp_lst)
+axs[1,0].set_ylabel("$C_P$ [-]")
+
+# %%
+
+
+fig, ax1 = plt.subplots(figsize=(5, 2.5))
+ax2 = ax1.twinx()
+ax1.plot(tsr_lst, Cp_lst, "b--", label="CP")
+ax2.plot(tsr_lst, Ct_lst, "r-.", label="CT")
+ax2.axvline(tsr_max, label = r"$CP_{max}$ " +f"($\lambda$ = {tsr_max:2.2f})", color = "grey", markersize = 5)
+# lns4 = ax1.axhline(16/27, label = "Betz Limit")
+ax1.set_xlabel(r"Tip Speed Ratio [-]")
+ax1.set_ylabel("Power Coefficient [-]")
+ax2.set_ylabel("Thrust Coefficient [-]")
+ax1.grid(True)
+
+lines1, labels1 = ax1.get_legend_handles_labels()
+lines2, labels2 = ax2.get_legend_handles_labels()
+lines = lines1 + lines2
+labels = labels1 + labels2
+ax1.legend(lines, labels, loc='upper center', ncol=3, bbox_to_anchor=(0.5, 1.4))
+
+# lns = lns1+lns2
+# labs = [l.get_label() for l in lns]
+# ax1.legend(lns, labs, loc=[0.02, 0.87])
+
+plt.tight_layout()
+# plt.savefig('../results/aero_design/cp_ct.pdf', bbox_inches='tight')
+plt.show(block=True)
+# %%
