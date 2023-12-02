@@ -306,6 +306,14 @@
       main_body	blade1;
     end rotating_threebladed_substructure;
 ;
+; controller tuning block
+  begin controller_tuning ;
+    partial_load 0.05 0.7; fn [hz], zeta [-]
+    full_load 0.05 0.7 ; fn [hz], zeta [-]
+    gain_scheduling 2 ; 1 linear, 2 quadratic
+    constant_power 0 ; 0 constant torque, 1 constant power
+  end controller_tuning ;
+;
 ; define operational data
     operational_data_filename	./IIIB_scaled_turbine_JULIO.opt;	used for everything EXCEPT compute_optimal_pitch_angle
     begin operational_data;	used for compute_optimal_pitch_angle
@@ -327,6 +335,7 @@ save_power ;	save steady-state values to .pwr
 ;save_induction ;	save steady-state spanwise values to many .ind files, 3 for each wind speed
 ;compute_stability_analysis windturbine 12 ;  compute/save aeroelastic campbell diagram (.cmb), XX modes
 ;save_modal_amplitude ;  save modal amplitudes and phrases to .amb file
+compute_controller_input;
   end hawcstab2;
 ;
 exit;

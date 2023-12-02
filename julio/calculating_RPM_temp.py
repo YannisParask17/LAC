@@ -21,8 +21,9 @@ print(V_rated)
 
 #%%
 #Calculating the omega_max
-omega_max = TSR_max*V_rated/R
+omega_max = TSR_max*(V_rated-1)/R
 print(f"{omega_max} rad/s \n{omega_max*30/np.pi} RPM")
+print(f"HAWC2S {omega_max*30/np.pi*50} RPM")
 
 #%%
 # Tip speed

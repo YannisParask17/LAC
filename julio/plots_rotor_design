@@ -57,7 +57,6 @@ fig.tight_layout()
 fig.show()
 # %%
 
-# Path for the file
 pwr_path = r"..\IIIB_scaled_turbine_Julio\IIIB_scaled_turbine_rigid_varTSR_JULIO.pwr"
 # Load the data
 pwr_data = load_pwr(pwr_path)
@@ -72,49 +71,61 @@ Cp_lst = pwr_data["Cp"]
 Ct_lst = pwr_data["Ct"]
 tsr_max = tsr_lst[np.argmax(Cp_lst)]
 
+
+
 # %%
 # Path for the file
 pwr_path = r"..\IIIB_scaled_turbine_Julio\IIIB_scaled_turbine_JULIO.pwr"
 # Load the data
 pwr_data = load_pwr(pwr_path)
 
+ws_lst = pwr_data["V_ms"]
+pwr_lst = pwr_data["P_kW"]
+thrust_lst = pwr_data["T_kN"]
+tsr_lst = pwr_data["Speed_rpm"]*np.pi/30*R/V
+Cp_lst = pwr_data["Cp"]
+Ct_lst = pwr_data["Ct"]
+
+pwr_path = r"..\dtu_10mw\dtu_10mw_hawc2s_flex_minrotspd.pwr"
+# Load the data
+pwr_data_RWT = load_pwr(pwr_path)
+
+ws_RWT = pwr_data_RWT["V_ms"]
+pwr_RWT = pwr_data_RWT["P_kW"]
+thrust_RWT = pwr_data_RWT["T_kN"]
+tsr_RWT = pwr_data_RWT["Speed_rpm"]*np.pi/30*R/V
+Cp_RWT = pwr_data_RWT["Cp"]
+Ct_RWT = pwr_data_RWT["Ct"]
+
 #%%
 
-fig, axs = plt.subplots(2, 2, num=2, clear=True, sharex=True)
+fig, axs = plt.subplots(2, 2, num=2, clear=True, sharex=True, figsize = (8.5,4), layout="constrained")
 
 axs[0,0].grid(True)
+axs[0,0].plot(ws_lst, pwr_RWT)
 axs[0,0].plot(ws_lst, pwr_lst)
 axs[0,0].set_ylabel("Mech. Power [kW]")
 
 axs[1,0].grid(True)
+axs[1,0].plot(ws_lst, Cp_RWT)
 axs[1,0].plot(ws_lst, Cp_lst)
 axs[1,0].set_ylabel("$C_P$ [-]")
+axs[1,0].set_xlabel("Wind speed [m/s]")
+
+
+axs[0,1].grid(True)
+axs[0,1].plot(ws_lst, thrust_RWT)
+axs[0,1].plot(ws_lst, thrust_lst)
+axs[0,1].set_ylabel("Thrust [kN]")
+
+axs[1,1].grid(True)
+axs[1,1].plot(ws_lst, Ct_RWT)
+axs[1,1].plot(ws_lst, Ct_lst)
+axs[1,1].set_ylabel("$C_T$ [-]")
+axs[1,1].set_xlabel("Wind speed [m/s]")
 
 # %%
 
 
-fig, ax1 = plt.subplots(figsize=(5, 2.5))
-ax2 = ax1.twinx()
-ax1.plot(tsr_lst, Cp_lst, "b--", label="CP")
-ax2.plot(tsr_lst, Ct_lst, "r-.", label="CT")
-ax2.axvline(tsr_max, label = r"$CP_{max}$ " +f"($\lambda$ = {tsr_max:2.2f})", color = "grey", markersize = 5)
-# lns4 = ax1.axhline(16/27, label = "Betz Limit")
-ax1.set_xlabel(r"Tip Speed Ratio [-]")
-ax1.set_ylabel("Power Coefficient [-]")
-ax2.set_ylabel("Thrust Coefficient [-]")
-ax1.grid(True)
-
-lines1, labels1 = ax1.get_legend_handles_labels()
-lines2, labels2 = ax2.get_legend_handles_labels()
-lines = lines1 + lines2
-labels = labels1 + labels2
-ax1.legend(lines, labels, loc='upper center', ncol=3, bbox_to_anchor=(0.5, 1.4))
-
-# lns = lns1+lns2
-# labs = [l.get_label() for l in lns]
-# ax1.legend(lns, labs, loc=[0.02, 0.87])
-
-plt.tight_layout()
-# plt.savefig('../results/aero_design/cp_ct.pdf', bbox_inches='tight')
-plt.show(block=True)
 # %%
+
