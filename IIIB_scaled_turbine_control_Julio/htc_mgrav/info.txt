@@ -1,0 +1,18 @@
+Here I run a HAWC2 round without wind and a rigid st.
+We get the gravitational moments in the tower base to plot the theoretical
+tawer base moment.
+
+Jenni said:
+
+    We didn't get to discuss this in class, so I'll recommend you a way to do it.
+
+    Although it would be exciting to calculate by hand, it usually ends up being
+    a little cumbersome. So I would recommend just doing a short simulation with
+    NO wind or turbulence (you could use one of the steady htc files as a template)
+    and then just extracting the tower-base moment at the end of the simulation.
+
+    To be totally pedantic, you should run this simulation with a rigid tower (and
+    blades), but to be honest I don't mind if your gravity moment is not super
+    accurate. It changes anyway with flexible blades/towers at different wind speeds.
+
+    Please comment here if you have questions!

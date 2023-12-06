@@ -73,6 +73,6 @@ for antype in ['structural', 'aeroelastic']:
     fig.tight_layout(rect=[0, 0, 1, 0.87])
 
 
-    plt.savefig(cmb_path.replace("cmb", "pdf"), bbox_inches='tight')
+    # plt.savefig(cmb_path.replace("cmb", "pdf"), bbox_inches='tight')
 plt.show()
 

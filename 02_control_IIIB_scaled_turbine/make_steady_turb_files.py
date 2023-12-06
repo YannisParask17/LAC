@@ -7,7 +7,7 @@ from lacbox.htc import make_steady, make_turb
 
 
 # path to master (TURBULENT!) htc file and range of wind speeds of interest
-htc_path = Path('htc_master/IIIB_scaled_turbine_flex_turb.htc')
+htc_path = Path('htc_master/scaled_turbine_turb.htc')
 wsps = range(5, 25)
 
 

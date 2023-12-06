@@ -1,0 +1,49 @@
+ Logfile: ./log/notiltnodragrigid/iiib_scaled_turbine_notiltnodragrigid_05.0.log
+  is open for log outputs
+ ***********************************************************************
+ *  Build information for HAWC2MB
+ *  Aeroelastic tool HAWC2MB
+ *  Intel, version         2021 ,     20201112
+ *  WINDOWS 64-bit
+ ***********************************************************************
+ *  GIT-TAG        = 13.0.4
+ *  GIT-BRANCH     = 
+ *  BUILD_TYPE     = Windows64 RELEASE
+ *  BUILDER        = ContainerAdministrator
+ *  COMPUTER_NAME  = RUNNER-UYZRLEJ3
+ *  BUILD_DATE     = Mon 07/31/2023
+ ***********************************************************************
+________________________________________________________________________
+  Log file output
+                                                       Time : 11:10:43
+                                                       Date : 05:12.2023
+________________________________________________________________________
+ Newmark commands read with succes
+ Simulation commands read with succes
+ Reading data of main body : tower
+ Succes opening ./data/IIIB_scaled_turbine_Tower_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body tower commands read with succes
+ Reading data of main body : towertop
+ Succes opening ./data/IIIB_scaled_turbine_Towertop_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body towertop commands read with succes
+ Reading data of main body : shaft
+ Succes opening ./data/IIIB_scaled_turbine_Shaft_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body shaft commands read with succes
+ Reading data of main body : hub1
+ Succes opening ./data/IIIB_scaled_turbine_Hub_st.dat
+ timoschenko input commands read with succes
+ topologi_c2def_inputs read with succes
+ Topologi main body hub1 commands read with succes
+ Reading data of main body : hub2
+ Topologi main body hub2 commands read with succes
+ Reading data of main body : hub3
+ Topologi main body hub3 commands read with succes
+ Reading data of main body : blade1
+ Succes opening ./data/IIIB_scaled_turbine_Blade_st.dat
+ *** ERROR *** End-of-file before set #      1  $      2  was found
